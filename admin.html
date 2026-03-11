@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pasture — Admin · Coupons, Contact & Orders</title>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600;700&family=Lora:ital,wght@0,400;0,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --mud: #1C0F06; --bark: #3B1F0C; --clay: #B5541F; --ochre: #C98B2A; --cream: #FAF0DC;
+      --green: #25D366; --border: rgba(185,136,60,.2);
+    }
+    *,*::before,*::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Lora', serif; background: var(--cream); color: var(--mud); padding: 24px 6%; max-width: 900px; margin: 0 auto; }
+    h1 { font-family: 'Josefin Sans', sans-serif; font-size: 1.5rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 8px; color: var(--bark); }
+    .sub { font-size: 0.85rem; color: var(--clay); margin-bottom: 28px; }
+    section { margin-bottom: 36px; padding: 20px; background: rgba(255,255,255,.6); border: 1px solid var(--border); border-radius: 8px; }
+    section h2 { font-family: 'Josefin Sans', sans-serif; font-size: 0.75rem; letter-spacing: 2.5px; text-transform: uppercase; color: var(--clay); margin-bottom: 14px; }
+    .row { display: flex; flex-wrap: wrap; gap: 12px 24px; margin-bottom: 10px; }
+    .row span:first-child { font-weight: 600; min-width: 90px; }
+    .wa-cta { display: inline-flex; align-items: center; gap: 10px; background: rgba(37,211,102,.12); border: 1px solid rgba(37,211,102,.4); color: #25D366; padding: 14px 24px; font-family: 'Josefin Sans', sans-serif; font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; border-radius: 6px; margin-top: 10px; transition: all .3s; }
+    .wa-cta:hover { background: rgba(37,211,102,.2); border-color: #25D366; }
+    .coupon-list { list-style: none; }
+    .coupon-list li { padding: 8px 12px; margin-bottom: 6px; background: rgba(185,136,60,.08); border-radius: 4px; font-family: 'Josefin Sans', sans-serif; font-size: 0.8rem; }
+    .coupon-list li strong { color: var(--clay); margin-right: 8px; }
+    .note { font-size: 0.8rem; color: var(--bark); margin-top: 14px; padding: 12px; background: rgba(185,136,60,.06); border-radius: 4px; }
+    .orders-list { list-style: none; }
+    .orders-list li { padding: 14px; margin-bottom: 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.85rem; }
+    .orders-list .oid { font-family: 'Josefin Sans', sans-serif; font-weight: 700; color: var(--clay); margin-bottom: 4px; }
+    .orders-list .meta { color: var(--bark); font-size: 0.8rem; }
+    .orders-empty { color: var(--bark); font-style: italic; padding: 20px; }
+    .back { display: inline-block; margin-bottom: 20px; font-family: 'Josefin Sans', sans-serif; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--clay); text-decoration: none; }
+    .back:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <a href="order.html" class="back">← Back to Order</a>
+  <h1>Pasture Admin</h1>
+  <p class="sub">Coupons, contact details & orders · सवलत कोड, संपर्क आणि ऑर्डर</p>
+
+  <section id="contactSec">
+    <h2>Contact details</h2>
+    <div class="row"><span>Name</span><span id="brandName">—</span></div>
+    <div class="row"><span>Phone</span><span id="brandPhone">—</span></div>
+    <div class="row"><span>Email</span><span id="brandEmail">—</span></div>
+    <div class="row"><span>Address</span><span id="brandAddress">—</span></div>
+    <a id="waLink" class="wa-cta" href="#" target="_blank" rel="noopener">💬 Open WhatsApp · व्हॉट्सअॅपवर जा</a>
+    <p class="note">To change contact info, edit <code>config/site.json</code> → <code>brand</code> and redeploy.</p>
+  </section>
+
+  <section id="couponsSec">
+    <h2>Coupon codes</h2>
+    <ul class="coupon-list" id="couponList"></ul>
+    <p class="note">To add or remove coupons, edit <code>config/site.json</code> → <code>coupons</code> and redeploy.</p>
+  </section>
+
+  <section id="deliverySec">
+    <h2>Delivery</h2>
+    <div class="row"><span>Free above</span><span id="freeAbove">—</span></div>
+    <div class="row"><span>Charge</span><span id="deliveryCharge">—</span></div>
+  </section>
+
+  <section id="ordersSec">
+    <h2>Recent orders</h2>
+    <ul class="orders-list" id="ordersList"></ul>
+    <p class="note">Orders placed via the site are listed here. On serverless, the list may reset on deploy; use Vercel KV for persistent storage (see README).</p>
+  </section>
+
+  <script>
+    (function () {
+      const CONFIG_URL = '/api/config';
+      const ORDERS_URL = '/api/order';
+
+      function el(id) { return document.getElementById(id); }
+
+      function loadConfig() {
+        fetch(CONFIG_URL)
+          .then(function (r) { return r.json(); })
+          .then(function (data) {
+            var brand = data.brand || {};
+            el('brandName').textContent = brand.name || '—';
+            el('brandPhone').textContent = brand.phoneFormatted || brand.phone || '—';
+            el('brandEmail').textContent = brand.email || '—';
+            el('brandAddress').textContent = brand.address || '—';
+            var wa = 'https://wa.me/' + (brand.phoneWhatsApp || ('91' + (brand.phone || '').replace(/\D/g, '')));
+            var waLink = el('waLink');
+            waLink.href = wa;
+            waLink.target = '_blank';
+
+            var delivery = data.delivery || {};
+            el('freeAbove').textContent = delivery.freeAbove != null ? '₹' + delivery.freeAbove : '—';
+            el('deliveryCharge').textContent = delivery.charge != null ? '₹' + delivery.charge : '—';
+
+            var coupons = data.coupons || [];
+            var ul = el('couponList');
+            ul.innerHTML = '';
+            coupons.forEach(function (c) {
+              var li = document.createElement('li');
+              li.innerHTML = '<strong>' + (c.code || '') + '</strong> ' + (c.type === 'percent' ? c.value + '% off' : '₹' + c.value + ' off');
+              ul.appendChild(li);
+            });
+            if (!coupons.length) ul.innerHTML = '<li>No coupons in config</li>';
+          })
+          .catch(function () {
+            var sec = el('contactSec');
+            if (sec) sec.querySelector('h2').insertAdjacentHTML('afterend', '<p class="note">Failed to load config. Check /api/config.</p>');
+          });
+      }
+
+      function loadOrders() {
+        fetch(ORDERS_URL)
+          .then(function (r) { return r.json(); })
+          .then(function (orders) {
+            var list = el('ordersList');
+            list.innerHTML = '';
+            if (!orders || !orders.length) {
+              list.innerHTML = '<li class="orders-empty">No orders yet. Orders appear when customers confirm on the order page.</li>';
+              return;
+            }
+            orders.forEach(function (o) {
+              var li = document.createElement('li');
+              var c = o.customer || {};
+              li.innerHTML =
+                '<div class="oid">' + (o.id || '—') + '</div>' +
+                '<div class="meta">' + (c.firstName || '') + ' ' + (c.lastName || '') + ' · ' + (c.phone || '') + '</div>' +
+                '<div class="meta">' + (c.address || '') + ', ' + (c.city || '') + ' ' + (c.pincode || '') + '</div>' +
+                '<div class="meta">Total ₹' + (o.total != null ? o.total : o.subtotal) + '</div>';
+              list.appendChild(li);
+            });
+          })
+          .catch(function () {
+            el('ordersList').innerHTML = '<li class="orders-empty">Could not load orders. Ensure /api/orders is available.</li>';
+          });
+      }
+
+      loadConfig();
+      loadOrders();
+    })();
+  </script>
+</body>
+</html>

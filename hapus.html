@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pasture — Ratnagiri Hapus Alphonso · हापूस आंबा</title>
+<script src="js/app-config.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Marathi:ital@0;1&family=Josefin+Sans:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,600;1,400;1,600&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --mud:     #1C0F06; --bark:   #3B1F0C;
+  --orange:  #D44F10; --amber:  #E07828;
+  --gold:    #F0A832; --yellow: #F7CC5A;
+  --cream:   #FAF0DC; --parch:  #F5E6C0;
+  --smoke:   #F9F4EE; --green:  #2E6B18;
+  --leaf:    #4A9E30; --sage:   #8FBF5E;
+  --border:  rgba(212,79,16,.2);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Lora',serif;background:var(--cream);color:var(--mud);overflow-x:hidden;cursor:none;}
+
+#cur{position:fixed;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;}
+#curR{position:fixed;width:36px;height:36px;border:1.5px solid var(--orange);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.5;}
+
+#bird{position:fixed;pointer-events:none;z-index:400;width:160px;top:15vh;animation:birdFly 30s linear infinite;}
+#bird video{width:100%;mix-blend-mode:multiply;opacity:.8;}
+@keyframes birdFly{
+  0%  {left:-180px;top:15vh;transform:scaleX(1);}
+  47% {left:108vw;top:10vh;transform:scaleX(1);}
+  48% {left:108vw;top:20vh;transform:scaleX(-1);}
+  97% {left:-180px;top:17vh;transform:scaleX(-1);}
+  100%{left:-180px;top:15vh;transform:scaleX(1);}
+}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:22px 6%;transition:all .4s;}
+nav.scrolled{background:rgba(250,240,220,.96);backdrop-filter:blur(14px);padding:14px 6%;box-shadow:0 2px 24px rgba(60,20,0,.1);border-bottom:1px solid rgba(212,79,16,.15);}
+.logo-link{text-decoration:none;}
+.logo-en{font-family:'Josefin Sans',sans-serif;font-size:20px;letter-spacing:5px;font-weight:700;color:var(--cream);text-transform:uppercase;transition:color .4s;}
+nav.scrolled .logo-en{color:var(--mud);}
+.logo-mr{font-family:'Tiro Devanagari Marathi',serif;font-size:12px;color:var(--orange);display:block;margin-top:1px;}
+.nav-ul{display:flex;gap:36px;list-style:none;}
+.nav-ul a{font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:2.5px;color:rgba(250,240,220,.85);text-decoration:none;text-transform:uppercase;transition:color .3s;border-bottom:1.5px solid transparent;padding-bottom:2px;}
+nav.scrolled .nav-ul a{color:var(--bark);}
+.nav-ul a:hover,.nav-ul a.active{color:var(--orange);border-bottom-color:var(--orange);}
+.nav-cta{font-family:'Josefin Sans',sans-serif;font-size:10px;letter-spacing:2.5px;background:var(--orange);color:var(--cream);padding:11px 24px;text-decoration:none;text-transform:uppercase;transition:all .3s;}
+.nav-cta:hover{background:var(--mud);transform:translateY(-1px);}
+
+/* HERO */
+#hero{min-height:100vh;position:relative;overflow:hidden;
+  background:linear-gradient(165deg,#1a0800 0%,#2a1004 30%,#3d1808 55%,#1a1204 80%,#0e1a04 100%);
+  display:flex;align-items:center;padding:0 6%;}
+#hero::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 55% at 65% 35%,rgba(240,168,50,.12) 0%,transparent 65%),
+             radial-gradient(ellipse 50% 40% at 25% 65%,rgba(212,79,16,.15) 0%,transparent 55%);
+  animation:glw 7s ease-in-out infinite alternate;}
+@keyframes glw{from{opacity:.7}to{opacity:1}}
+
+.hero-mango-tree{position:absolute;right:4%;bottom:0;width:46%;max-width:560px;z-index:2;cursor:default;}
+
+/* ── INTERACTIVE MANGO FRUIT TOOLTIP ── */
+.mango-fruit{cursor:pointer;}
+.mango-body{transition:filter .25s,transform .25s;transform-origin:center;transform-box:fill-box;}
+.mango-fruit:hover .mango-body{filter:brightness(1.3) drop-shadow(0 0 10px rgba(240,168,50,.8));transform:scale(1.12);}
+@keyframes mangoPulse{0%{r:18;opacity:.5}100%{r:34;opacity:0}}
+.mango-pulse{animation:mangoPulse 2.2s ease-out infinite;}
+
+#mango-card{
+  position:absolute;z-index:20;
+  background:rgba(26,8,0,.96);
+  border:1px solid rgba(212,79,16,.45);
+  backdrop-filter:blur(16px);
+  padding:16px 20px;
+  min-width:220px;max-width:260px;
+  pointer-events:none;
+  opacity:0;
+  transform:translateY(8px) scale(.97);
+  transition:opacity .22s,transform .22s;
+}
+#mango-card.show{opacity:1;transform:none;}
+#mango-card::before{content:'';position:absolute;bottom:-6px;left:24px;width:10px;height:10px;background:rgba(26,8,0,.96);border-right:1px solid rgba(212,79,16,.45);border-bottom:1px solid rgba(212,79,16,.45);transform:rotate(45deg);}
+.mc-icon{font-size:1.6rem;display:block;margin-bottom:6px;}
+.mc-title{font-family:'Josefin Sans',sans-serif;font-size:.7rem;letter-spacing:2.5px;color:var(--gold);text-transform:uppercase;margin-bottom:2px;}
+.mc-mr{font-family:'Tiro Devanagari Marathi',serif;font-size:.85rem;color:var(--amber);margin-bottom:6px;display:block;}
+.mc-body{font-size:.78rem;color:rgba(250,240,220,.85);line-height:1.6;}
+.mc-stat{font-family:'Josefin Sans',sans-serif;font-size:.65rem;letter-spacing:1.5px;color:var(--sage);margin-top:7px;display:block;text-transform:uppercase;}
+
+/* Coming soon ribbon */
+.coming-ribbon{
+  position:absolute;top:120px;right:0;z-index:10;
+  background:var(--orange);color:var(--cream);
+  font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:3px;
+  padding:14px 48px 14px 22px;text-transform:uppercase;
+  transform:rotate(0deg);
+  box-shadow:0 4px 20px rgba(212,79,16,.4);
+}
+.coming-ribbon::after{content:'';position:absolute;right:0;top:0;bottom:0;width:0;height:0;border-style:solid;border-width:24px 0 24px 14px;border-color:transparent transparent transparent rgba(250,240,220,.9);}
+
+.hero-content{position:relative;z-index:5;max-width:560px;}
+.hero-eyebrow{font-family:'Caveat',cursive;font-size:1.5rem;color:var(--sage);display:block;margin-bottom:14px;animation:fadeUp .8s .2s both;}
+.hero-marathi{font-family:'Tiro Devanagari Marathi',serif;font-size:clamp(2rem,4.5vw,3.8rem);color:#F7CC5A;line-height:1.15;animation:fadeUp .8s .35s both;}
+.hero-title{font-family:'Josefin Sans',sans-serif;font-size:clamp(2.2rem,5vw,4.8rem);font-weight:700;color:var(--cream);letter-spacing:3px;text-transform:uppercase;line-height:1;animation:fadeUp .8s .5s both;}
+.hero-title em{color:var(--gold);font-style:italic;font-family:'Lora',serif;}
+.hero-desc{font-size:1rem;color:rgba(250,240,220,.88);line-height:1.8;margin-top:18px;max-width:420px;animation:fadeUp .8s .65s both;}
+.hero-btns{display:flex;gap:16px;margin-top:32px;animation:fadeUp .8s .8s both;}
+.btn-notify{font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:3px;background:var(--gold);color:var(--mud);padding:15px 38px;border:none;text-transform:uppercase;font-weight:700;transition:all .3s;cursor:pointer;display:inline-block;}
+.btn-notify:hover{background:var(--yellow);transform:translateY(-3px);box-shadow:0 12px 30px rgba(240,168,50,.4);}
+.btn-cashew{font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:3px;border:1.5px solid rgba(250,240,220,.3);color:var(--cream);padding:15px 38px;text-decoration:none;text-transform:uppercase;transition:all .3s;display:inline-block;}
+.btn-cashew:hover{border-color:var(--gold);color:var(--gold);}
+.hero-season-note{display:inline-flex;align-items:center;gap:10px;background:rgba(212,79,16,.15);border:1px solid rgba(212,79,16,.3);padding:10px 18px;margin-top:24px;font-family:'Josefin Sans',sans-serif;font-size:.8rem;letter-spacing:2px;color:var(--gold);text-transform:uppercase;animation:fadeUp .8s 1s both;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+
+/* NOTIFY FORM */
+.notify-section{background:linear-gradient(160deg,#1a0800,#2a1004,#0e1a04);padding:80px 6%;text-align:center;position:relative;overflow:hidden;}
+.notify-section::before{content:'🥭';position:absolute;font-size:20rem;opacity:.04;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;}
+.notify-section .eyebrow{font-family:'Caveat',cursive;font-size:1.4rem;color:var(--sage);display:block;margin-bottom:10px;}
+.notify-title{font-family:'Josefin Sans',sans-serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:700;letter-spacing:2px;color:var(--cream);text-transform:uppercase;}
+.notify-title em{font-style:italic;color:var(--gold);font-family:'Lora',serif;}
+.notify-mr{font-family:'Tiro Devanagari Marathi',serif;font-size:1.1rem;color:rgba(240,168,50,.7);margin-top:8px;display:block;}
+.notify-sub{color:rgba(250,240,220,.82);font-size:.9rem;line-height:1.7;margin-top:14px;max-width:480px;margin-left:auto;margin-right:auto;}
+.notify-form{display:flex;gap:0;max-width:480px;margin:36px auto 0;}
+.notify-input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(240,168,50,.3);border-right:none;padding:14px 18px;color:var(--cream);font-family:'Lora',serif;font-size:.9rem;outline:none;transition:border-color .3s;}
+.notify-input::placeholder{color:rgba(250,240,220,.3);}
+.notify-input:focus{border-color:rgba(240,168,50,.6);}
+.notify-btn{font-family:'Josefin Sans',sans-serif;font-size:.8rem;letter-spacing:2px;background:var(--gold);color:var(--mud);border:none;padding:14px 24px;text-transform:uppercase;cursor:pointer;font-weight:700;transition:all .3s;white-space:nowrap;}
+.notify-btn:hover{background:var(--yellow);}
+.notify-success{display:none;font-family:'Caveat',cursive;font-size:1.4rem;color:var(--gold);margin-top:20px;}
+.notify-count{font-family:'Josefin Sans',sans-serif;font-size:.78rem;letter-spacing:2px;color:rgba(250,240,220,.4);text-transform:uppercase;margin-top:16px;}
+
+/* BAND */
+.hapus-band{background:var(--mud);padding:22px 6%;display:flex;justify-content:space-around;flex-wrap:wrap;gap:16px;border-bottom:3px solid var(--orange);}
+.band-item{text-align:center;}
+.band-num{font-family:'Josefin Sans',sans-serif;font-size:1.9rem;font-weight:700;color:var(--gold);display:block;}
+.band-mr{font-family:'Tiro Devanagari Marathi',serif;font-size:.9rem;color:rgba(240,168,50,.7);display:block;}
+.band-lbl{font-size:.72rem;letter-spacing:2px;color:rgba(250,240,220,.72);text-transform:uppercase;}
+
+/* ABOUT HAPUS */
+#about{background:var(--smoke);padding:90px 6%;}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-top:60px;}
+.eyebrow{font-family:'Caveat',cursive;font-size:1.4rem;color:var(--orange);display:block;margin-bottom:10px;}
+.section-title{font-family:'Josefin Sans',sans-serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:700;letter-spacing:2px;line-height:1.15;text-transform:uppercase;color:var(--mud);}
+.section-title em{font-style:italic;color:var(--orange);font-family:'Lora',serif;}
+.section-mr{font-family:'Tiro Devanagari Marathi',serif;font-size:1.1rem;color:var(--amber);margin-top:6px;}
+.about-body{margin-top:20px;color:#3B1F0C;line-height:1.9;font-size:.95rem;}
+.about-body p{margin-bottom:14px;}
+.about-list{list-style:none;margin-top:22px;display:flex;flex-direction:column;gap:12px;}
+.about-list li{display:flex;align-items:flex-start;gap:12px;font-size:.9rem;color:#3B1F0C;}
+.about-list li::before{content:'✦';color:var(--gold);flex-shrink:0;margin-top:2px;}
+
+/* Mango visual */
+.mango-visual{background:linear-gradient(145deg,#1a0800,#2a1004,#0e1a04);position:relative;aspect-ratio:4/5;display:flex;align-items:stretch;justify-content:stretch;overflow:hidden;}
+.mango-visual img{width:100%;height:100%;object-fit:cover;display:block;}
+
+/* GI SECTION */
+#gi{background:var(--parch);padding:90px 6%;}
+.gi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:60px;}
+.gi-card{background:var(--cream);border-left:4px solid var(--orange);padding:28px 24px;}
+.gi-icon{font-size:2rem;display:block;margin-bottom:12px;}
+.gi-title-en{font-family:'Josefin Sans',sans-serif;font-size:.85rem;letter-spacing:2px;font-weight:700;color:var(--mud);text-transform:uppercase;margin-bottom:3px;}
+.gi-title-mr{font-family:'Tiro Devanagari Marathi',serif;font-size:.95rem;color:var(--orange);margin-bottom:10px;}
+.gi-body{font-size:.85rem;color:#3B1F0C;line-height:1.75;}
+
+/* WHAT MAKES HAPUS */
+#what{background:var(--cream);padding:90px 6%;}
+.what-header{text-align:center;margin-bottom:60px;}
+.what-steps{display:grid;grid-template-columns:repeat(2,1fr);gap:0;}
+.what-step{padding:36px 34px;position:relative;border-right:1px solid rgba(212,79,16,.15);}
+.what-step:nth-child(2),.what-step:nth-child(4){border-right:none;}
+.what-step:nth-child(3),.what-step:nth-child(4){border-top:1px solid rgba(212,79,16,.15);}
+.ws-num{font-family:'Josefin Sans',sans-serif;font-size:4rem;font-weight:700;color:rgba(240,168,50,.12);line-height:1;margin-bottom:-10px;}
+.ws-icon{font-size:2rem;display:block;margin-bottom:10px;}
+.ws-title-en{font-family:'Josefin Sans',sans-serif;font-size:.9rem;letter-spacing:2px;font-weight:700;color:var(--mud);text-transform:uppercase;margin-bottom:3px;}
+.ws-title-mr{font-family:'Tiro Devanagari Marathi',serif;font-size:.95rem;color:var(--orange);margin-bottom:10px;}
+.ws-body{font-size:.87rem;color:#3B1F0C;line-height:1.75;}
+
+/* PACKS */
+#packs{background:linear-gradient(160deg,#1a0800,#2a1004,#1a1204 70%,#0e1a04);padding:90px 6%;position:relative;overflow:hidden;}
+#packs::before{content:'';position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;}
+.packs-header{text-align:center;margin-bottom:60px;}
+.packs-header .eyebrow{color:var(--sage);}
+.packs-header .section-title{color:var(--cream);}
+.packs-header .section-mr{color:rgba(240,168,50,.7);}
+.pack-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.pack-card{background:rgba(255,255,255,.04);border:1px solid rgba(212,79,16,.18);padding:36px 28px;text-align:center;position:relative;overflow:hidden;transition:all .35s;}
+.pack-card:hover{border-color:rgba(240,168,50,.45);transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.5);}
+.pack-card.best{border-color:rgba(240,168,50,.4);background:rgba(240,168,50,.06);}
+.pack-card.best::after{content:'Best Value';position:absolute;top:0;right:0;background:var(--gold);color:var(--mud);font-family:'Josefin Sans',sans-serif;font-size:8px;letter-spacing:2px;padding:4px 12px;text-transform:uppercase;}
+.pack-card.soon{opacity:.55;}
+.pack-size{font-family:'Josefin Sans',sans-serif;font-size:2.5rem;font-weight:700;color:var(--cream);letter-spacing:2px;line-height:1;}
+.pack-size-mr{font-family:'Tiro Devanagari Marathi',serif;font-size:1rem;color:rgba(240,168,50,.6);margin-bottom:16px;display:block;}
+.pack-price{font-family:'Josefin Sans',sans-serif;font-size:2.2rem;font-weight:700;color:var(--gold);line-height:1;}
+.pack-per{font-size:.82rem;color:rgba(250,240,220,.4);margin:6px 0 18px;}
+.pack-desc{font-size:.82rem;color:rgba(250,240,220,.8);line-height:1.6;margin-bottom:18px;}
+.pack-btn{width:100%;background:transparent;border:1px solid rgba(240,168,50,.3);color:var(--gold);font-family:'Josefin Sans',sans-serif;font-size:.75rem;letter-spacing:2px;padding:12px;text-transform:uppercase;cursor:pointer;transition:all .3s;}
+.pack-btn:hover,.pack-card.best .pack-btn{background:var(--gold);color:var(--mud);}
+
+/* FOOTER */
+footer{background:var(--mud);padding:60px 6% 28px;color:rgba(250,240,220,.65);}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr;gap:60px;margin-bottom:50px;}
+.footer-brand{font-family:'Josefin Sans',sans-serif;font-size:22px;letter-spacing:5px;color:var(--cream);text-transform:uppercase;}
+.footer-tagline{font-family:'Caveat',cursive;font-size:1.05rem;color:var(--gold);margin-top:10px;display:block;}
+.footer-p{font-size:.85rem;line-height:1.7;margin-top:14px;color:rgba(250,240,220,.5);}
+.footer-col h5{font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:3px;color:var(--gold);margin-bottom:18px;text-transform:uppercase;}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.footer-col a{color:rgba(250,240,220,.72);text-decoration:none;font-size:.85rem;transition:color .2s;}
+.footer-col a:hover{color:var(--cream);}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.07);padding-top:22px;display:flex;justify-content:space-between;font-size:.78rem;}
+
+/* ── PROGRESS BAR ── */
+#progress-bar{position:fixed;top:0;left:0;height:2.5px;background:linear-gradient(90deg,var(--orange),var(--gold),var(--yellow));z-index:9999;width:0%;transition:width .1s linear;}
+
+/* ── GRAIN OVERLAY ── */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-repeat:repeat;background-size:180px;}
+
+/* ── BACK TO TOP ── */
+#btt{position:fixed;bottom:32px;right:32px;z-index:600;width:44px;height:44px;background:var(--mud);border:1px solid rgba(212,79,16,.35);color:var(--gold);font-size:1.2rem;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transform:translateY(12px);transition:all .35s;pointer-events:none;}
+#btt.show{opacity:1;transform:none;pointer-events:all;}
+#btt:hover{background:var(--orange);border-color:var(--orange);transform:translateY(-2px);}
+
+/* ── NOTIFY FORM GLOW ── */
+.notify-input:focus{border-color:rgba(240,168,50,.6);box-shadow:0 0 0 3px rgba(240,168,50,.08);}
+
+/* ── SHIMMER PACK CARDS ── */
+.pack-card::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.04) 50%,transparent 60%);transform:translateX(-100%);transition:transform .6s;}
+.pack-card:hover::after{transform:translateX(100%);}
+
+/* ── WAITLIST COUNTER ANIMATION ── */
+@keyframes countPop{0%{transform:scale(1)}50%{transform:scale(1.3)}100%{transform:scale(1)}}
+#waitCount.pop{animation:countPop .3s ease;}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s,transform .8s;}
+.reveal.visible{opacity:1;transform:none;}
+.reveal-l{opacity:0;transform:translateX(-40px);transition:opacity .8s,transform .8s;}
+.reveal-l.visible{opacity:1;transform:none;}
+.reveal-r{opacity:0;transform:translateX(40px);transition:opacity .8s,transform .8s;}
+.reveal-r.visible{opacity:1;transform:none;}
+
+@media(max-width:900px){
+  .about-grid,.gi-grid,.pack-cards,.what-steps{grid-template-columns:1fr;}
+  .what-step{border-right:none;border-bottom:1px solid rgba(212,79,16,.15);}
+  nav .nav-ul,nav .nav-cta{display:none;}
+  .footer-top{grid-template-columns:1fr;}
+  .notify-form{flex-direction:column;}
+  .notify-input{border-right:1px solid rgba(240,168,50,.3);}
+}
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+<button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
+<div id="cur"></div>
+<div id="curR"></div>
+
+<div id="bird">
+  <video autoplay muted loop playsinline>
+    <source src="https://supplant.me/wp-content/uploads/2022/03/Calibri_Q50.webm#t=1" type="video/webm">
+  </video>
+</div>
+
+<nav id="nav">
+  <a href="cashew.html" class="logo-link">
+    <span class="logo-en">Pasture</span>
+    <span class="logo-mr">आपली शेती · रत्नागिरी</span>
+  </a>
+  <ul class="nav-ul">
+    <li><a href="cashew.html">Cashew · काजू</a></li>
+    <li><a href="hapus.html" class="active">Hapus · हापूस</a></li>
+    <li><a href="order.html">Order · ऑर्डर</a></li>
+  </ul>
+  <a href="order.html" class="nav-cta">Order Cashew · काजू</a>
+</nav>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section id="hero">
+  <!-- Stars -->
+  <div id="stars"></div>
+
+  <!-- COMING SOON RIBBON -->
+  <div class="coming-ribbon">🥭 Coming Season Apr–Jun 2025</div>
+
+  <!-- Interactive Mango Benefit Tooltip Card -->
+  <div id="mango-card">
+    <span class="mc-icon" id="mc-icon">🥭</span>
+    <div class="mc-title" id="mc-title">Vitamin C Powerhouse</div>
+    <span class="mc-mr" id="mc-mr">व्हिटॅमिन C चा खजिना</span>
+    <div class="mc-body" id="mc-body">One Alphonso mango provides your entire day's Vitamin C — far more than an orange.</div>
+    <span class="mc-stat" id="mc-stat">↑ 60mg Vitamin C · Immunity Boost</span>
+  </div>
+
+  <!-- Mango Tree SVG — Interactive -->
+  <svg class="hero-mango-tree" id="mangoTree" viewBox="0 0 500 680" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="mg1" cx="50%" cy="40%" r="55%">
+        <stop offset="0%" stop-color="#F7CC5A"/>
+        <stop offset="45%" stop-color="#F0A832"/>
+        <stop offset="100%" stop-color="#C0392B"/>
+      </radialGradient>
+      <radialGradient id="mg2" cx="50%" cy="40%" r="55%">
+        <stop offset="0%" stop-color="#E07828"/>
+        <stop offset="55%" stop-color="#D44F10"/>
+        <stop offset="100%" stop-color="#A83510"/>
+      </radialGradient>
+    </defs>
+    <!-- Ground -->
+    <ellipse cx="250" cy="665" rx="180" ry="20" fill="#0a1f04" opacity=".6"/>
+    <!-- Trunk -->
+    <path d="M238 655 Q230 560 218 455 Q208 370 225 285" stroke="#5C3317" stroke-width="38" fill="none" stroke-linecap="round"/>
+    <path d="M248 655 Q256 558 268 455 Q280 372 264 288" stroke="#3B1F0C" stroke-width="24" fill="none" stroke-linecap="round"/>
+    <path d="M232 550 Q240 544 248 550" stroke="#2a1000" stroke-width="2.5" fill="none" opacity=".5"/>
+    <path d="M229 490 Q238 483 247 490" stroke="#2a1000" stroke-width="2.5" fill="none" opacity=".4"/>
+    <!-- Branches -->
+    <path d="M222 320 Q168 265 118 230 Q88 210 48 218" stroke="#5C3317" stroke-width="16" fill="none" stroke-linecap="round"/>
+    <path d="M240 278 Q290 222 338 185 Q370 162 415 150" stroke="#5C3317" stroke-width="14" fill="none" stroke-linecap="round"/>
+    <path d="M220 385 Q168 355 132 318 Q100 288 65 285" stroke="#4a2810" stroke-width="12" fill="none" stroke-linecap="round"/>
+    <path d="M255 360 Q308 328 350 296 Q382 270 422 262" stroke="#4a2810" stroke-width="11" fill="none" stroke-linecap="round"/>
+    <path d="M228 440 Q184 420 152 390" stroke="#3d2208" stroke-width="9" fill="none" stroke-linecap="round"/>
+    <path d="M264 428 Q305 408 335 382" stroke="#3d2208" stroke-width="9" fill="none" stroke-linecap="round"/>
+    <!-- Foliage -->
+    <ellipse cx="48" cy="200" rx="72" ry="50" fill="#0a2205" opacity=".95"/>
+    <ellipse cx="28" cy="190" rx="55" ry="40" fill="#1A3D0C" opacity=".9"/>
+    <ellipse cx="75" cy="182" rx="65" ry="48" fill="#2E6B18" opacity=".88"/>
+    <ellipse cx="50" cy="174" rx="50" ry="36" fill="#3d8a25" opacity=".8"/>
+    <ellipse cx="415" cy="136" rx="70" ry="52" fill="#0a2205" opacity=".95"/>
+    <ellipse cx="435" cy="126" rx="54" ry="40" fill="#1A3D0C" opacity=".9"/>
+    <ellipse cx="392" cy="130" rx="60" ry="46" fill="#2E6B18" opacity=".88"/>
+    <ellipse cx="418" cy="122" rx="46" ry="35" fill="#4A9E30" opacity=".8"/>
+    <ellipse cx="422" cy="252" rx="62" ry="44" fill="#1A3D0C" opacity=".88"/>
+    <ellipse cx="445" cy="244" rx="46" ry="34" fill="#2E6B18" opacity=".8"/>
+    <ellipse cx="65" cy="274" rx="60" ry="44" fill="#1A3D0C" opacity=".85"/>
+    <ellipse cx="46" cy="266" rx="45" ry="33" fill="#4A9E30" opacity=".78"/>
+    <ellipse cx="152" cy="378" rx="58" ry="42" fill="#1A3D0C" opacity=".82"/>
+    <ellipse cx="335" cy="370" rx="58" ry="42" fill="#1A3D0C" opacity=".82"/>
+    <ellipse cx="152" cy="380" rx="40" ry="28" fill="#2E6B18" opacity=".7"/>
+    <ellipse cx="335" cy="372" rx="40" ry="28" fill="#2E6B18" opacity=".7"/>
+    <!-- Central mass -->
+    <ellipse cx="244" cy="240" rx="112" ry="82" fill="#0a2205" opacity=".95"/>
+    <ellipse cx="228" cy="220" rx="90" ry="70" fill="#1A3D0C" opacity=".92"/>
+    <ellipse cx="264" cy="212" rx="95" ry="74" fill="#2E6B18" opacity=".88"/>
+    <ellipse cx="244" cy="200" rx="76" ry="60" fill="#3d8a25" opacity=".82"/>
+    <ellipse cx="252" cy="188" rx="60" ry="48" fill="#4A9E30" opacity=".72"/>
+    <!-- Light glint -->
+    <ellipse cx="255" cy="182" rx="20" ry="8" fill="rgba(143,191,94,.15)" transform="rotate(-30,255,182)"/>
+
+    <!-- ══ INTERACTIVE MANGO FRUITS ══ -->
+
+    <!-- Fruit 1 — VITAMIN C (left cluster top) -->
+    <g class="mango-fruit" data-mbenefit="vitc">
+      <circle cx="62" cy="262" r="26" fill="rgba(240,168,50,0)" class="mango-pulse"/>
+      <line x1="75" y1="205" x2="68" y2="235" stroke="#2a1a0a" stroke-width="2"/>
+      <ellipse cx="62" cy="262" rx="16" ry="22" fill="url(#mg1)" class="mango-body" transform="rotate(-20,62,262)"/>
+      <path d="M62 240 Q58 238 62 236 Q66 238 62 240" fill="#2E6B18"/>
+    </g>
+
+    <!-- Fruit 2 — DIGESTION (left cluster bottom) -->
+    <g class="mango-fruit" data-mbenefit="digest">
+      <circle cx="100" cy="264" r="24" fill="rgba(240,168,50,0)" class="mango-pulse"/>
+      <line x1="88" y1="208" x2="95" y2="238" stroke="#2a1a0a" stroke-width="2"/>
+      <ellipse cx="100" cy="264" rx="15" ry="21" fill="url(#mg2)" class="mango-body" transform="rotate(15,100,264)"/>
+      <path d="M100 243 Q96 241 100 239 Q104 241 100 243" fill="#2E6B18"/>
+    </g>
+
+    <!-- Fruit 3 — EYE HEALTH (right cluster top) -->
+    <g class="mango-fruit" data-mbenefit="eyes">
+      <circle cx="388" cy="210" r="26" fill="rgba(240,168,50,0)" class="mango-pulse"/>
+      <line x1="400" y1="158" x2="394" y2="186" stroke="#2a1a0a" stroke-width="2"/>
+      <ellipse cx="388" cy="210" rx="16" ry="23" fill="url(#mg1)" class="mango-body" transform="rotate(-10,388,210)"/>
+      <path d="M388 187 Q384 185 388 183 Q392 185 388 187" fill="#2E6B18"/>
+    </g>
+
+    <!-- Fruit 4 — SKIN GLOW (right cluster second) -->
+    <g class="mango-fruit" data-mbenefit="skin">
+      <circle cx="434" cy="212" r="23" fill="rgba(240,168,50,0)" class="mango-pulse"/>
+      <line x1="420" y1="160" x2="428" y2="188" stroke="#2a1a0a" stroke-width="2"/>
+      <ellipse cx="434" cy="212" rx="14" ry="20" fill="url(#mg2)" class="mango-body" transform="rotate(20,434,212)"/>
+      <path d="M434 192 Q430 190 434 188 Q438 190 434 192" fill="#2E6B18"/>
+    </g>
+
+    <!-- Fruit 5 — HEART (right upper) -->
+    <g class="mango-fruit" data-mbenefit="heart">
+      <circle cx="406" cy="318" r="24" fill="rgba(240,168,50,0)" class="mango-pulse"/>
+      <line x1="418" y1="270" x2="412" y2="295" stroke="#2a1a0a" stroke-width="2"/>
+      <ellipse cx="406" cy="318" rx="15" ry="22" fill="url(#mg1)" class="mango-body" transform="rotate(-15,406,318)"/>
+      <path d="M406 296 Q402 294 406 292 Q410 294 406 296" fill="#2E6B18"/>
+    </g>
+
+    <!-- Fruit 6 — ENERGY (centre top) -->
+    <g class="mango-fruit" data-mbenefit="energy">
+      <circle cx="290" cy="246" r="26" fill="rgba(240,168,50,0)" class="mango-pulse"/>
+      <line x1="280" y1="195" x2="285" y2="222" stroke="#2a1a0a" stroke-width="2"/>
+      <ellipse cx="290" cy="246" rx="17" ry="24" fill="url(#mg1)" class="mango-body" transform="rotate(10,290,246)"/>
+      <path d="M290 222 Q286 220 290 218 Q294 220 290 222" fill="#2E6B18"/>
+    </g>
+
+    <!-- Fruit 7 — IMMUNITY (centre left) -->
+    <g class="mango-fruit" data-mbenefit="immunity">
+      <circle cx="202" cy="250" r="25" fill="rgba(240,168,50,0)" class="mango-pulse"/>
+      <line x1="215" y1="198" x2="208" y2="225" stroke="#2a1a0a" stroke-width="2"/>
+      <ellipse cx="202" cy="250" rx="16" ry="23" fill="url(#mg2)" class="mango-body" transform="rotate(-25,202,250)"/>
+      <path d="M202 227 Q198 225 202 223 Q206 225 202 227" fill="#2E6B18"/>
+    </g>
+
+    <!-- Fallen ripe mangoes -->
+    <ellipse cx="320" cy="660" rx="18" ry="14" fill="#F0A832" transform="rotate(30,320,660)" opacity=".8"/>
+    <ellipse cx="180" cy="658" rx="16" ry="12" fill="#D44F10" transform="rotate(-20,180,658)" opacity=".7"/>
+
+    <!-- Hover hint -->
+    <g id="mangoHint" opacity="1" style="transition:opacity .5s">
+      <ellipse cx="250" cy="130" rx="82" ry="18" fill="rgba(26,8,0,.55)"/>
+      <text x="250" y="135" text-anchor="middle" font-family="Josefin Sans,sans-serif" font-size="10" letter-spacing="2" fill="rgba(247,204,90,.75)">HOVER MANGOES ↓</text>
+    </g>
+  </svg>
+
+  <div class="hero-content">
+    <span class="hero-eyebrow">🥭 GI Certified · रत्नागिरी हापूस</span>
+    <div class="hero-marathi">राजा आंबा · हापूस</div>
+    <h1 class="hero-title">Ratnagiri<br><em>Alphonso</em><br>Hapus</h1>
+    <p class="hero-desc">The king of mangoes. GI Certified Ratnagiri Alphonso — tree-ripened, never chemically ripened, packed with saffron-like fragrance and unmatched sweetness. Arriving April 2025.</p>
+    <div class="hero-btns">
+      <button class="btn-notify" onclick="document.getElementById('notifySection').scrollIntoView({behavior:'smooth'})">Notify Me · मला सूचित करा 🥭</button>
+      <a href="cashew.html" class="btn-cashew">Order Cashew Now · काजू मागवा</a>
+    </div>
+    <div class="hero-season-note">🗓️ Season: April — June · हंगाम: एप्रिल — जून</div>
+  </div>
+</section>
+
+<!-- NOTIFY SECTION -->
+<div id="notifySection" class="notify-section">
+  <span class="eyebrow">सूचना मिळवा · Get Notified</span>
+  <h2 class="notify-title">Be First When<br><em>Season Opens</em></h2>
+  <span class="notify-mr">हंगाम सुरू होताच सर्वप्रथम जाणून घ्या</span>
+  <p class="notify-sub">Ratnagiri Hapus season is short (April–June). Last year, our stock sold out in 3 weeks. Register your number and we will call you as soon as harvesting begins.</p>
+  <div class="notify-form">
+    <input class="notify-input" id="notifyPhone" placeholder="Your WhatsApp number · व्हॉट्सअॅप नंबर" type="tel">
+    <button class="notify-btn" onclick="registerNotify()">Notify Me 🥭</button>
+  </div>
+  <div class="notify-success" id="notifySuccess">✓ You're registered! We'll WhatsApp you when season opens. 🥭</div>
+  <div class="notify-count" id="notifyCount">Join <span id="waitCount">247</span> people already on the waitlist</div>
+</div>
+
+<!-- BAND -->
+<div class="hapus-band">
+  <div class="band-item">
+    <span class="band-num">GI</span>
+    <span class="band-mr">भौगोलिक संकेत</span>
+    <span class="band-lbl">Geographic Indication Certified</span>
+  </div>
+  <div class="band-item">
+    <span class="band-num">Apr–Jun</span>
+    <span class="band-mr">हापूस हंगाम</span>
+    <span class="band-lbl">Season Window</span>
+  </div>
+  <div class="band-item">
+    <span class="band-num">Zero</span>
+    <span class="band-mr">कृत्रिम पिकवणे नाही</span>
+    <span class="band-lbl">Chemical Ripening</span>
+  </div>
+  <div class="band-item">
+    <span class="band-num">48hr</span>
+    <span class="band-mr">झाडावरून तुमच्यापर्यंत</span>
+    <span class="band-lbl">Farm to Door</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="reveal-l">
+      <div class="mango-visual">
+        <img src="mango_tree.jpg" alt="Mango tree">
+      </div>
+    </div>
+    <div class="reveal-r">
+      <span class="eyebrow">हापूसबद्दल · About Hapus</span>
+      <h2 class="section-title">India's Most<br>Celebrated <em>Mango</em></h2>
+      <div class="section-mr">भारताचा सर्वश्रेष्ठ आंबा — GI प्रमाणित</div>
+      <div class="about-body">
+        <p>The Alphonso (हापूस) is the king of mangoes — rich, non-fibrous, intensely fragrant with a saffron-like aroma that fills the room. Grown only in the coastal Konkan belt of Maharashtra, particularly Ratnagiri and Devgad, it carries a Geographical Indication (GI) tag recognising its unique origin.</p>
+        <p>आमच्या रत्नागिरीच्या बागेत हे आंबे झाडावरच पिकतात. कोणतेही कार्बाइड (carbide) किंवा रासायनिक प्रक्रिया नाही. झाड-पका आंबा — हीच आमची ओळख.</p>
+        <p>Our family tends to these mango trees with the same care as our cashew orchards. Tree-ripened Hapus has a texture and sweetness that is simply impossible to replicate with forced ripening.</p>
+      </div>
+      <ul class="about-list">
+        <li>GI Certified Ratnagiri Hapus — authenticity guaranteed</li>
+        <li>Tree-ripened (झाड-पका) — naturally sweet, no carbide</li>
+        <li>Rich saffron-yellow flesh, non-fibrous, melt-in-mouth texture</li>
+        <li>Packed in ventilated wooden crates lined with dried leaves</li>
+        <li>Shipped within 24 hours of harvest — maximum freshness</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- GI CERTIFICATION -->
+<section id="gi">
+  <div style="text-align:center;margin-bottom:60px;" class="reveal">
+    <span class="eyebrow">GI प्रमाणपत्र · Why GI Matters</span>
+    <h2 class="section-title">What Makes Ratnagiri Hapus<br><em>Genuine</em></h2>
+    <div class="section-mr">रत्नागिरी हापूस खरा कसा ओळखावा</div>
+  </div>
+  <div class="gi-grid">
+    <div class="gi-card reveal" style="transition-delay:.05s">
+      <span class="gi-icon">📍</span>
+      <div class="gi-title-en">Geographic Origin</div>
+      <div class="gi-title-mr">भौगोलिक उत्पत्ती</div>
+      <p class="gi-body">Genuine Hapus comes only from the districts of Ratnagiri, Sindhudurg, and Devgad in Maharashtra. The unique combination of laterite soil, sea breeze (खारी हवा), and monsoon pattern cannot be replicated anywhere else.</p>
+    </div>
+    <div class="gi-card reveal" style="transition-delay:.1s">
+      <span class="gi-icon">🌳</span>
+      <div class="gi-title-en">Tree-Ripened Only</div>
+      <div class="gi-title-mr">झाड-पका हापूस</div>
+      <p class="gi-body">True Hapus is allowed to ripen naturally on the tree for 120–130 days. When it falls on its own, it is harvested. This patience creates the intense sweetness and deep fragrance that carbide-ripened mangoes can never match.</p>
+    </div>
+    <div class="gi-card reveal" style="transition-delay:.15s">
+      <span class="gi-icon">🎨</span>
+      <div class="gi-title-en">The Saffron Glow</div>
+      <div class="gi-title-mr">केशरी रंग आणि सुगंध</div>
+      <p class="gi-body">Authentic Ratnagiri Hapus has a deep saffron-yellow (केशरी) flesh, not the pale yellow of imitations. The fragrance alone — described as floral, honey-like, and intensely aromatic — distinguishes it from all other varieties.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT MAKES IT SPECIAL -->
+<section id="what">
+  <div class="what-header reveal">
+    <span class="eyebrow">विशेषता · What Makes It Special</span>
+    <h2 class="section-title">From Our Orchard<br>to Your <em>Table</em></h2>
+    <div class="section-mr" style="font-family:'Tiro Devanagari Marathi',serif;font-size:1.1rem;color:var(--amber);margin-top:8px;">आमच्या बागेतून थेट तुमच्या ताटात</div>
+  </div>
+  <div class="what-steps">
+    <div class="what-step reveal" style="transition-delay:.05s">
+      <div class="ws-num">01</div>
+      <span class="ws-icon">🌸</span>
+      <div class="ws-title-en">December — Flowering (मोहोर)</div>
+      <div class="ws-title-mr">डिसेंबर — आंब्याचा मोहोर</div>
+      <p class="ws-body">Mango trees begin to bloom with panicles of small cream-white flowers (मोहोर). Each cluster can produce 1–4 mangoes. We carefully monitor and manage the flowering to ensure good fruit set without any chemical interventions.</p>
+    </div>
+    <div class="what-step reveal" style="transition-delay:.1s">
+      <div class="ws-num">02</div>
+      <span class="ws-icon">🌱</span>
+      <div class="ws-title-en">January–March — Growing Period</div>
+      <div class="ws-title-mr">जानेवारी–मार्च — वाढीचा काळ</div>
+      <p class="ws-body">Tiny mango fruits grow slowly over 3 months. During this time, the sea breeze and Konkan sunshine work their magic on the developing mangoes, building the unique sugar profile and aroma compounds found in Ratnagiri Hapus.</p>
+    </div>
+    <div class="what-step reveal" style="transition-delay:.15s">
+      <div class="ws-num">03</div>
+      <span class="ws-icon">🥭</span>
+      <div class="ws-title-en">April–May — Harvest (तोडणी)</div>
+      <div class="ws-title-mr">एप्रिल–मे — आंबा तोडणी</div>
+      <p class="ws-body">When the mango naturally separates from the stem or is at perfect maturity, we harvest by hand. Each mango is gently wrapped in dried leaves or newspaper to prevent bruising, and arranged in wooden crates for transport.</p>
+    </div>
+    <div class="what-step reveal" style="transition-delay:.2s">
+      <div class="ws-num">04</div>
+      <span class="ws-icon">📦</span>
+      <div class="ws-title-en">Packed & Dispatched in 24 Hours</div>
+      <div class="ws-title-mr">२४ तासात पॅक करून पाठवणे</div>
+      <p class="ws-body">Harvested mangoes are graded (by size and ripeness), packed in wooden crates with ventilation holes, and dispatched within 24 hours. We never store in cold rooms — fresh from the tree, straight to your hands.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PACKS (Coming Soon) -->
+<section id="packs">
+  <div class="packs-header reveal">
+    <span class="eyebrow">पॅक्स · Available Packs</span>
+    <h2 class="section-title" style="color:#FAF0DC">Hapus <em style="color:#F0A832">Packs</em> Coming Soon</h2>
+    <div class="section-mr">एप्रिल २०२५ पासून उपलब्ध · Available from April 2025</div>
+    <p style="color:rgba(250,240,220,.45);margin-top:12px;font-style:italic;font-size:.88rem;">Register above to be notified when ordering opens.</p>
+  </div>
+  <div class="pack-cards">
+    <div class="pack-card soon reveal" style="transition-delay:.05s">
+      <div class="pack-size">Regular Box</div>
+      <span class="pack-size-mr">साधारण बॉक्स · 12 पीस</span>
+      <div class="pack-price">~₹850</div>
+      <div class="pack-per">12 pieces · Medium size</div>
+      <p class="pack-desc">12 medium Hapus mangoes in a ventilated box. Perfect for a small family. GI Certified, tree-ripened.</p>
+      <button class="pack-btn" onclick="document.getElementById('notifyPhone').focus();document.getElementById('notifySection').scrollIntoView({behavior:'smooth'})">Notify Me · सूचना द्या</button>
+    </div>
+    <div class="pack-card best soon reveal" style="transition-delay:.1s">
+      <div class="pack-size">Gift Crate</div>
+      <span class="pack-size-mr">भेट क्रेट · 6 मोठे</span>
+      <div class="pack-price">~₹780</div>
+      <div class="pack-per">6 large pieces · Wooden crate</div>
+      <p class="pack-desc">6 premium large Hapus in a branded wooden crate. The perfect corporate gift or celebration gift for loved ones.</p>
+      <button class="pack-btn" onclick="document.getElementById('notifyPhone').focus();document.getElementById('notifySection').scrollIntoView({behavior:'smooth'})">Notify Me · सूचना द्या</button>
+    </div>
+    <div class="pack-card soon reveal" style="transition-delay:.15s">
+      <div class="pack-size">Family Crate</div>
+      <span class="pack-size-mr">कुटुंब क्रेट · 24 पीस</span>
+      <div class="pack-price">~₹1,800</div>
+      <div class="pack-per">24 pieces · Large family pack</div>
+      <p class="pack-desc">24 Hapus mangoes in a large wooden crate. Best value for families, corporate orders, and those who want to stock up for the season.</p>
+      <button class="pack-btn" onclick="document.getElementById('notifyPhone').focus();document.getElementById('notifySection').scrollIntoView({behavior:'smooth'})">Notify Me · सूचना द्या</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FARMER POV ══════════════ -->
+<section style="background:linear-gradient(165deg,#1a0800,#2a1004 50%,#0e1a04);padding:90px 6%;position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;background-image:url('data:image/svg+xml,%3Csvg viewBox=\'0 0 300 300\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'.8\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\' opacity=\'0.04\'/%3E%3C/svg%3E');pointer-events:none;"></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;position:relative;" class="reveal">
+
+    <!-- Left: Farmer letter -->
+    <div style="position:relative;">
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(212,79,16,.3);padding:40px 42px;position:relative;">
+        <div style="position:absolute;inset:0;background:repeating-linear-gradient(transparent,transparent 27px,rgba(212,79,16,.05) 28px);pointer-events:none;"></div>
+        <div style="position:relative;z-index:1;">
+          <div style="font-family:'Caveat',cursive;font-size:1rem;color:rgba(240,168,50,.6);margin-bottom:18px;letter-spacing:1px;">Ratnagiri, March 2025</div>
+          <p style="font-family:'Caveat',cursive;font-size:1.4rem;color:var(--cream);line-height:1.9;margin-bottom:16px;">
+            हापूसचा मोहोर डिसेंबरमध्ये येतो. एप्रिलपर्यंत आम्ही वाट पाहतो — आणि तेव्हाच आंबा स्वतः झाडावरून पडतो.
+          </p>
+          <p style="font-family:'Lora',serif;font-size:.88rem;color:rgba(250,240,220,.75);line-height:1.85;margin-bottom:14px;">
+            The Alphonso flowers in December. We wait — four months — tending the trees, watching the sky, managing the sea breeze. In April, when the mango is truly ready, it falls on its own. We never pull it.
+          </p>
+          <p style="font-family:'Lora',serif;font-size:.88rem;color:rgba(250,240,220,.75);line-height:1.85;margin-bottom:20px;">
+            That is why our Hapus smells like saffron. That is why it melts in your mouth. It lived its full life on the tree. No carbide. No cold room. No shortcuts.
+          </p>
+          <p style="font-family:'Caveat',cursive;font-size:1.2rem;color:var(--gold);">
+            Nature sets the schedule. We just follow it.
+          </p>
+          <div style="margin-top:28px;padding-top:18px;border-top:1px dashed rgba(212,79,16,.25);">
+            <div style="font-family:'Caveat',cursive;font-size:1.5rem;color:var(--cream);">— Dinesh Sawant</div>
+            <div style="font-family:'Josefin Sans',sans-serif;font-size:.65rem;letter-spacing:2.5px;color:rgba(240,168,50,.6);text-transform:uppercase;margin-top:4px;">Mango & Cashew Farmer · Ratnagiri, Maharashtra</div>
+          </div>
+        </div>
+      </div>
+      <!-- Wax seal -->
+      <div style="position:absolute;bottom:-20px;right:-20px;width:68px;height:68px;border:2px solid var(--orange);border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(26,8,0,.95);transform:rotate(-8deg);">
+        <div style="font-size:1.3rem;">🥭</div>
+        <div style="font-family:'Josefin Sans',sans-serif;font-size:.45rem;letter-spacing:1.5px;color:var(--gold);text-transform:uppercase;">GI Certified</div>
+      </div>
+    </div>
+
+    <!-- Right: How to spot real vs fake -->
+    <div>
+      <span style="font-family:'Caveat',cursive;font-size:1.4rem;color:var(--sage);display:block;margin-bottom:10px;">A Farmer Tells You the Truth</span>
+      <h2 style="font-family:'Josefin Sans',sans-serif;font-size:clamp(1.5rem,2.8vw,2.2rem);font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--cream);line-height:1.15;">Real Hapus vs<br><em style="font-style:italic;color:var(--gold);font-family:'Lora',serif;">Market Imitations</em></h2>
+      <div style="font-family:'Tiro Devanagari Marathi',serif;font-size:1rem;color:rgba(240,168,50,.6);margin-top:6px;margin-bottom:28px;">खरा हापूस ओळखायला शिका</div>
+
+      <div style="display:flex;flex-direction:column;gap:0;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid rgba(212,79,16,.2);padding-bottom:14px;margin-bottom:14px;">
+          <div style="font-family:'Josefin Sans',sans-serif;font-size:.65rem;letter-spacing:2px;color:var(--sage);text-transform:uppercase;margin-bottom:10px;">Real Ratnagiri Hapus 🥭</div>
+          <div style="font-family:'Josefin Sans',sans-serif;font-size:.65rem;letter-spacing:2px;color:rgba(250,240,220,.3);text-transform:uppercase;margin-bottom:10px;">Market Fake ⚠️</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px 0;border-bottom:1px solid rgba(212,79,16,.1);">
+          <div style="font-size:.82rem;color:rgba(250,240,220,.85);"><span style="color:var(--gold)">🟡</span> Deep saffron-yellow flesh</div>
+          <div style="font-size:.82rem;color:rgba(250,240,220,.4);">Pale yellow, watery inside</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px 0;border-bottom:1px solid rgba(212,79,16,.1);">
+          <div style="font-size:.82rem;color:rgba(250,240,220,.85);"><span style="color:var(--gold)">👃</span> Intense saffron-floral aroma</div>
+          <div style="font-size:.82rem;color:rgba(250,240,220,.4);">Chemical smell, no fragrance</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px 0;border-bottom:1px solid rgba(212,79,16,.1);">
+          <div style="font-size:.82rem;color:rgba(250,240,220,.85);"><span style="color:var(--gold)">🤌</span> Non-fibrous, melts in mouth</div>
+          <div style="font-size:.82rem;color:rgba(250,240,220,.4);">Stringy, hard to eat</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px 0;border-bottom:1px solid rgba(212,79,16,.1);">
+          <div style="font-size:.82rem;color:rgba(250,240,220,.85);"><span style="color:var(--gold)">🌡️</span> Ripened on tree naturally</div>
+          <div style="font-size:.82rem;color:rgba(250,240,220,.4);">Carbide-ripened in 24 hrs</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px 0;">
+          <div style="font-size:.82rem;color:rgba(250,240,220,.85);"><span style="color:var(--gold)">📦</span> Shipped within 24hrs of harvest</div>
+          <div style="font-size:.82rem;color:rgba(250,240,220,.4);">Cold stored for weeks or months</div>
+        </div>
+      </div>
+      <a href="cashew.html" style="display:inline-flex;align-items:center;gap:10px;margin-top:28px;font-family:'Josefin Sans',sans-serif;font-size:.72rem;letter-spacing:2.5px;background:transparent;border:1px solid rgba(212,79,16,.4);color:var(--gold);padding:13px 24px;text-decoration:none;text-transform:uppercase;transition:all .3s;" onmouseover="this.style.background='rgba(212,79,16,.15)'" onmouseout="this.style.background='transparent'">🌿 Order Cashew While You Wait for Hapus Season</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand" data-config="brand-name">Pasture</div>
+      <span style="font-family:'Tiro Devanagari Marathi',serif;font-size:1rem;color:var(--gold);display:block;margin-top:4px;" data-config="tagline-mr">आपली शेती · रत्नागिरी</span>
+      <span class="footer-tagline">"झाडावरून थेट तुमच्यापर्यंत 🥭"</span>
+      <p class="footer-p">Farm-direct Ratnagiri Hapus Alphonso and Cashew from the Konkan coast. Chemical-free, GI certified, honest farming.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Pages</h5>
+      <ul>
+        <li><a href="cashew.html">Cashew · काजू</a></li>
+        <li><a href="hapus.html">Hapus · हापूस</a></li>
+        <li><a href="order.html">Order · ऑर्डर</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Contact</h5>
+      <ul>
+        <li><a href="tel:+919876543210" data-config="phone-href"><span data-config="phone">+91 98765 43210</span></a></li>
+        <li><a href="https://wa.me/919876543210" data-config="whatsapp-href">WhatsApp Us</a></li>
+        <li><a href="mailto:hello@pasture.in" data-config="email-href"><span data-config="email">hello@pasture.in</span></a></li>
+        <li data-config="address">Ratnagiri, Konkan, Maharashtra</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Pasture · Ratnagiri, Maharashtra</span>
+    <span style="font-family:'Caveat',cursive;font-size:1rem;color:var(--gold);">आंबा हंगाम येतो आहे! 🥭</span>
+  </div>
+</footer>
+
+<script>
+// Cursor
+const cur=document.getElementById('cur'),curR=document.getElementById('curR');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(a);})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='18px';cur.style.height='18px';curR.style.width='54px';curR.style.height='54px';});
+  el.addEventListener('mouseleave',()=>{cur.style.width='10px';cur.style.height='10px';curR.style.width='36px';curR.style.height='36px';});
+});
+
+// Nav + Progress bar + Back to top
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('scrolled',scrollY>60);
+  const h=document.documentElement.scrollHeight-window.innerHeight;
+  if(h>0)document.getElementById('progress-bar').style.width=(scrollY/h*100)+'%';
+  document.getElementById('btt').classList.toggle('show',scrollY>400);
+});
+
+// Stars
+const sc=document.getElementById('stars');
+for(let i=0;i<55;i++){
+  const s=document.createElement('div');
+  const sz=Math.random()*2.5+.5;
+  s.style.cssText=`position:absolute;width:${sz}px;height:${sz}px;background:rgba(247,204,90,${.15+Math.random()*.7});border-radius:50%;top:${Math.random()*85}%;left:${Math.random()*100}%;animation:tw ${2+Math.random()*4}s ease-in-out infinite;animation-delay:${Math.random()*4}s;`;
+  sc.appendChild(s);
+}
+const sts=document.createElement('style');
+sts.textContent='@keyframes tw{0%,100%{opacity:.1}50%{opacity:.9}}';
+document.head.appendChild(sts);
+
+// Notify
+let waitlistCount=247;
+function registerNotify(){
+  const ph=document.getElementById('notifyPhone').value.trim();
+  if(!ph){alert('Please enter your WhatsApp number · व्हॉट्सअॅप नंबर टाका');return;}
+  fetch('/api/notify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone:ph})}).then(function(r){if(r.ok)return r.json();throw new Error('Request failed');}).then(function(){showNotifySuccess();}).catch(function(){showNotifySuccess();});
+}
+function showNotifySuccess(){
+  document.getElementById('notifySuccess').style.display='block';
+  document.getElementById('notifyPhone').value='';
+  waitlistCount++;
+  const wc=document.getElementById('waitCount');
+  if(wc){wc.textContent=waitlistCount;wc.classList.remove('pop');void wc.offsetWidth;wc.classList.add('pop');}
+}
+
+// Reveals — improved
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}}),{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el=>obs.observe(el));
+
+// Magnetic hover on CTAs
+document.querySelectorAll('.btn-notify,.btn-cashew,.nav-cta,.pack-btn,.notify-btn').forEach(btn=>{
+  btn.addEventListener('mousemove',e=>{
+    const r=btn.getBoundingClientRect();
+    const x=(e.clientX-r.left-r.width/2)*.2;
+    const y=(e.clientY-r.top-r.height/2)*.2;
+    btn.style.transform=`translate(${x}px,${y}px)`;
+  });
+  btn.addEventListener('mouseleave',()=>{btn.style.transform='';});
+});
+
+// Leaf fall
+let lastLeaf=0;
+window.addEventListener('scroll',()=>{
+  const now=Date.now();if(now-lastLeaf<1200)return;lastLeaf=now;
+  const l=document.createElement('div');
+  l.style.cssText=`position:fixed;top:-30px;left:${Math.random()*100}vw;font-size:${.8+Math.random()*.8}rem;pointer-events:none;z-index:999;animation:lf ${3+Math.random()*2}s ease-in forwards;`;
+  l.textContent=['🥭','🌿','🍃','🌱'][Math.floor(Math.random()*4)];
+  document.body.appendChild(l);setTimeout(()=>l.remove(),5000);
+});
+const lf=document.createElement('style');
+lf.textContent='@keyframes lf{0%{transform:translateY(0) rotate(0deg);opacity:0}10%{opacity:1}100%{transform:translateY(120vh) rotate(120deg);opacity:0}}';
+document.head.appendChild(lf);
+
+// ══ INTERACTIVE MANGO BENEFITS ══
+const mangoBenefits={
+  vitc:{icon:'🍊',title:'Vitamin C Powerhouse',mr:'व्हिटॅमिन C चा खजिना',body:'One Alphonso mango provides more than your entire daily Vitamin C need — nearly 60mg. Far more potent than an orange, and tastes infinitely better.',stat:'↑ 60mg Vitamin C · Stronger Immunity Daily'},
+  digest:{icon:'🌿',title:'Aids Digestion',mr:'पचनशक्ती वाढवतो',body:'Hapus contains digestive enzymes (amylases) that break down complex carbohydrates. The dietary fibre in ripe mango feeds gut bacteria and eases digestion.',stat:'↑ Amylase Enzymes · Dietary Fibre · Gut Health'},
+  eyes:{icon:'👁️',title:'Sharp Eyesight',mr:'दृष्टी तीक्ष्ण ठेवतो',body:'Alphonso is one of the richest fruit sources of beta-carotene, which converts to Vitamin A in the body — essential for night vision and preventing dry eyes.',stat:'↑ Beta-Carotene · Vitamin A · Eye Protection'},
+  skin:{icon:'✨',title:'Radiant Skin',mr:'त्वचा चमकदार',body:'Vitamin C in Hapus stimulates collagen production — the protein that keeps skin firm and youthful. Vitamin E protects skin cells from UV-induced oxidative stress.',stat:'↑ Collagen Synthesis · Anti-Ageing · Natural Glow'},
+  heart:{icon:'❤️',title:'Heart Protection',mr:'हृदय संरक्षण',body:'Hapus contains mangiferin — a rare polyphenol shown to protect heart cells, reduce inflammation, and lower bad LDL cholesterol. Truly the king of fruits.',stat:'↑ Mangiferin · Potassium · Healthy Blood Pressure'},
+  energy:{icon:'⚡',title:'Natural Energy Burst',mr:'नैसर्गिक ऊर्जा',body:'The natural sugars in a tree-ripened Alphonso — fructose, glucose, and sucrose — are easily absorbed and give clean, sustained energy without the crash of processed sweets.',stat:'Natural Sugars · No Additives · Saffron Sweetness'},
+  immunity:{icon:'🛡️',title:'Immunity Shield',mr:'रोगप्रतिकार शक्ती',body:'Beyond Vitamin C, Hapus is rich in folate, Vitamin B6, and copper — all essential for producing white blood cells. Seasonal eating of Hapus aligns with summer immunity needs.',stat:'↑ Folate · Copper · White Blood Cell Production'}
+};
+
+const mcard=document.getElementById('mango-card');
+const mtree=document.getElementById('mangoTree');
+let mhideTimer;
+
+document.querySelectorAll('.mango-fruit').forEach(fg=>{
+  const key=fg.dataset.mbenefit;
+  const b=mangoBenefits[key];
+  if(!b)return;
+
+  fg.addEventListener('mouseenter',e=>{
+    clearTimeout(mhideTimer);
+    document.getElementById('mc-icon').textContent=b.icon;
+    document.getElementById('mc-title').textContent=b.title;
+    document.getElementById('mc-mr').textContent=b.mr;
+    document.getElementById('mc-body').textContent=b.body;
+    document.getElementById('mc-stat').textContent=b.stat;
+
+    const fgRect=fg.getBoundingClientRect();
+    const heroRect=document.getElementById('hero').getBoundingClientRect();
+
+    let left=fgRect.left+fgRect.width/2-heroRect.left-120;
+    let top=fgRect.top-heroRect.top-165;
+    left=Math.max(10,Math.min(left,heroRect.width-280));
+    top=Math.max(80,top);
+
+    mcard.style.left=left+'px';
+    mcard.style.top=top+'px';
+    mcard.classList.add('show');
+
+    const hint=document.getElementById('mangoHint');
+    if(hint)hint.style.opacity='0';
+
+    cur.style.width='18px';cur.style.height='18px';
+    curR.style.width='54px';curR.style.height='54px';
+  });
+
+  fg.addEventListener('mouseleave',()=>{
+    mhideTimer=setTimeout(()=>mcard.classList.remove('show'),180);
+    cur.style.width='10px';cur.style.height='10px';
+    curR.style.width='36px';curR.style.height='36px';
+  });
+});
+
+mcard.addEventListener('mouseenter',()=>clearTimeout(mhideTimer));
+mcard.addEventListener('mouseleave',()=>{mhideTimer=setTimeout(()=>mcard.classList.remove('show'),180);});
+</script>
+</body>
+</html>

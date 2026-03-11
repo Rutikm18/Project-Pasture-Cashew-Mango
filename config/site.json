@@ -1,0 +1,97 @@
+{
+  "brand": {
+    "name": "Pasture",
+    "taglineMr": "आपली शेती · रत्नागिरी",
+    "email": "hello@pasture.in",
+    "phone": "9325848094",
+    "phoneFormatted": "+91 9325848094",
+    "phoneWhatsApp": "919325848094",
+    "address": "Ratnagiri, Konkan, Maharashtra"
+  },
+  "delivery": {
+    "freeAbove": 999,
+    "charge": 80
+  },
+  "products": {
+    "cashew": [
+      {
+        "id": "W180-250",
+        "name": "W180 Jumbo Cashew",
+        "weight": "250g",
+        "price": 960,
+        "icon": "🥜",
+        "featured": true,
+        "grade": "Premium Grade · W180",
+        "description": "250g · Largest Whole Kernels",
+        "tags": ["Gift Quality", "Vacuum Sealed", "Largest Grade"]
+      },
+      {
+        "id": "W180-500",
+        "name": "W180 Jumbo Cashew",
+        "weight": "500g",
+        "price": 1840,
+        "icon": "🥜",
+        "grade": "Premium Grade · W180",
+        "description": "500g · Large Whole Kernels",
+        "tags": ["Best Value", "Vacuum Sealed"]
+      },
+      {
+        "id": "W210-250",
+        "name": "W210 Select Cashew",
+        "weight": "250g",
+        "price": 860,
+        "icon": "🥜",
+        "grade": "Select Grade · W210",
+        "description": "250g · Medium-Large Whole",
+        "tags": ["Mithai · Desserts", "Vacuum Sealed"]
+      },
+      {
+        "id": "W240-250",
+        "name": "W240 Standard Cashew",
+        "weight": "250g",
+        "price": 780,
+        "icon": "🥜",
+        "grade": "Standard Grade · W240",
+        "description": "250g · Whole Kernels",
+        "tags": ["Cooking · स्वयंपाक", "Vacuum Sealed"]
+      }
+    ],
+    "valuePacks": [
+      {
+        "id": "W180-1kg",
+        "name": "W180 Jumbo Cashew",
+        "weight": "1 kg",
+        "price": 3520,
+        "icon": "📦",
+        "label": "1 kg",
+        "grade": "W180 Premium",
+        "saveText": "Save ₹320 vs 4×250g"
+      },
+      {
+        "id": "W180-2kg",
+        "name": "W180 Jumbo Cashew",
+        "weight": "2 kg",
+        "price": 6400,
+        "icon": "📦",
+        "best": true,
+        "label": "2 kg",
+        "grade": "W180 Premium",
+        "saveText": "Save ₹1,040 vs 8×250g"
+      },
+      {
+        "id": "W180-gift",
+        "name": "W180 Gift Box",
+        "weight": "500g Wooden Box",
+        "price": 2200,
+        "icon": "🎁",
+        "label": "Gift Box 🎁",
+        "grade": "W180 · 500g Branded",
+        "saveText": "Premium wooden gift box"
+      }
+    ]
+  },
+  "coupons": [
+    { "code": "KONKAN10", "type": "percent", "value": 10 },
+    { "code": "YOURHARVEST", "type": "fixed", "value": 100 }
+  ]
+}

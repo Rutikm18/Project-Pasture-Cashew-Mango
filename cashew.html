@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pasture — Ratnagiri Cashew · काजू</title>
+<script src="js/app-config.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Marathi:ital@0;1&family=Josefin+Sans:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,600;1,400;1,600&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --mud:     #1C0F06; --bark:   #3B1F0C; --terra:  #7A3B1E;
+  --clay:    #B5541F; --ochre:  #C98B2A; --sun:    #E8B94A;
+  --straw:   #F2D98B; --cream:  #FAF0DC; --parch:  #F5E6C0;
+  --smoke:   #F9F4EE; --leaf-dk:#1A3D0C; --leaf:   #2E6B18;
+  --leaf-lt: #4A9E30; --sage:   #8FBF5E;
+  --border:  rgba(185,136,60,.2);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Lora',serif;background:var(--cream);color:var(--mud);overflow-x:hidden;cursor:none;}
+
+/* CURSOR */
+#cur{position:fixed;width:10px;height:10px;background:var(--sun);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;}
+#curR{position:fixed;width:36px;height:36px;border:1.5px solid var(--clay);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.5;}
+
+/* BIRD */
+#bird{position:fixed;pointer-events:none;z-index:400;width:160px;top:15vh;
+  animation:birdFly 30s linear infinite;}
+#bird video{width:100%;mix-blend-mode:multiply;opacity:.8;}
+@keyframes birdFly{
+  0%  {left:-180px;top:15vh;transform:scaleX(1);}
+  47% {left:108vw;top:10vh;transform:scaleX(1);}
+  48% {left:108vw;top:20vh;transform:scaleX(-1);}
+  97% {left:-180px;top:17vh;transform:scaleX(-1);}
+  100%{left:-180px;top:15vh;transform:scaleX(1);}
+}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:22px 6%;transition:all .4s;}
+nav.scrolled{background:rgba(250,240,220,.96);backdrop-filter:blur(14px);padding:14px 6%;box-shadow:0 2px 24px rgba(60,20,0,.1);border-bottom:1px solid var(--border);}
+.logo-link{text-decoration:none;}
+.logo-en{font-family:'Josefin Sans',sans-serif;font-size:20px;letter-spacing:5px;font-weight:700;color:var(--cream);text-transform:uppercase;transition:color .4s;}
+nav.scrolled .logo-en{color:var(--mud);}
+.logo-mr{font-family:'Tiro Devanagari Marathi',serif;font-size:12px;color:var(--clay);display:block;margin-top:1px;}
+.nav-ul{display:flex;gap:36px;list-style:none;}
+.nav-ul a{font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:2.5px;color:rgba(250,240,220,.85);text-decoration:none;text-transform:uppercase;transition:color .3s;border-bottom:1.5px solid transparent;padding-bottom:2px;}
+nav.scrolled .nav-ul a{color:var(--bark);}
+.nav-ul a:hover,.nav-ul a.active{color:var(--clay);border-bottom-color:var(--clay);}
+nav.scrolled .nav-ul a:hover,nav.scrolled .nav-ul a.active{color:var(--clay);}
+.nav-cta{font-family:'Josefin Sans',sans-serif;font-size:10px;letter-spacing:2.5px;background:var(--clay);color:var(--cream);padding:11px 24px;text-decoration:none;text-transform:uppercase;transition:all .3s;}
+.nav-cta:hover{background:var(--mud);transform:translateY(-1px);}
+
+/* ═══════════ HERO ═══════════ */
+#hero{
+  min-height:100vh;position:relative;overflow:hidden;
+  background:linear-gradient(170deg,#0e0600 0%,#1C0F06 30%,#2a1408 55%,#1a2e0a 100%);
+  display:flex;align-items:center;padding:80px 6% 0;
+}
+/* Animated sky gradient */
+#hero::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 70% 40%,rgba(42,80,12,.4) 0%,transparent 70%),
+             radial-gradient(ellipse 60% 40% at 20% 70%,rgba(122,59,30,.25) 0%,transparent 60%);
+  animation:skyPulse 8s ease-in-out infinite alternate;}
+@keyframes skyPulse{from{opacity:.8}to{opacity:1}}
+
+/* Stars */
+.star{position:absolute;background:rgba(242,217,139,.7);border-radius:50%;pointer-events:none;}
+
+/* Ground */
+.hero-ground{position:absolute;bottom:0;left:0;right:0;height:200px;}
+
+/* ── INTERACTIVE TREE TOOLTIP ── */
+.hero-tree{position:absolute;right:4%;bottom:0;width:48%;max-width:580px;z-index:2;cursor:default;}
+.fruit-group{cursor:pointer;}
+.fruit-group .fruit-body{transition:filter .25s,transform .25s;transform-origin:center;transform-box:fill-box;}
+.fruit-group:hover .fruit-body{filter:brightness(1.35) drop-shadow(0 0 8px rgba(232,185,74,.7));transform:scale(1.15);}
+
+/* Benefit tooltip */
+#benefit-card{
+  position:absolute;z-index:20;
+  background:rgba(28,15,6,.96);
+  border:1px solid rgba(185,136,60,.4);
+  backdrop-filter:blur(16px);
+  padding:16px 20px;
+  min-width:220px;max-width:260px;
+  pointer-events:none;
+  opacity:0;
+  transform:translateY(8px) scale(.97);
+  transition:opacity .22s,transform .22s;
+  border-radius:2px;
+}
+#benefit-card.show{opacity:1;transform:none;}
+#benefit-card::before{content:'';position:absolute;bottom:-6px;left:24px;width:10px;height:10px;background:rgba(28,15,6,.96);border-right:1px solid rgba(185,136,60,.4);border-bottom:1px solid rgba(185,136,60,.4);transform:rotate(45deg);}
+.bc-icon{font-size:1.6rem;display:block;margin-bottom:6px;}
+.bc-title{font-family:'Josefin Sans',sans-serif;font-size:.7rem;letter-spacing:2.5px;color:var(--sun);text-transform:uppercase;margin-bottom:2px;}
+.bc-mr{font-family:'Tiro Devanagari Marathi',serif;font-size:.85rem;color:var(--ochre);margin-bottom:6px;display:block;}
+.bc-body{font-size:.78rem;color:rgba(250,240,220,.82);line-height:1.6;}
+.bc-stat{font-family:'Josefin Sans',sans-serif;font-size:.65rem;letter-spacing:1.5px;color:var(--sage);margin-top:7px;display:block;text-transform:uppercase;}
+
+/* Pulse ring on fruits */
+@keyframes fruitPulse{0%{r:14;opacity:.6}100%{r:28;opacity:0}}
+.fruit-pulse{animation:fruitPulse 2s ease-out infinite;}
+
+/* Content */
+.hero-content{position:relative;z-index:5;max-width:560px;}
+.hero-eyebrow{font-family:'Caveat',cursive;font-size:1.5rem;color:var(--sage);display:block;margin-bottom:14px;animation:fadeUp .8s .2s both;}
+.hero-marathi{font-family:'Tiro Devanagari Marathi',serif;font-size:clamp(2.2rem,5vw,4rem);color:var(--straw);line-height:1.15;animation:fadeUp .8s .35s both;}
+.hero-title{font-family:'Josefin Sans',sans-serif;font-size:clamp(2.5rem,5.5vw,5rem);font-weight:700;color:var(--cream);letter-spacing:3px;text-transform:uppercase;line-height:1;animation:fadeUp .8s .5s both;}
+.hero-title em{color:var(--sun);font-style:italic;font-family:'Lora',serif;letter-spacing:1px;}
+.hero-desc{font-size:1rem;color:rgba(250,240,220,.85);line-height:1.8;margin-top:18px;max-width:420px;animation:fadeUp .8s .65s both;}
+.hero-btns{display:flex;gap:16px;margin-top:32px;animation:fadeUp .8s .8s both;}
+.btn-main{font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:3px;background:var(--sun);color:var(--mud);padding:15px 38px;text-decoration:none;text-transform:uppercase;font-weight:700;transition:all .3s;display:inline-block;}
+.btn-main:hover{background:var(--straw);transform:translateY(-3px);box-shadow:0 12px 30px rgba(232,185,74,.4);}
+.btn-ghost{font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:3px;border:1.5px solid rgba(250,240,220,.35);color:var(--cream);padding:15px 38px;text-decoration:none;text-transform:uppercase;transition:all .3s;display:inline-block;}
+.btn-ghost:hover{border-color:var(--sun);color:var(--sun);}
+.hero-trust{display:flex;gap:24px;margin-top:36px;animation:fadeUp .8s 1s both;}
+.trust-chip{display:flex;align-items:center;gap:8px;font-size:.8rem;color:rgba(250,240,220,.75);}
+.trust-chip span:first-child{font-size:1rem;}
+
+/* Scroll hint */
+.scroll-hint{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);z-index:6;text-align:center;animation:bounce 2s infinite;}
+.scroll-hint p{font-family:'Caveat',cursive;font-size:.9rem;color:rgba(250,240,220,.65);}
+.scroll-line{width:1px;height:44px;background:linear-gradient(to bottom,rgba(250,240,220,.3),transparent);margin:6px auto 0;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+
+/* ── PROGRESS BAR ── */
+#progress-bar{position:fixed;top:0;left:0;height:2.5px;background:linear-gradient(90deg,var(--clay),var(--sun),var(--ochre));z-index:9999;width:0%;transition:width .1s linear;transform-origin:left;}
+
+/* ── GRAIN OVERLAY ── */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;opacity:.028;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-repeat:repeat;background-size:180px;}
+
+/* ── BACK TO TOP ── */
+#btt{position:fixed;bottom:32px;right:32px;z-index:600;width:44px;height:44px;background:var(--mud);border:1px solid rgba(185,136,60,.3);color:var(--sun);font-size:1.2rem;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transform:translateY(12px);transition:all .35s;pointer-events:none;}
+#btt.show{opacity:1;transform:none;pointer-events:all;}
+#btt:hover{background:var(--clay);border-color:var(--clay);transform:translateY(-2px);}
+
+/* ── SHIMMER ON GRADE CARDS ── */
+.grade-card::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.04) 50%,transparent 60%);transform:translateX(-100%);transition:transform .6s;}
+.grade-card:hover::after{transform:translateX(100%);}
+
+/* ── MAGNETIC BUTTON BASE ── */
+.btn-main,.btn-ghost,.btn-white,.nav-cta{display:inline-block;position:relative;}
+
+/* ── SECTION SEPARATOR ── */
+.section-sep{width:48px;height:2px;background:var(--clay);margin:18px 0;display:block;}
+
+/* ── SCROLL REVEAL IMPROVED ── */
+.reveal,.reveal-l,.reveal-r{will-change:opacity,transform;}
+
+/* ═══════════ SEASON BAND ═══════════ */
+.season-band{background:var(--mud);padding:22px 6%;display:flex;justify-content:space-around;flex-wrap:wrap;gap:16px;border-bottom:3px solid var(--clay);}
+.season-item{text-align:center;}
+.season-num{font-family:'Josefin Sans',sans-serif;font-size:2rem;font-weight:700;color:var(--sun);display:block;}
+.season-lbl{font-size:.75rem;letter-spacing:2px;color:rgba(250,240,220,.72);text-transform:uppercase;}
+.season-mr{font-family:'Tiro Devanagari Marathi',serif;font-size:.9rem;color:var(--ochre);display:block;}
+
+/* ═══════════ ABOUT SECTION ═══════════ */
+#about{background:var(--smoke);padding:90px 6%;position:relative;overflow:hidden;}
+#about::after{content:'';position:absolute;right:-80px;top:-80px;width:400px;height:400px;background:radial-gradient(circle,rgba(201,139,42,.08),transparent 70%);pointer-events:none;}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-top:60px;}
+.eyebrow{font-family:'Caveat',cursive;font-size:1.4rem;color:var(--clay);display:block;margin-bottom:10px;}
+.section-title{font-family:'Josefin Sans',sans-serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:700;letter-spacing:2px;line-height:1.15;text-transform:uppercase;color:var(--mud);}
+.section-title em{font-style:italic;color:var(--clay);font-family:'Lora',serif;letter-spacing:1px;}
+.section-mr{font-family:'Tiro Devanagari Marathi',serif;font-size:1.3rem;color:var(--terra);margin-top:6px;font-style:italic;}
+.about-body{margin-top:20px;color:#3B1F0C;line-height:1.9;font-size:.97rem;}
+.about-body p{margin-bottom:14px;}
+.about-list{list-style:none;margin-top:22px;display:flex;flex-direction:column;gap:12px;}
+.about-list li{display:flex;align-items:flex-start;gap:12px;font-size:.92rem;color:#3B1F0C;}
+.about-list li::before{content:'✦';color:var(--ochre);flex-shrink:0;margin-top:2px;}
+
+/* Farm illustration box */
+.farm-visual{position:relative;background:linear-gradient(145deg,#1a3d0c,#2a5e14,#1C0F06);border-radius:4px;overflow:hidden;aspect-ratio:4/5;display:flex;align-items:stretch;justify-content:stretch;}
+.farm-visual img{width:100%;height:100%;object-fit:cover;display:block;}
+.farm-visual-inner{padding:20px;z-index:2;position:relative;width:100%;}
+
+/* ═══════════ CASHEW JOURNEY ═══════════ */
+#journey{background:var(--cream);padding:90px 6%;}
+.journey-header{text-align:center;margin-bottom:70px;}
+.journey-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0;}
+.journey-step{padding:40px 36px;position:relative;border-right:1px solid var(--border);}
+.journey-step:last-child{border-right:none;}
+.journey-step:nth-child(4),.journey-step:nth-child(5),.journey-step:nth-child(6){border-top:1px solid var(--border);}
+.step-num{font-family:'Josefin Sans',sans-serif;font-size:4rem;font-weight:700;color:var(--parch);line-height:1;margin-bottom:-10px;}
+.step-icon{font-size:2.2rem;display:block;margin-bottom:12px;}
+.step-title-en{font-family:'Josefin Sans',sans-serif;font-size:1rem;letter-spacing:2px;font-weight:700;color:var(--mud);text-transform:uppercase;margin-bottom:4px;}
+.step-title-mr{font-family:'Tiro Devanagari Marathi',serif;font-size:1rem;color:var(--clay);margin-bottom:12px;}
+.step-desc{font-size:.88rem;color:#3B1F0C;line-height:1.75;}
+
+/* ═══════════ GRADES SECTION ═══════════ */
+#grades{background:linear-gradient(165deg,#1C0F06 0%,#2a1408 50%,#1a2e0a 100%);padding:90px 6%;position:relative;overflow:hidden;}
+#grades::before{content:'';position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;opacity:.7;}
+.grades-header{text-align:center;margin-bottom:60px;}
+.grades-header .section-title{color:var(--cream);}
+.grades-header .eyebrow{color:var(--sage);}
+.grades-header .section-mr{color:var(--ochre);}
+.grade-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.grade-card{background:rgba(255,255,255,.04);border:1px solid rgba(185,136,60,.18);padding:32px 24px;position:relative;overflow:hidden;transition:all .35s;cursor:pointer;
+  background-image:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(232,185,74,.07) 0%,transparent 60%);}
+.grade-card:hover{border-color:rgba(232,185,74,.45);transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.5);}
+.grade-card.featured{border-color:rgba(232,185,74,.4);background:rgba(232,185,74,.06);}
+.grade-badge{position:absolute;top:0;right:0;background:var(--sun);color:var(--mud);font-family:'Josefin Sans',sans-serif;font-size:8px;letter-spacing:2px;padding:4px 10px;text-transform:uppercase;}
+.grade-code{font-family:'Josefin Sans',sans-serif;font-size:2.2rem;font-weight:700;color:var(--sun);letter-spacing:2px;line-height:1;}
+.grade-desc-en{font-family:'Josefin Sans',sans-serif;font-size:.8rem;letter-spacing:2px;color:rgba(250,240,220,.85);text-transform:uppercase;margin:6px 0 14px;}
+.grade-desc-mr{font-family:'Tiro Devanagari Marathi',serif;font-size:.95rem;color:var(--straw);margin-bottom:16px;}
+.grade-detail{font-size:.82rem;color:rgba(250,240,220,.82);line-height:1.65;margin-bottom:20px;}
+.grade-price{font-family:'Josefin Sans',sans-serif;font-size:1.8rem;font-weight:700;color:var(--sun);}
+.grade-price .per{font-size:.9rem;color:rgba(250,240,220,.65);font-weight:400;margin-left:4px;}
+.grade-use{margin-top:14px;display:flex;flex-wrap:wrap;gap:6px;}
+.grade-tag{font-size:.7rem;letter-spacing:1px;color:rgba(250,240,220,.5);border:1px solid rgba(185,136,60,.2);padding:2px 10px;text-transform:uppercase;}
+.grade-btn{width:100%;margin-top:18px;background:transparent;border:1px solid rgba(232,185,74,.3);color:var(--sun);font-family:'Josefin Sans',sans-serif;font-size:.75rem;letter-spacing:2.5px;padding:11px;text-transform:uppercase;cursor:pointer;transition:all .3s;}
+.grade-btn:hover,.grade-card.featured .grade-btn{background:var(--sun);color:var(--mud);}
+
+/* ═══════════ TREE SECTION ═══════════ */
+#tree{background:var(--parch);padding:90px 6%;}
+.tree-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-top:60px;}
+.tree-facts{display:flex;flex-direction:column;gap:22px;}
+.tree-fact{display:flex;gap:18px;align-items:flex-start;padding:22px;background:var(--cream);border-left:3px solid var(--clay);}
+.fact-icon{font-size:1.8rem;flex-shrink:0;}
+.fact-en{font-family:'Josefin Sans',sans-serif;font-size:.85rem;letter-spacing:2px;font-weight:700;color:var(--mud);text-transform:uppercase;margin-bottom:3px;}
+.fact-mr{font-family:'Tiro Devanagari Marathi',serif;font-size:.95rem;color:var(--clay);margin-bottom:6px;}
+.fact-body{font-size:.85rem;color:#3B1F0C;line-height:1.7;}
+
+/* ═══════════ TESTIMONIALS ═══════════ */
+#testimonials{background:var(--mud);padding:90px 6%;}
+.testi-header{text-align:center;margin-bottom:60px;}
+.testi-header .section-title{color:var(--cream);}
+.testi-header .eyebrow{color:var(--sage);}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+.testi-card{background:rgba(255,255,255,.04);border:1px solid rgba(185,136,60,.15);padding:32px 28px;position:relative;}
+.testi-card::before{content:'"';font-family:'Lora',serif;font-size:5rem;color:rgba(201,139,42,.2);position:absolute;top:10px;right:18px;line-height:1;}
+.testi-text{font-size:.93rem;color:rgba(250,240,220,.9);line-height:1.8;margin-bottom:22px;font-style:italic;}
+.testi-name{font-family:'Josefin Sans',sans-serif;font-size:.8rem;letter-spacing:2px;color:var(--sun);text-transform:uppercase;margin-bottom:2px;}
+.testi-loc{font-size:.8rem;color:rgba(250,240,220,.4);}
+.testi-stars{color:var(--sun);font-size:.9rem;margin-bottom:14px;}
+
+/* ═══════════ CTA BAND ═══════════ */
+.cta-band{background:var(--clay);padding:70px 6%;text-align:center;position:relative;overflow:hidden;}
+.cta-band::before,.cta-band::after{content:'';position:absolute;background:rgba(0,0,0,.1);border-radius:50%;}
+.cta-band::before{width:400px;height:400px;top:-200px;right:-100px;}
+.cta-band::after{width:300px;height:300px;bottom:-150px;left:-80px;}
+.cta-eyebrow{font-family:'Caveat',cursive;font-size:1.4rem;color:rgba(250,240,220,.8);display:block;margin-bottom:10px;}
+.cta-title{font-family:'Josefin Sans',sans-serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:700;letter-spacing:3px;color:var(--cream);text-transform:uppercase;position:relative;z-index:1;}
+.cta-mr{font-family:'Tiro Devanagari Marathi',serif;font-size:1.3rem;color:var(--straw);margin-top:8px;display:block;}
+.cta-btns{display:flex;gap:16px;justify-content:center;margin-top:30px;position:relative;z-index:1;}
+.btn-white{font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:3px;background:var(--cream);color:var(--clay);padding:15px 38px;text-decoration:none;text-transform:uppercase;font-weight:700;transition:all .3s;display:inline-block;}
+.btn-white:hover{background:var(--mud);color:var(--sun);}
+
+/* FOOTER */
+footer{background:var(--mud);padding:60px 6% 28px;color:rgba(250,240,220,.65);}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr;gap:60px;margin-bottom:50px;}
+.footer-brand{font-family:'Josefin Sans',sans-serif;font-size:22px;letter-spacing:5px;color:var(--cream);text-transform:uppercase;}
+.footer-tagline{font-family:'Caveat',cursive;font-size:1.05rem;color:var(--ochre);margin-top:10px;display:block;}
+.footer-p{font-size:.85rem;line-height:1.7;margin-top:14px;color:rgba(250,240,220,.68);}
+.footer-col h5{font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:3px;color:var(--sun);margin-bottom:18px;text-transform:uppercase;}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.footer-col a{color:rgba(250,240,220,.72);text-decoration:none;font-size:.85rem;transition:color .2s;}
+.footer-col a:hover{color:var(--cream);}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.07);padding-top:22px;display:flex;justify-content:space-between;font-size:.78rem;}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s,transform .8s;}
+.reveal.visible{opacity:1;transform:none;}
+.reveal-l{opacity:0;transform:translateX(-40px);transition:opacity .8s,transform .8s;}
+.reveal-l.visible{opacity:1;transform:none;}
+.reveal-r{opacity:0;transform:translateX(40px);transition:opacity .8s,transform .8s;}
+.reveal-r.visible{opacity:1;transform:none;}
+
+@media(max-width:900px){
+  .about-grid,.tree-grid,.testi-grid,.grade-cards{grid-template-columns:1fr;}
+  .journey-steps{grid-template-columns:1fr;}
+  .journey-step{border-right:none;border-bottom:1px solid var(--border);}
+  nav .nav-ul,nav .nav-cta{display:none;}
+  .footer-top{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+<button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
+<div id="cur"></div>
+<div id="curR"></div>
+
+<!-- BIRD -->
+<div id="bird">
+  <video autoplay muted loop playsinline>
+    <source src="https://supplant.me/wp-content/uploads/2022/03/Calibri_Q50.webm#t=1" type="video/webm">
+  </video>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="cashew.html" class="logo-link">
+    <span class="logo-en">Pasture</span>
+    <span class="logo-mr">आपली शेती · रत्नागिरी</span>
+  </a>
+  <ul class="nav-ul">
+    <li><a href="cashew.html" class="active">Cashew · काजू</a></li>
+    <li><a href="hapus.html">Hapus · हापूस</a></li>
+    <li><a href="order.html">Order · ऑर्डर</a></li>
+  </ul>
+  <a href="order.html" class="nav-cta">Order Now · आता ऑर्डर करा</a>
+</nav>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section id="hero">
+  <!-- Stars -->
+  <div id="stars"></div>
+
+  <!-- Cashew Tree SVG — Interactive Fruits -->
+  <div id="benefit-card">
+    <span class="bc-icon" id="bc-icon">🥜</span>
+    <div class="bc-title" id="bc-title">Heart Health</div>
+    <span class="bc-mr" id="bc-mr">हृदयासाठी गुणकारी</span>
+    <div class="bc-body" id="bc-body">Cashews are rich in oleic acid — the same heart-healthy fat found in olive oil.</div>
+    <span class="bc-stat" id="bc-stat">↑ Good HDL Cholesterol</span>
+  </div>
+
+  <svg class="hero-tree" id="heroTree" viewBox="0 0 520 680" xmlns="http://www.w3.org/2000/svg">
+    <!-- Ground shadow -->
+    <ellipse cx="260" cy="660" rx="180" ry="22" fill="#0a1f04" opacity=".6"/>
+    <!-- Roots -->
+    <path d="M248 640 Q220 650 200 660 Q185 664 170 660" stroke="#3B1F0C" stroke-width="10" fill="none" stroke-linecap="round" opacity=".6"/>
+    <path d="M268 642 Q295 652 315 660 Q330 664 345 660" stroke="#3B1F0C" stroke-width="8" fill="none" stroke-linecap="round" opacity=".6"/>
+    <path d="M258 645 Q258 660 252 674" stroke="#3B1F0C" stroke-width="7" fill="none" stroke-linecap="round" opacity=".5"/>
+    <!-- Trunk -->
+    <path d="M248 640 Q242 540 225 430 Q212 350 232 265" stroke="#5C3317" stroke-width="32" fill="none" stroke-linecap="round"/>
+    <path d="M252 640 Q260 545 272 440 Q285 358 268 272" stroke="#3B1F0C" stroke-width="20" fill="none" stroke-linecap="round"/>
+    <!-- Bark detail lines -->
+    <path d="M240 560 Q248 555 255 560" stroke="#2a1000" stroke-width="2" fill="none" opacity=".5"/>
+    <path d="M237 510 Q245 504 253 510" stroke="#2a1000" stroke-width="2" fill="none" opacity=".4"/>
+    <path d="M235 460 Q244 453 252 460" stroke="#2a1000" stroke-width="2" fill="none" opacity=".4"/>
+    <!-- Main branches -->
+    <path d="M232 310 Q178 260 130 228 Q100 208 62 215" stroke="#5C3317" stroke-width="14" fill="none" stroke-linecap="round"/>
+    <path d="M248 270 Q295 220 340 186 Q370 164 412 155" stroke="#5C3317" stroke-width="12" fill="none" stroke-linecap="round"/>
+    <path d="M228 375 Q178 345 145 308 Q115 278 82 276" stroke="#4a2810" stroke-width="11" fill="none" stroke-linecap="round"/>
+    <path d="M258 348 Q308 316 348 285 Q378 260 415 252" stroke="#4a2810" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <path d="M238 430 Q195 412 165 380" stroke="#4a2810" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <path d="M262 418 Q300 398 328 375" stroke="#4a2810" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <path d="M244 475 Q215 465 190 448" stroke="#3d2208" stroke-width="7" fill="none" stroke-linecap="round"/>
+    <path d="M268 468 Q296 455 318 440" stroke="#3d2208" stroke-width="7" fill="none" stroke-linecap="round"/>
+    <!-- Foliage layers -->
+    <ellipse cx="62" cy="198" rx="70" ry="52" fill="#0e2808" opacity=".95"/>
+    <ellipse cx="42" cy="188" rx="52" ry="40" fill="#1A3D0C" opacity=".9"/>
+    <ellipse cx="88" cy="180" rx="62" ry="46" fill="#2E6B18" opacity=".88"/>
+    <ellipse cx="65" cy="172" rx="48" ry="36" fill="#3d8a25" opacity=".8"/>
+    <ellipse cx="412" cy="142" rx="68" ry="50" fill="#0e2808" opacity=".95"/>
+    <ellipse cx="432" cy="132" rx="52" ry="38" fill="#1A3D0C" opacity=".9"/>
+    <ellipse cx="390" cy="136" rx="58" ry="44" fill="#2E6B18" opacity=".88"/>
+    <ellipse cx="415" cy="128" rx="45" ry="34" fill="#4A9E30" opacity=".8"/>
+    <ellipse cx="415" cy="242" rx="58" ry="42" fill="#1A3D0C" opacity=".88"/>
+    <ellipse cx="438" cy="234" rx="44" ry="32" fill="#2E6B18" opacity=".8"/>
+    <ellipse cx="82" cy="265" rx="58" ry="42" fill="#1A3D0C" opacity=".85"/>
+    <ellipse cx="62" cy="258" rx="44" ry="32" fill="#4A9E30" opacity=".78"/>
+    <ellipse cx="165" cy="368" rx="56" ry="40" fill="#1A3D0C" opacity=".82"/>
+    <ellipse cx="328" cy="362" rx="56" ry="40" fill="#1A3D0C" opacity=".82"/>
+    <ellipse cx="190" cy="438" rx="48" ry="34" fill="#1A3D0C" opacity=".78"/>
+    <ellipse cx="318" cy="432" rx="48" ry="34" fill="#1A3D0C" opacity=".78"/>
+    <!-- Centre foliage mass -->
+    <ellipse cx="248" cy="235" rx="105" ry="78" fill="#0e2808" opacity=".95"/>
+    <ellipse cx="232" cy="215" rx="85" ry="66" fill="#1A3D0C" opacity=".9"/>
+    <ellipse cx="268" cy="208" rx="90" ry="70" fill="#2E6B18" opacity=".88"/>
+    <ellipse cx="248" cy="196" rx="72" ry="56" fill="#3d8a25" opacity=".82"/>
+    <ellipse cx="255" cy="185" rx="58" ry="46" fill="#4A9E30" opacity=".72"/>
+    <ellipse cx="248" cy="175" rx="44" ry="34" fill="#5FC25F" opacity=".55"/>
+    <!-- Light glints on leaves -->
+    <ellipse cx="255" cy="170" rx="18" ry="8" fill="rgba(143,191,94,.18)" transform="rotate(-30,255,170)"/>
+    <ellipse cx="75" cy="165" rx="14" ry="6" fill="rgba(143,191,94,.15)" transform="rotate(20,75,165)"/>
+    <ellipse cx="408" cy="125" rx="14" ry="6" fill="rgba(143,191,94,.15)" transform="rotate(-15,408,125)"/>
+
+    <!-- ══ INTERACTIVE CASHEW FRUITS ══ -->
+    <!-- Fruit 1 — HEART (left cluster) -->
+    <g class="fruit-group" data-benefit="heart">
+      <circle cx="92" cy="248" r="22" fill="rgba(232,185,74,0)" class="fruit-pulse"/>
+      <line x1="92" y1="200" x2="92" y2="228" stroke="#3B1F0C" stroke-width="2.5"/>
+      <ellipse cx="92" cy="248" rx="11" ry="20" fill="#D44210" class="fruit-body"/>
+      <path d="M82 240 Q92 248 102 240" fill="none" stroke="#E8541A" stroke-width="1.5"/>
+      <ellipse cx="88" cy="264" rx="7" ry="5.5" fill="#C98B2A" transform="rotate(-20,88,264)"/>
+    </g>
+
+    <!-- Fruit 2 — BRAIN (top right) -->
+    <g class="fruit-group" data-benefit="brain">
+      <circle cx="430" cy="205" r="22" fill="rgba(232,185,74,0)" class="fruit-pulse"/>
+      <line x1="430" y1="160" x2="430" y2="186" stroke="#3B1F0C" stroke-width="2.5"/>
+      <ellipse cx="430" cy="205" rx="11" ry="20" fill="#C0392B" class="fruit-body"/>
+      <ellipse cx="426" cy="220" rx="7" ry="5.5" fill="#C98B2A" transform="rotate(15,426,220)"/>
+    </g>
+
+    <!-- Fruit 3 — BONE (right mid) -->
+    <g class="fruit-group" data-benefit="bone">
+      <circle cx="425" cy="300" r="20" fill="rgba(232,185,74,0)" class="fruit-pulse"/>
+      <line x1="425" y1="258" x2="425" y2="282" stroke="#3B1F0C" stroke-width="2.5"/>
+      <ellipse cx="425" cy="300" rx="10" ry="18" fill="#D44210" class="fruit-body"/>
+      <ellipse cx="422" cy="314" rx="6" ry="5" fill="#C98B2A" transform="rotate(-10,422,314)"/>
+    </g>
+
+    <!-- Fruit 4 — IMMUNITY (lower left) -->
+    <g class="fruit-group" data-benefit="immunity">
+      <circle cx="172" cy="424" r="20" fill="rgba(232,185,74,0)" class="fruit-pulse"/>
+      <line x1="172" y1="385" x2="172" y2="408" stroke="#3B1F0C" stroke-width="2"/>
+      <ellipse cx="172" cy="424" rx="9" ry="17" fill="#C0392B" class="fruit-body"/>
+      <ellipse cx="170" cy="437" rx="6" ry="4.5" fill="#C98B2A"/>
+    </g>
+
+    <!-- Fruit 5 — ENERGY (lower right) -->
+    <g class="fruit-group" data-benefit="energy">
+      <circle cx="325" cy="416" r="20" fill="rgba(232,185,74,0)" class="fruit-pulse"/>
+      <line x1="325" y1="378" x2="325" y2="400" stroke="#3B1F0C" stroke-width="2"/>
+      <ellipse cx="325" cy="416" rx="9" ry="17" fill="#D44210" class="fruit-body"/>
+      <ellipse cx="323" cy="429" rx="6" ry="4.5" fill="#C98B2A"/>
+    </g>
+
+    <!-- Fruit 6 — SKIN (centre top) -->
+    <g class="fruit-group" data-benefit="skin">
+      <circle cx="268" cy="228" r="22" fill="rgba(232,185,74,0)" class="fruit-pulse"/>
+      <line x1="268" y1="185" x2="268" y2="210" stroke="#3B1F0C" stroke-width="2.5"/>
+      <ellipse cx="268" cy="228" rx="11" ry="20" fill="#E8541A" class="fruit-body"/>
+      <ellipse cx="264" cy="244" rx="7" ry="5.5" fill="#C98B2A"/>
+    </g>
+
+    <!-- Hover hint label — fades out after user first interacts -->
+    <g id="hoverHint" opacity="1" style="transition:opacity .5s">
+      <ellipse cx="260" cy="130" rx="80" ry="18" fill="rgba(28,15,6,.55)"/>
+      <text x="260" y="135" text-anchor="middle" font-family="Josefin Sans,sans-serif" font-size="10" letter-spacing="2" fill="rgba(242,217,139,.75)" text-transform="uppercase">HOVER FRUITS ↓</text>
+    </g>
+  </svg>
+
+  <!-- Ground layers -->
+  <svg class="hero-ground" viewBox="0 0 1440 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="position:absolute;bottom:0;left:0;right:0;width:100%;z-index:1;">
+    <path d="M0 120 Q180 80 360 110 Q540 140 720 100 Q900 60 1080 90 Q1260 120 1440 80 L1440 200 L0 200 Z" fill="#0e1f06" opacity=".95"/>
+    <path d="M0 150 Q240 110 480 140 Q720 170 960 130 Q1200 90 1440 120 L1440 200 L0 200 Z" fill="#0a1a04" opacity=".8"/>
+    <!-- Grass blades -->
+    <g fill="#1A3D0C" opacity=".7">
+      <path d="M50 155 Q53 140 57 128 Q60 140 62 155"/>
+      <path d="M80 150 Q84 133 88 120 Q92 133 95 150"/>
+      <path d="M200 148 Q204 130 208 118 Q212 130 215 148"/>
+      <path d="M350 152 Q354 136 358 122 Q362 136 365 152"/>
+      <path d="M500 145 Q504 128 508 115 Q512 128 515 145"/>
+      <path d="M680 150 Q684 133 688 120 Q692 133 695 150"/>
+      <path d="M820 148 Q824 131 828 118 Q832 131 835 148"/>
+      <path d="M950 152 Q954 135 958 122 Q962 135 965 152"/>
+      <path d="M1100 148 Q1104 130 1108 118 Q1112 130 1115 148"/>
+      <path d="M1280 150 Q1284 133 1288 120 Q1292 133 1295 150"/>
+      <path d="M1400 145 Q1404 128 1408 115 Q1412 128 1415 145"/>
+    </g>
+  </svg>
+
+  <div class="hero-content">
+    <span class="hero-eyebrow">🌿 रत्नागिरीच्या मातीतून · From the Soil of Ratnagiri</span>
+    <div class="hero-marathi">शुद्ध काजू · आपल्या शेतातून</div>
+    <h1 class="hero-title">Pure <em>Cashew</em><br>Farm to Home</h1>
+    <p class="hero-desc">No middlemen. No storage. Straight from our cashew orchards in Ratnagiri, Maharashtra — handpicked, sun-dried, vacuum sealed and shipped to your door.</p>
+    <div class="hero-btns">
+      <a href="order.html" class="btn-main">Order Now · ऑर्डर करा</a>
+      <a href="#journey" class="btn-ghost">Our Story · आमची कहाणी</a>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-chip"><span>🌿</span><span>100% Natural</span></div>
+      <div class="trust-chip"><span>✋</span><span>Hand-Picked</span></div>
+      <div class="trust-chip"><span>🚚</span><span>Direct Delivery</span></div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <p>Scroll to explore</p>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ══════════════ SEASON BAND ══════════════ -->
+<div class="season-band">
+  <div class="season-item">
+    <span class="season-num" data-target="15">0</span>
+    <span class="season-mr">एकर शेती</span>
+    <span class="season-lbl">Acres of Farm</span>
+  </div>
+  <div class="season-item">
+    <span class="season-num" data-target="1200">0</span>
+    <span class="season-mr">काजूची झाडे</span>
+    <span class="season-lbl">Cashew Trees</span>
+  </div>
+  <div class="season-item">
+    <span class="season-num" data-target="3">0</span>
+    <span class="season-mr">पिढ्या शेती</span>
+    <span class="season-lbl">Generations of Farming</span>
+  </div>
+  <div class="season-item">
+    <span class="season-num" data-target="100">0</span>
+    <span class="season-mr">% रासायनिक-मुक्त</span>
+    <span class="season-lbl">Chemical Free</span>
+  </div>
+  <div class="season-item">
+    <span class="season-num" style="font-size:1.4rem">Feb–May</span>
+    <span class="season-mr">काजू हंगाम</span>
+    <span class="season-lbl">Harvest Season</span>
+  </div>
+</div>
+
+<!-- ══════════════ ABOUT ══════════════ -->
+<section id="about">
+  <div class="about-grid">
+    <div class="reveal-l">
+      <!-- Farm scene illustration -->
+      <div class="farm-visual">
+        <img src="cashew_tree.jpg" alt="Cashew tree">
+      </div>
+    </div>
+    <div class="reveal-r">
+      <span class="eyebrow">आमच्याबद्दल · About Us</span>
+      <h2 class="section-title">Three Generations<br>of <em>Honest Farming</em></h2>
+      <div class="section-mr">तीन पिढ्यांचे प्रामाणिक शेतकरी</div>
+      <div class="about-body">
+        <p>Our family has farmed cashew orchards in the Konkan hills of Ratnagiri for over 60 years. What began as a small plot of land by my grandfather has grown into 15 acres of thriving cashew groves — tended with patience, respect for the soil, and zero chemicals.</p>
+        <p>आमची शेती रत्नागिरीच्या लाल मातीत आहे. आम्ही कोणतेही रासायनिक खते वापरत नाही. प्रत्येक काजू हाताने तोडला जातो, उन्हात वाळवला जातो आणि थेट तुमच्यापर्यंत पाठवला जातो.</p>
+        <p>We sell directly — no brokers, no cold storage, no compromise. When you order, your cashews are packed within 48 hours of processing, by the same hands that harvested them.</p>
+      </div>
+      <ul class="about-list">
+        <li>Ratnagiri's red laterite soil gives our cashews their rich, buttery flavour</li>
+        <li>Hand-harvested during February–May cashew season (काजू हंगाम)</li>
+        <li>Sun-dried on bamboo mats — the traditional konkan method</li>
+        <li>Vacuum-sealed in food-grade packaging, shipped in 48 hours</li>
+        <li>Zero pesticides, zero artificial preservatives, zero middlemen</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ JOURNEY ══════════════ -->
+<section id="journey">
+  <div class="journey-header reveal">
+    <span class="eyebrow">काजूचा प्रवास · The Cashew Journey</span>
+    <h2 class="section-title">From Blossom<br>to Your <em>Hands</em></h2>
+    <p style="color:var(--terra);margin-top:14px;font-style:italic;max-width:480px;margin-left:auto;margin-right:auto;">Every step is done by our family. Nothing is outsourced. Nothing is rushed.</p>
+  </div>
+  <div class="journey-steps">
+    <div class="journey-step reveal" style="transition-delay:.05s">
+      <div class="step-num">01</div>
+      <span class="step-icon">🌸</span>
+      <div class="step-title-en">January — Flowering</div>
+      <div class="step-title-mr">जानेवारी — फुलांचा काळ</div>
+      <p class="step-desc">Cashew trees bloom with tiny pinkish-white flowers across our Ratnagiri orchard. Each flower holds the promise of one cashew — a process we watch over carefully every year.</p>
+    </div>
+    <div class="journey-step reveal" style="transition-delay:.1s">
+      <div class="step-num">02</div>
+      <span class="step-icon">🍎</span>
+      <div class="step-title-en">March — The Cashew Apple</div>
+      <div class="step-title-mr">मार्च — काजूचे सफरचंद</div>
+      <p class="step-desc">The bright red-orange cashew apple (काजू बोंड) appears first. Sweet, tangy, rich in Vitamin C. Below it hangs the kidney-shaped nut. We pick each one carefully by hand.</p>
+    </div>
+    <div class="journey-step reveal" style="transition-delay:.15s">
+      <div class="step-num">03</div>
+      <span class="step-icon">☀️</span>
+      <div class="step-title-en">Sun Drying — Konkan Style</div>
+      <div class="step-title-mr">उन्हात वाळवणे — कोकण पद्धत</div>
+      <p class="step-desc">Raw cashews spread on bamboo mats (चटई) under the Konkan sun for 2–3 days. This ancient method reduces moisture, concentrates flavour, and needs no machinery.</p>
+    </div>
+    <div class="journey-step reveal" style="transition-delay:.2s">
+      <div class="step-num">04</div>
+      <span class="step-icon">🔥</span>
+      <div class="step-title-en">Roasting / Processing</div>
+      <div class="step-title-mr">भाजणे / प्रक्रिया</div>
+      <p class="step-desc">Cashews are steam-processed to remove the toxic outer shell, then gently roasted in traditional clay pots (मातीच्या भांड्यात) or kept raw — your choice. No chemicals involved.</p>
+    </div>
+    <div class="journey-step reveal" style="transition-delay:.25s">
+      <div class="step-num">05</div>
+      <span class="step-icon">🤲</span>
+      <div class="step-title-en">Hand Grading — Women-Led</div>
+      <div class="step-title-mr">हाताने श्रेणीकरण — महिला</div>
+      <p class="step-desc">Village women (आमच्या गावातल्या महिला) sort every single cashew by hand — by size, by wholeness, by grade. W180, W210, W240, W320. This is skill built over decades.</p>
+    </div>
+    <div class="journey-step reveal" style="transition-delay:.3s">
+      <div class="step-num">06</div>
+      <span class="step-icon">📦</span>
+      <div class="step-title-en">Vacuum Sealed & Shipped</div>
+      <div class="step-title-mr">व्हॅक्यूम सील करून पाठवणे</div>
+      <p class="step-desc">Graded cashews are vacuum-sealed in food-grade pouches, labelled by hand, and shipped to you within 48 hours of your order. Farm to your kitchen — direct and honest.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ GRADES ══════════════ -->
+<section id="grades">
+  <div class="grades-header reveal">
+    <span class="eyebrow" style="color:#8FBF5E">काजूचे प्रकार · Our Cashew Grades</span>
+    <h2 class="section-title" style="color:#FAF0DC">Choose Your <em style="color:#E8B94A">Grade</em></h2>
+    <div style="font-family:'Tiro Devanagari Marathi',serif;font-size:1.1rem;color:rgba(201,139,42,.8);margin-top:8px;">आपल्या गरजेनुसार श्रेणी निवडा</div>
+    <p style="color:rgba(250,240,220,.5);margin-top:12px;font-size:.88rem;font-style:italic;max-width:500px;margin-left:auto;margin-right:auto;">W-numbers indicate how many whole cashews fit in 1 pound (453g). Lower = larger kernel.</p>
+  </div>
+  <div class="grade-cards">
+    <div class="grade-card featured reveal" style="transition-delay:.05s">
+      <div class="grade-badge">Most Popular</div>
+      <div class="grade-code">W180</div>
+      <div class="grade-desc-en">Jumbo Premium Grade</div>
+      <div class="grade-desc-mr">सर्वात मोठा · भेटकार्ट-योग्य</div>
+      <p class="grade-detail">The largest, most impressive cashew. Buttery texture, rich flavour. Perfect for gifting, premium snacking, and garnishing sweets. Rare and seasonal.</p>
+      <div class="grade-price">₹960 <span class="per">/ 250g</span></div>
+      <div class="grade-use">
+        <span class="grade-tag">Gifting</span>
+        <span class="grade-tag">Snacking</span>
+        <span class="grade-tag">Premium</span>
+      </div>
+      <button class="grade-btn" onclick="window.location='order.html?grade=W180'">Order W180 · ऑर्डर करा</button>
+    </div>
+    <div class="grade-card reveal" style="transition-delay:.1s">
+      <div class="grade-code">W210</div>
+      <div class="grade-desc-en">Select Large Grade</div>
+      <div class="grade-desc-mr">निवडक मोठा · मिठाई-योग्य</div>
+      <p class="grade-detail">Slightly smaller than W180 but equally premium. Ideal for mithai (काजू katli), halwa, and desserts. Holds shape perfectly when cooked.</p>
+      <div class="grade-price">₹860 <span class="per">/ 250g</span></div>
+      <div class="grade-use">
+        <span class="grade-tag">Mithai</span>
+        <span class="grade-tag">Desserts</span>
+        <span class="grade-tag">Halwa</span>
+      </div>
+      <button class="grade-btn" onclick="window.location='order.html?grade=W210'">Order W210 · ऑर्डर करा</button>
+    </div>
+    <div class="grade-card reveal" style="transition-delay:.15s">
+      <div class="grade-code">W240</div>
+      <div class="grade-desc-en">Standard Whole Grade</div>
+      <div class="grade-desc-mr">साधारण आकार · स्वयंपाक-योग्य</div>
+      <p class="grade-detail">The everyday cashew. Great for cooking curries (काजू करी), pulao, and snacking. Best value for regular household use and bulk buying.</p>
+      <div class="grade-price">₹780 <span class="per">/ 250g</span></div>
+      <div class="grade-use">
+        <span class="grade-tag">Cooking</span>
+        <span class="grade-tag">Pulao</span>
+        <span class="grade-tag">Daily Use</span>
+      </div>
+      <button class="grade-btn" onclick="window.location='order.html?grade=W240'">Order W240 · ऑर्डर करा</button>
+    </div>
+    <div class="grade-card reveal" style="transition-delay:.2s">
+      <div class="grade-code">W320</div>
+      <div class="grade-desc-en">Economy Cooking Grade</div>
+      <div class="grade-desc-mr">किफायतशीर · मसाल्यासाठी</div>
+      <p class="grade-detail">Medium-sized kernels, perfect for grinding into cashew paste, butter, or using in sauces and gravies. Best bang for money.</p>
+      <div class="grade-price">₹640 <span class="per">/ 250g</span></div>
+      <div class="grade-use">
+        <span class="grade-tag">Paste/Butter</span>
+        <span class="grade-tag">Gravy</span>
+        <span class="grade-tag">Bulk</span>
+      </div>
+      <button class="grade-btn" onclick="window.location='order.html?grade=W320'">Order W320 · ऑर्डर करा</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ TREE FACTS ══════════════ -->
+<section id="tree">
+  <div class="tree-grid">
+    <div class="reveal-l">
+      <span class="eyebrow">काजूचे झाड · The Cashew Tree</span>
+      <h2 class="section-title">Nature's Most<br><em>Generous Tree</em></h2>
+      <div style="font-family:'Tiro Devanagari Marathi',serif;font-size:1.1rem;color:var(--terra);margin-top:8px;">निसर्गाचे सर्वात उदार झाड</div>
+      <p style="margin-top:18px;color:#3B1F0C;line-height:1.85;font-size:.93rem;">The cashew tree (Anacardium occidentale) is remarkable — it produces both a fruit AND a nut. Our Ratnagiri trees, fed by the laterite soil and monsoon rains, live for 30+ years and produce some of India's finest cashews.</p>
+      <a href="order.html" class="btn-main" style="display:inline-block;margin-top:28px;text-decoration:none;">Order Fresh Cashew · ताजे काजू मागवा</a>
+    </div>
+    <div class="reveal-r">
+      <div class="tree-facts">
+        <div class="tree-fact">
+          <span class="fact-icon">🍎</span>
+          <div>
+            <div class="fact-en">The Cashew Apple (काजू बोंड)</div>
+            <div class="fact-mr">काजू फळ — विटामिन C ने भरपूर</div>
+            <p class="fact-body">The bright cashew apple is actually the false fruit. It contains 5× more Vitamin C than an orange. In Konkan villages, it is fermented into local vinegar (आमटी) or made into juice and jam.</p>
+          </div>
+        </div>
+        <div class="tree-fact">
+          <span class="fact-icon">🌰</span>
+          <div>
+            <div class="fact-en">The Nut Grows Outside (अनोखी रचना)</div>
+            <div class="fact-mr">बी फळाच्या बाहेर असते</div>
+            <p class="fact-body">Unlike all other nuts, the cashew grows outside its fruit — hanging below the cashew apple in a hard shell. The shell contains CNSL, a caustic oil, which is why cashews must be carefully processed before eating.</p>
+          </div>
+        </div>
+        <div class="tree-fact">
+          <span class="fact-icon">🌿</span>
+          <div>
+            <div class="fact-en">Ratnagiri Soil Advantage</div>
+            <div class="fact-mr">रत्नागिरीची लाल माती</div>
+            <p class="fact-body">Ratnagiri's red laterite soil, combined with the sea breeze (समुद्री हवा) from the Arabian Sea, gives local cashews a distinctive creaminess and flavour that cannot be replicated elsewhere.</p>
+          </div>
+        </div>
+        <div class="tree-fact">
+          <span class="fact-icon">💪</span>
+          <div>
+            <div class="fact-en">Nutrition Powerhouse</div>
+            <div class="fact-mr">पोषणाचा खजिना</div>
+            <p class="fact-body">30g of cashew provides 37% of daily magnesium, 98% of copper, 31% of zinc, and healthy unsaturated fats. Rich in iron, B vitamins, and plant protein — a true superfood.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ TESTIMONIALS ══════════════ -->
+<section id="testimonials">
+  <div class="testi-header reveal">
+    <span class="eyebrow">ग्राहकांचे मत · Customer Words</span>
+    <h2 class="section-title" style="color:var(--cream)">What Our <em>Customers</em> Say</h2>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card reveal" style="transition-delay:.05s">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"The W180 cashews are extraordinary — so large and so creamy. I gifted them to relatives in Pune and they couldn't believe it was farm-direct. Will order every season."</p>
+      <div class="testi-name">Priya Deshpande</div>
+      <div class="testi-loc">Mumbai, Maharashtra</div>
+    </div>
+    <div class="testi-card reveal" style="transition-delay:.1s">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"खूप छान काजू! रत्नागिरीचा असल्याने चव वेगळीच आहे. मध्यस्थ नसल्याने किंमत पण रास्त आहे. दरवर्षी आम्ही इथूनच घेतो."</p>
+      <div class="testi-name">Suresh Kulkarni</div>
+      <div class="testi-loc">Pune, Maharashtra</div>
+    </div>
+    <div class="testi-card reveal" style="transition-delay:.15s">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"I've been buying cashews from shops for years. This is on a completely different level. Fresh, no stale smell, whole kernels. The vacuum packaging keeps them perfectly fresh."</p>
+      <div class="testi-name">Anjali Nair</div>
+      <div class="testi-loc">Bangalore, Karnataka</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FARMER POV ══════════════ -->
+<section id="farmer" style="background:var(--parch);padding:90px 6%;position:relative;overflow:hidden;">
+  <div style="position:absolute;right:-60px;bottom:-60px;width:300px;height:300px;background:radial-gradient(circle,rgba(201,139,42,.06),transparent 70%);pointer-events:none;"></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;" class="reveal">
+    <!-- Farmer letter -->
+    <div style="position:relative;">
+      <div style="background:var(--cream);padding:40px 42px;border:1px solid var(--border);position:relative;box-shadow:4px 4px 0 rgba(185,136,60,.1);">
+        <!-- Paper texture lines -->
+        <div style="position:absolute;inset:0;background:repeating-linear-gradient(transparent,transparent 27px,rgba(185,136,60,.06) 28px);pointer-events:none;border-radius:inherit;"></div>
+        <div style="position:relative;z-index:1;">
+          <div style="font-family:'Caveat',cursive;font-size:1rem;color:var(--terra);margin-bottom:18px;letter-spacing:1px;">Ratnagiri, February 2025</div>
+          <p style="font-family:'Caveat',cursive;font-size:1.45rem;color:var(--mud);line-height:1.9;margin-bottom:16px;">
+            माझ्या वडिलांनी हे झाड लावलं तेव्हा मी सहा वर्षांचा होतो. आता माझा मुलगा त्याच झाडावरून काजू तोडतो.
+          </p>
+          <p style="font-family:'Lora',serif;font-size:.9rem;color:#5C3A1E;line-height:1.85;margin-bottom:16px;">
+            My father planted these trees when I was six years old. Today, my son harvests from those same trees. Three generations, one orchard, zero middlemen. When you order from us, you are not buying from a warehouse. You are receiving cashews packed by the same hands that picked them, the same morning they were processed.
+          </p>
+          <p style="font-family:'Caveat',cursive;font-size:1.2rem;color:var(--clay);line-height:1.7;">
+            That is our promise. That is Pasture.
+          </p>
+          <div style="margin-top:28px;padding-top:18px;border-top:1px dashed rgba(185,136,60,.25);">
+            <div style="font-family:'Caveat',cursive;font-size:1.5rem;color:var(--mud);">— Ramchandra Sawant</div>
+            <div style="font-family:'Josefin Sans',sans-serif;font-size:.65rem;letter-spacing:2.5px;color:var(--terra);text-transform:uppercase;margin-top:4px;">Third-generation Farmer · Ratnagiri</div>
+          </div>
+        </div>
+      </div>
+      <!-- Decorative stamp -->
+      <div style="position:absolute;top:-18px;right:-18px;width:72px;height:72px;border:2px solid var(--clay);border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--cream);transform:rotate(12deg);">
+        <div style="font-size:1.4rem;">🌿</div>
+        <div style="font-family:'Josefin Sans',sans-serif;font-size:.5rem;letter-spacing:1.5px;color:var(--clay);text-transform:uppercase;">Pasture</div>
+      </div>
+    </div>
+
+    <!-- Farm facts / farmer perspective -->
+    <div>
+      <span style="font-family:'Caveat',cursive;font-size:1.4rem;color:var(--clay);display:block;margin-bottom:10px;">A Farmer Tells You What to Look For</span>
+      <h2 style="font-family:'Josefin Sans',sans-serif;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--mud);line-height:1.15;">How to Know<br>a <em style="font-style:italic;color:var(--clay);font-family:'Lora',serif;">Real Cashew</em></h2>
+      <div style="font-family:'Tiro Devanagari Marathi',serif;font-size:1rem;color:var(--terra);margin-top:6px;margin-bottom:28px;">खरा काजू कसा ओळखावा — शेतकऱ्याचे मत</div>
+
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div style="display:flex;gap:16px;align-items:flex-start;padding:16px 18px;background:var(--cream);border-left:3px solid var(--sage);">
+          <span style="font-size:1.4rem;flex-shrink:0;">👃</span>
+          <div>
+            <div style="font-family:'Josefin Sans',sans-serif;font-size:.75rem;letter-spacing:2px;color:var(--mud);text-transform:uppercase;margin-bottom:3px;">The Smell Test</div>
+            <p style="font-size:.84rem;color:#3B1F0C;line-height:1.7;">Real cashews smell slightly sweet and buttery, like fresh milk. A stale or plastic smell means they have been in cold storage for months. Ours are packed within 48 hours.</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:flex-start;padding:16px 18px;background:var(--cream);border-left:3px solid var(--ochre);">
+          <span style="font-size:1.4rem;flex-shrink:0;">🎨</span>
+          <div>
+            <div style="font-family:'Josefin Sans',sans-serif;font-size:.75rem;letter-spacing:2px;color:var(--mud);text-transform:uppercase;margin-bottom:3px;">The Colour Test</div>
+            <p style="font-size:.84rem;color:#3B1F0C;line-height:1.7;">Good cashews are ivory to pale gold — never bright white (bleached) or grey (old). Our W180 Jumbos have a natural warm ivory tone from sun-drying on bamboo mats.</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:flex-start;padding:16px 18px;background:var(--cream);border-left:3px solid var(--clay);">
+          <span style="font-size:1.4rem;flex-shrink:0;">🤌</span>
+          <div>
+            <div style="font-family:'Josefin Sans',sans-serif;font-size:.75rem;letter-spacing:2px;color:var(--mud);text-transform:uppercase;margin-bottom:3px;">The Texture Test</div>
+            <p style="font-size:.84rem;color:#3B1F0C;line-height:1.7;">A fresh cashew should snap cleanly, never bend. Bending means moisture has entered — poor storage or old stock. Ours are vacuum sealed at harvest to lock in crunch.</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:flex-start;padding:16px 18px;background:var(--cream);border-left:3px solid var(--leaf);">
+          <span style="font-size:1.4rem;flex-shrink:0;">💧</span>
+          <div>
+            <div style="font-family:'Josefin Sans',sans-serif;font-size:.75rem;letter-spacing:2px;color:var(--mud);text-transform:uppercase;margin-bottom:3px;">The Aftertaste Test</div>
+            <p style="font-size:.84rem;color:#3B1F0C;line-height:1.7;">Quality cashews leave a clean, creamy aftertaste. Any bitterness means rancid oils from poor storage. Ratnagiri cashews are naturally sweet — the red laterite soil gives them their flavour.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ CTA ══════════════ -->
+<div class="cta-band">
+  <span class="cta-eyebrow">🌿 Season is short — Order now</span>
+  <h2 class="cta-title">Farm-Fresh Cashews<br>Delivered to Your Door</h2>
+  <span class="cta-mr">ताज्या काजूंची ऑर्डर द्या — थेट शेतातून</span>
+  <div class="cta-btns">
+    <a href="order.html" class="btn-white">Order Cashew · काजू ऑर्डर करा</a>
+    <a href="hapus.html" style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:3px;border:1.5px solid rgba(250,240,220,.5);color:var(--cream);padding:15px 38px;text-decoration:none;text-transform:uppercase;transition:all .3s;display:inline-block;" onmouseover="this.style.borderColor='#FAF0DC';this.style.background='rgba(250,240,220,.1)'" onmouseout="this.style.borderColor='rgba(250,240,220,.5)';this.style.background='transparent'">Coming Soon: Hapus Mango 🥭</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand" data-config="brand-name">Pasture</div>
+      <span style="font-family:'Tiro Devanagari Marathi',serif;font-size:1rem;color:var(--ochre);display:block;margin-top:4px;" data-config="tagline-mr">आपली शेती · रत्नागिरी</span>
+      <span class="footer-tagline">"Grown with patience. Packed with love."</span>
+      <p class="footer-p">Farm-direct cashews from Ratnagiri's Konkan coast. Three generations of honest, chemical-free farming. No middlemen. No compromise.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Pages</h5>
+      <ul>
+        <li><a href="cashew.html">Cashew · काजू</a></li>
+        <li><a href="hapus.html">Hapus · हापूस</a></li>
+        <li><a href="order.html">Order · ऑर्डर</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Contact</h5>
+      <ul>
+        <li><a href="tel:+919876543210" data-config="phone-href"><span data-config="phone">+91 98765 43210</span></a></li>
+        <li><a href="https://wa.me/919876543210" data-config="whatsapp-href">WhatsApp Us</a></li>
+        <li><a href="mailto:hello@pasture.in" data-config="email-href"><span data-config="email">hello@pasture.in</span></a></li>
+        <li data-config="address">Ratnagiri, Konkan, Maharashtra</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Pasture · Ratnagiri, Maharashtra · सर्व हक्क राखीव</span>
+    <span style="font-family:'Caveat',cursive;font-size:1rem;color:var(--ochre);">शेतातून थेट तुमच्यापर्यंत 🌿</span>
+  </div>
+</footer>
+
+<script>
+// Cursor
+const cur=document.getElementById('cur'),curR=document.getElementById('curR');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(a);})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='18px';cur.style.height='18px';curR.style.width='54px';curR.style.height='54px';});
+  el.addEventListener('mouseleave',()=>{cur.style.width='10px';cur.style.height='10px';curR.style.width='36px';curR.style.height='36px';});
+});
+
+// Nav scroll + progress bar + back to top
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('scrolled',scrollY>60);
+  const h=document.documentElement.scrollHeight-window.innerHeight;
+  document.getElementById('progress-bar').style.width=(scrollY/h*100)+'%';
+  document.getElementById('btt').classList.toggle('show',scrollY>400);
+});
+
+// Stars
+const starC=document.getElementById('stars');
+for(let i=0;i<60;i++){
+  const s=document.createElement('div');
+  s.className='star';
+  const size=Math.random()*2.5+.5;
+  s.style.cssText=`width:${size}px;height:${size}px;top:${Math.random()*85}%;left:${Math.random()*100}%;opacity:${Math.random()*.7+.15};animation:twinkle ${2+Math.random()*4}s ease-in-out infinite;animation-delay:${Math.random()*4}s;`;
+  starC.appendChild(s);
+}
+const sts=document.createElement('style');
+sts.textContent='@keyframes twinkle{0%,100%{opacity:.1}50%{opacity:.8}}';
+document.head.appendChild(sts);
+
+// Counters
+let ran=false;
+const sb=document.querySelector('.season-band');
+new IntersectionObserver(e=>{if(e[0].isIntersecting&&!ran){ran=true;
+  document.querySelectorAll('[data-target]').forEach(el=>{
+    const t=+el.dataset.target;let c=0;const inc=t/60;
+    const ti=setInterval(()=>{c=Math.min(c+inc,t);el.textContent=c>=t?t.toLocaleString():Math.floor(c).toLocaleString();if(c>=t)clearInterval(ti);},25);
+  });}},{threshold:.5}).observe(sb);
+
+// Reveals — also fire immediately if already in viewport
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}}),{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el=>obs.observe(el));
+
+// Magnetic hover effect on CTA buttons
+document.querySelectorAll('.btn-main,.btn-ghost,.btn-white,.nav-cta,.grade-btn').forEach(btn=>{
+  btn.addEventListener('mousemove',e=>{
+    const r=btn.getBoundingClientRect();
+    const x=(e.clientX-r.left-r.width/2)*.25;
+    const y=(e.clientY-r.top-r.height/2)*.25;
+    btn.style.transform=`translate(${x}px,${y}px)`;
+  });
+  btn.addEventListener('mouseleave',()=>{btn.style.transform='';});
+});
+
+// Grade card glow on hover
+document.querySelectorAll('.grade-card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=((e.clientX-r.left)/r.width*100).toFixed(1);
+    const y=((e.clientY-r.top)/r.height*100).toFixed(1);
+    card.style.setProperty('--mx',x+'%');
+    card.style.setProperty('--my',y+'%');
+  });
+});
+
+// Hero tree parallax on scroll
+const heroTree=document.querySelector('.hero-tree');
+window.addEventListener('scroll',()=>{
+  if(heroTree&&scrollY<window.innerHeight){
+    heroTree.style.transform=`translateY(${scrollY*.12}px)`;
+  }
+});
+// Leaf particles on scroll
+let lastLeaf=0;
+window.addEventListener('scroll',()=>{
+  const now=Date.now();if(now-lastLeaf<1200)return;lastLeaf=now;
+  const l=document.createElement('div');
+  l.style.cssText=`position:fixed;top:-30px;left:${Math.random()*100}vw;font-size:${.8+Math.random()*.8}rem;pointer-events:none;z-index:999;animation:lf ${3+Math.random()*2}s ease-in forwards;`;
+  l.textContent=['🍃','🌿','🍀','🌱'][Math.floor(Math.random()*4)];
+  document.body.appendChild(l);setTimeout(()=>l.remove(),5000);
+});
+const lf=document.createElement('style');
+lf.textContent='@keyframes lf{0%{transform:translateY(0) rotate(0deg);opacity:0}10%{opacity:1}100%{transform:translateY(120vh) rotate(120deg);opacity:0}}';
+document.head.appendChild(lf);
+
+// ══ INTERACTIVE FRUIT BENEFITS ══
+const benefits={
+  heart:{icon:'❤️',title:'Heart Health',mr:'हृदयासाठी गुणकारी',body:'Cashews are packed with oleic acid — the same heart-healthy monounsaturated fat in olive oil. Regular consumption lowers LDL and raises good HDL cholesterol.',stat:'↑ 37% Daily Magnesium · Lowers Bad Cholesterol'},
+  brain:{icon:'🧠',title:'Brain Power',mr:'मेंदूसाठी पोषक',body:'Rich in copper and zinc — essential minerals for neurotransmitter synthesis. A handful of cashews provides nearly 100% of your daily copper needs.',stat:'↑ 98% Daily Copper · Supports Nerve Function'},
+  bone:{icon:'🦴',title:'Strong Bones',mr:'हाडांसाठी मजबूत',body:'Cashews provide magnesium, phosphorus, and copper — three minerals that work together to build and maintain bone density, especially important with age.',stat:'↑ 31% Daily Zinc · Bone Mineral Density'},
+  immunity:{icon:'🛡️',title:'Immune Boost',mr:'रोगप्रतिकार शक्ती',body:'The zinc and selenium in cashews activate T-cells and natural killer cells. Konkan cashews, sun-dried naturally, retain full antioxidant potency.',stat:'↑ Antioxidants · Seasonal Harvest = Peak Nutrition'},
+  energy:{icon:'⚡',title:'Lasting Energy',mr:'ऊर्जेचा खजिना',body:'Unlike processed snacks, cashews give slow-release energy through healthy fats and plant protein. 30g = 5g protein and sustained energy for hours.',stat:'5g Protein per 30g · No Sugar Crash'},
+  skin:{icon:'✨',title:'Glowing Skin',mr:'त्वचेसाठी गुणकारी',body:'Cashews are rich in selenium and vitamin E — powerful antioxidants that protect skin from oxidative damage. The healthy fats keep skin supple and hydrated.',stat:'↑ Selenium · Vitamin E · Natural Glow'}
+};
+
+const card=document.getElementById('benefit-card');
+const treeEl=document.getElementById('heroTree');
+let hideTimer;
+
+document.querySelectorAll('.fruit-group').forEach(fg=>{
+  const key=fg.dataset.benefit;
+  const b=benefits[key];
+  if(!b)return;
+
+  fg.addEventListener('mouseenter',e=>{
+    clearTimeout(hideTimer);
+    document.getElementById('bc-icon').textContent=b.icon;
+    document.getElementById('bc-title').textContent=b.title;
+    document.getElementById('bc-mr').textContent=b.mr;
+    document.getElementById('bc-body').textContent=b.body;
+    document.getElementById('bc-stat').textContent=b.stat;
+
+    // Position tooltip above the fruit group using SVG coords → screen coords
+    const svgRect=treeEl.getBoundingClientRect();
+    const fg_rect=fg.getBoundingClientRect();
+    const heroRect=document.getElementById('hero').getBoundingClientRect();
+
+    // Place card above the fruit, relative to hero
+    let left=fg_rect.left+fg_rect.width/2-heroRect.left-120;
+    let top=fg_rect.top-heroRect.top-160;
+    // Clamp to hero bounds
+    left=Math.max(10,Math.min(left,heroRect.width-280));
+    top=Math.max(80,top);
+
+    card.style.left=left+'px';
+    card.style.top=top+'px';
+    card.classList.add('show');
+
+    // Hide the hover hint after first interaction
+    const hint=document.getElementById('hoverHint');
+    if(hint)hint.style.opacity='0';
+
+    // Expand cursor
+    cur.style.width='18px';cur.style.height='18px';
+    curR.style.width='54px';curR.style.height='54px';
+  });
+
+  fg.addEventListener('mouseleave',()=>{
+    hideTimer=setTimeout(()=>card.classList.remove('show'),180);
+    cur.style.width='10px';cur.style.height='10px';
+    curR.style.width='36px';curR.style.height='36px';
+  });
+});
+
+card.addEventListener('mouseenter',()=>clearTimeout(hideTimer));
+card.addEventListener('mouseleave',()=>{hideTimer=setTimeout(()=>card.classList.remove('show'),180);});
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "name": "pasture",
+  "version": "1.0.0",
+  "description": "Pasture — Farm-direct Cashew & Hapus, Ratnagiri",
+  "scripts": {
+    "dev": "vercel dev",
+    "start": "vercel dev"
+  }
+}
