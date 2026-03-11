@@ -1,0 +1,12 @@
+# Netlify config for Pasture
+# https://docs.netlify.com/configure-builds/file-based-configuration/
+
+[build]
+  publish = "."
+  # No build command — static site
+
+# Serve cashew.html at the root (like vercel.json rewrite)
+[[redirects]]
+  from = "/"
+  to = "/cashew.html"
+  status = 200

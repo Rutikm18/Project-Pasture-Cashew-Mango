@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "Pasture — Farm-direct Cashew & Hapus, Ratnagiri",
   "scripts": {
-    "dev": "vercel dev",
-    "start": "vercel dev"
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
   }
 }

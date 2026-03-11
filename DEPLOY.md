@@ -1,92 +1,81 @@
-# 🚀 Deploy Pasture to Vercel — CI/CD Step-by-Step Guide
+# 🚀 Deploy Pasture — Step-by-Step Guide
 
-This guide walks you through getting your site live on Vercel and setting up **automatic deployments** (CI/CD): each push to your main branch triggers a new deploy.
-
----
-
-## Prerequisites
-
-- A **GitHub** account (or GitLab / Bitbucket)
-- A **Vercel** account (free at [vercel.com](https://vercel.com))
-- **Git** installed on your machine
+Deploy your site to **Vercel** (recommended; full API + CI/CD) or **Netlify** (static site only). Follow the steps in order.
 
 ---
 
-## 🔒 I don’t want my code public — what should I do?
+## What you need
 
-You have two good options:
-
-### Option A: Private GitHub repository (recommended)
-
-- Create the repo as **Private** instead of Public (Step 4 below: choose **“Private”**).
-- **Code = private:** Only you (and people you invite) can see the code on GitHub. Nobody can copy or clone your source.
-- **Website = public:** The site Vercel deploys (e.g. `https://your-project.vercel.app`) is **public**. Anyone can open it and use the UI — they see the live site only, not your repo. Your source code and config stay private.
-- Vercel can deploy from a private repo; when you import the project, Vercel asks for permission to read the repo. **Automatic CI/CD (deploy on every push) works the same.**
-- GitHub allows unlimited private repos for free.
-
-**What to do:** Follow the same steps below; in Step 4, choose **“Private”** when creating the repository. Everything else stays the same.
-
-### Option B: No GitHub — deploy only from your computer (Vercel CLI)
-
-- Your code **never** leaves your machine (or your own backup). No GitHub, no GitLab.
-- You deploy by running a command on your computer whenever you want to update the live site.
-- **Downside:** No automatic CI/CD; you must run `vercel` or `vercel --prod` yourself after changes.
-
-**Steps for Option B:**
-
-1. Install Vercel CLI: `npm i -g vercel`
-2. In your project folder run: `vercel` (first time: log in, link to a new Vercel project).
-3. For production deploy: `vercel --prod`
-4. When you change code, run `vercel --prod` again to update the live site.
+- **Git** installed on your computer
+- A **GitHub** account
+- A **Vercel** account (free at [vercel.com](https://vercel.com)) — for Vercel deploy  
+  **or** a **Netlify** account (free at [netlify.com](https://netlify.com)) — for Netlify deploy
 
 ---
 
-## Part 1: Prepare your project with Git
+## 🔒 Keep your code private
 
-### Step 1 — Open a terminal in your project folder
+- When you create the GitHub repo (Step 4), choose **Private**. Only you (and people you invite) can see the code.
+- The **live website** (Vercel or Netlify URL) stays public — visitors see the site, not your source code.
+
+---
+
+## Step 1 — Open a terminal in your project folder
 
 ```bash
 cd "/path/to/your/Project-Pashure"
 ```
-Replace with your actual project path.
 
-### Step 2 — Initialize Git (if not already)
+Replace `/path/to/your/Project-Pashure` with the real path to your project (e.g. on Mac: `"/Users/YourName/Documents/Project-Pashure"`).
+
+---
+
+## Step 2 — Initialize Git and make the first commit
+
+Run these commands one by one:
 
 ```bash
 git init
 ```
 
-### Step 3 — Add all files and commit
-
 ```bash
 git add .
+```
+
+```bash
 git commit -m "Initial commit: Pasture site ready for deploy"
 ```
 
 ---
 
-## Part 2: Push to GitHub
+## Step 3 — Create a new repository on GitHub
 
-### Step 4 — Create a new repository on GitHub
-
-1. Go to [github.com](https://github.com) and sign in.
-2. Click **“+”** (top right) → **“New repository”**.
-3. **Repository name:** e.g. `pasture` or `Project-Pashure`.
-4. Choose **Private** (so nobody can see or copy your code).
-5. **Do not** check “Add a README” (you already have files).
+1. Open [github.com](https://github.com) and sign in.
+2. Click the **“+”** icon (top right) → **“New repository”**.
+3. **Repository name:** e.g. `pasture` or `pasture-site` (use only letters, numbers, hyphens).
+4. Set visibility to **Private** (recommended).
+5. **Do not** tick “Add a README”, “Add .gitignore”, or “Choose a license”.
 6. Click **“Create repository”**.
 
-### Step 5 — Connect your local project to GitHub
+---
 
-GitHub will show you commands. Use these (replace `YOUR_USERNAME` and `YOUR_REPO` with your GitHub username and repo name):
+## Step 4 — Connect your project to GitHub and push
+
+GitHub will show you “push an existing repository from the command line”. Use these commands (replace `YOUR_USERNAME` and `YOUR_REPO` with your GitHub username and repo name):
 
 ```bash
 git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
+```
+
+```bash
 git branch -M main
+```
+
+```bash
 git push -u origin main
 ```
 
-Example:
+**Example** (if your username is `rutikmangale` and repo is `pasture`):
 
 ```bash
 git remote add origin https://github.com/rutikmangale/pasture.git
@@ -94,94 +83,151 @@ git branch -M main
 git push -u origin main
 ```
 
-If Git asks for credentials, use your GitHub username and a **Personal Access Token** (GitHub → Settings → Developer settings → Personal access tokens) as the password.
+If Git asks for a password, use your GitHub **Personal Access Token** (GitHub → Settings → Developer settings → Personal access tokens → Generate new token). Use the token as the password.
 
 ---
 
-## Part 3: Deploy on Vercel (first time)
+## Step 5 — Choose where to deploy
 
-### Step 6 — Sign in to Vercel
+| Platform   | Best for                          | APIs (config, notify, order) | CI/CD        |
+|-----------|------------------------------------|-------------------------------|--------------|
+| **Vercel**  | Full site with config + orders    | ✅ Yes                        | ✅ Auto on push |
+| **Netlify** | Static site only                   | ❌ No (uses defaults)         | ✅ Auto on push |
+
+- **Vercel:** Config, coupons, contact, and order storage work. Use **Part A** below.
+- **Netlify:** All pages work; order page uses default prices/phone. Use **Part B** below.
+
+---
+
+## Part A — Deploy on Vercel (step-by-step)
+
+### Step A1 — Log in to Vercel
 
 1. Go to [vercel.com](https://vercel.com).
 2. Click **“Sign Up”** or **“Log In”**.
-3. Choose **“Continue with GitHub”** and authorize Vercel.
+3. Choose **“Continue with GitHub”** and allow Vercel to access your GitHub account.
 
-### Step 7 — Import your project
+### Step A2 — Import your project
 
 1. On the Vercel dashboard, click **“Add New…”** → **“Project”**.
-2. You will see a list of your GitHub repositories. Find your project (e.g. `pasture` or `Project-Pashure`).
+2. You will see a list of your GitHub repos. Find your project (e.g. `pasture`).
 3. Click **“Import”** next to it.
 
-### Step 8 — Configure the project
+### Step A3 — Configure the project
 
-1. **Project Name:** e.g. `pasture` (or leave default).
+1. **Project Name:** Use only **lowercase letters, numbers, and** `-` **or** `_` (e.g. `pasture` or `pasture-site`).  
+   If you see *“A Project name can only contain…”*, change the name to lowercase (e.g. `pasture`).
 2. **Root Directory:** leave as **`.`** (project root).
-3. **Framework Preset:** **Other** (no framework).
+3. **Framework Preset:** **Other**.
 4. **Build Command:** leave empty.
-5. **Output Directory:** leave empty (Vercel serves static files + `api/` from root).
-6. **Install Command:** leave empty (or `npm install` if you add a `package.json` with deps).
+5. **Output Directory:** leave empty.
+6. **Install Command:** leave empty.
 
 Click **“Deploy”**.
 
-### Step 9 — Wait for the first deploy
+### Step A4 — Wait for the deploy
 
-- Vercel will clone your repo, run the build (if any), and deploy.
-- When it finishes, you will get a URL like **`https://pasture-xxxx.vercel.app`**.
-- Open it and check that the homepage, `/order.html`, and `/admin.html` work.
+1. Wait one to two minutes.
+2. When it finishes, you will see a URL like **`https://pasture-xxxx.vercel.app`**.
+3. Click it and check:
+   - Homepage loads (cashew page).
+   - [Your site]/order.html works.
+   - [Your site]/admin.html works.
 
----
+CI/CD is now on: every **push to `main`** will trigger a new deploy.
 
-## Part 4: CI/CD — Automatic deployments
+### Step A5 — (Optional) Add a custom domain
 
-Once the project is connected to GitHub, **CI/CD is already set up**.
-
-### What happens automatically
-
-| Action | Result |
-|--------|--------|
-| You push to `main` (or default branch) | Vercel runs a new build and deploy. |
-| You open a Pull Request | Vercel creates a **Preview URL** for that PR. |
-| Merge PR to `main` | Production is redeployed. |
-
-### How to use it day to day
-
-1. Edit code locally (e.g. `config/site.json`, HTML, or API).
-2. Commit and push:
-
-   ```bash
-   git add .
-   git commit -m "Update contact details / add coupon"
-   git push origin main
-   ```
-
-3. Vercel will build and deploy automatically. Your live site will update in one to two minutes.
-
-### Optional: Custom domain
-
-1. In Vercel: **Project → Settings → Domains**.
+1. In Vercel, open your project → **Settings** → **Domains**.
 2. Add your domain (e.g. `pasture.in`).
 3. Follow the DNS instructions and add the records at your domain registrar.
 
 ---
 
-## Quick reference — one-time setup
+## Part B — Deploy on Netlify (step-by-step)
+
+### Step B1 — Log in to Netlify
+
+1. Go to [netlify.com](https://netlify.com).
+2. Click **“Sign up”** or **“Log in”**.
+3. Choose **“Sign up with GitHub”** (or Email) and complete sign-in.
+
+### Step B2 — Add your site from GitHub
+
+1. On the Netlify dashboard, click **“Add new site”** → **“Import an existing project”**.
+2. Click **“Deploy with GitHub”** (or “Connect to Git provider” and choose GitHub).
+3. Authorize Netlify if asked.
+4. In the list of repositories, find your project (e.g. `pasture`) and click **“Import”** or **“Select”**.
+
+### Step B3 — Configure the build
+
+1. **Branch to deploy:** `main` (or your default branch).
+2. **Build command:** leave **empty**.
+3. **Publish directory:** leave as **`.`** (or the default; `netlify.toml` in the repo sets this).
+4. **Advanced** (if you see it): do not add a build command.
+
+Click **“Deploy [your-site-name]”** or **“Deploy site”**.
+
+### Step B4 — Wait for the deploy
+
+1. Wait one to two minutes.
+2. When it finishes, you will see a URL like **`https://random-name-12345.netlify.app`**.
+3. Click it and check:
+   - Homepage loads (cashew page).
+   - `/order.html` and `/admin.html` work.
+
+**Note:** On Netlify, `/api/config`, `/api/notify`, and `/api/order` do not run (they are for Vercel). The order page will use default prices and contact; admin may not load config. For full behaviour (config, coupons, orders), use Vercel (Part A).
+
+### Step B5 — (Optional) Change the site name or add a custom domain
+
+1. **Site name:** Site configuration → **Domain management** → **Options** → **Edit site name** (use lowercase, numbers, hyphens only).
+2. **Custom domain:** Domain management → **Add custom domain** → follow the DNS steps.
+
+---
+
+## Pushing updates (CI/CD)
+
+After your site is connected to GitHub, every push to `main` will redeploy.
+
+**Each time you change the code:**
 
 ```bash
-# 1. Go to your project folder
 cd "/path/to/your/Project-Pashure"
+git add .
+git commit -m "Short description of your change"
+git push origin main
+```
 
-# 2. Initialize Git and commit
+Wait one to two minutes; your live site will update (on Vercel or Netlify, depending where you deployed).
+
+---
+
+## Quick reference
+
+**One-time setup (Git + GitHub):**
+
+```bash
+cd "/path/to/your/Project-Pashure"
 git init
 git add .
 git commit -m "Initial commit: Pasture site"
-
-# 3. After creating the repo on GitHub (use your repo URL)
 git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
 git branch -M main
 git push -u origin main
 ```
 
-Then in Vercel: **Add New → Project → Import your GitHub repo → Deploy.**
+**Then:**
+
+- **Vercel:** Add New → Project → Import repo → set Project Name to e.g. `pasture` (lowercase) → Deploy.
+- **Netlify:** Add new site → Import from GitHub → select repo → leave build command empty → Deploy.
+
+**Push updates:**
+
+```bash
+git add .
+git commit -m "Describe your change"
+git push origin main
+```
 
 ---
 
@@ -189,11 +235,12 @@ Then in Vercel: **Add New → Project → Import your GitHub repo → Deploy.**
 
 | Issue | Fix |
 |-------|-----|
-| `api/config` or `api/order` returns 404 | Ensure the `api/` folder is in the repo and the project root in Vercel is set to the repo root. |
-| Config changes not showing | Redeploy: push a small change or click “Redeploy” in the Vercel dashboard. |
-| Need environment variables (e.g. for Vercel KV) | In Vercel: Project → Settings → Environment Variables. |
-| Preview URLs for pull requests | Created automatically; check the “Deployments” tab for each PR. |
+| **“Project name can only contain…”** (Vercel) | Use only lowercase letters, numbers, `-` and `_`. Example: `pasture` or `pasture-site`. |
+| **`api/config` or `api/order` 404** | You are on Netlify; APIs run only on Vercel. Deploy on Vercel for config and orders. |
+| **Config / contact not updating** | Redeploy: push a small change and wait, or in the dashboard click “Redeploy” / “Trigger deploy”. |
+| **Git asks for password** | Use a GitHub Personal Access Token as the password, not your GitHub password. |
+| **Site works but order page shows wrong prices** | On Netlify the config API is not available; use Vercel for config-driven prices and contact. |
 
 ---
 
-*Pasture · Deploy with Vercel · CI/CD on every push*
+*Pasture · Deploy with Vercel or Netlify · CI/CD on every push*

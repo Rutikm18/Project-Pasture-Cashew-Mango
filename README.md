@@ -23,6 +23,7 @@ Project-Pashure/
 ├── cashew_tree.jpg       ← About section image
 ├── mango_tree.jpg        ← About section image (hapus)
 ├── vercel.json           ← Vercel config (rewrites)
+├── netlify.toml          ← Netlify config (redirects; static only, no API)
 └── README.md             ← This file
 ```
 
@@ -209,7 +210,9 @@ Change `data-target` to your real numbers.
 **Test locally (with API):** In the project root run `npm run dev` or `npx vercel dev`. Open the URL shown (e.g. http://localhost:3000). Config, notify, and order API will work.  
 **Test locally (static only):** Run `python3 -m http.server 8000` and open http://localhost:8000/cashew.html. Pages work; config uses fallback defaults and notify will fail.
 
-**Static-only (Netlify, GitHub Pages, FTP):** The site still works without the API. If `/api/config` fails, the order page uses default values (e.g. FREE_SHIP 999, phone 919876543210). For full config-driven behaviour, deploy to Vercel.
+**Deploy on Netlify:** Yes. The static site works on Netlify; `netlify.toml` is included (root → `/cashew.html`). **Note:** The `api/` folder is for Vercel serverless. On Netlify, `/api/config`, `/api/notify`, and `/api/order` will not work unless you add [Netlify Functions](https://docs.netlify.com/functions/overview/) equivalents. The order page will fall back to default values (prices, phone, free delivery) when the config API is missing.
+
+**Other static hosts (GitHub Pages, FTP):** Same as Netlify — pages work; APIs do not. For full config-driven behaviour and order storage, use Vercel.
 
 ---
 
