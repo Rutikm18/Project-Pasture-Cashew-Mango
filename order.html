@@ -281,15 +281,17 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
   .order-layout{grid-template-columns:1fr;}
   .cart-col{position:relative;top:0;border-left:none;border-top:1px solid var(--border);padding:24px 16px;}
   .pack-grid{grid-template-columns:1fr 1fr;}
-  nav{position:relative;}
-  .nav-details{display:block;}
+  nav{position:relative;flex-wrap:wrap;gap:10px;}
+  .nav-details{display:block;order:2;flex-basis:auto;}
+  .nav-details summary{display:flex !important;align-items:center;justify-content:center;padding:12px 20px;min-height:44px;font-family:'Josefin Sans',sans-serif;font-size:.75rem;letter-spacing:2px;color:var(--bark);cursor:pointer;background:rgba(185,136,60,.12);border:1px solid var(--border);list-style:none;-webkit-tap-highlight-color:transparent;}
+  .nav-details summary::-webkit-details-marker{display:none;}
   .nav-details .nav-ul{display:none;}
-  .nav-summary{display:flex;align-items:center;justify-content:center;padding:10px 16px;font-family:'Josefin Sans',sans-serif;font-size:.7rem;letter-spacing:2px;color:var(--bark);cursor:pointer;background:rgba(185,136,60,.08);border:1px solid var(--border);list-style:none;}
-  .nav-summary::-webkit-details-marker{display:none;}
   .nav-details:not([open]) .nav-ul{display:none !important;}
   .nav-details[open] .nav-ul{display:flex !important;flex-direction:column;gap:0;position:absolute;top:100%;left:0;right:0;background:rgba(250,240,220,.98);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);box-shadow:0 8px 24px rgba(60,20,0,.12);padding:12px 0;z-index:600;}
-  .nav-details .nav-ul a{display:block;padding:14px 6%;border-bottom:1px solid rgba(185,136,60,.1);}
+  .nav-details .nav-ul a{display:block;padding:14px 6%;min-height:44px;line-height:1.4;display:flex;align-items:center;border-bottom:1px solid rgba(185,136,60,.1);}
   .nav-details .nav-ul li{list-style:none;}
+  .logo-link{min-width:0;}
+  .cart-pill{order:3;margin-left:auto;}
   .page-header{padding:44px 4% 36px;}
   .ph-title{font-size:clamp(1.6rem,6vw,2.5rem);}
   .ph-badges{gap:8px;margin-top:14px;}
@@ -316,6 +318,8 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
   nav{padding:12px 4%;}
   .cart-pill{padding:8px 14px;}
   .cart-pill .cart-total{font-size:.9rem;}
+  .logo-en{font-size:16px;letter-spacing:2px;}
+  .logo-mr{font-size:10px;}
 }
 @media(max-width:400px){
   .ph-badges{flex-direction:column;}

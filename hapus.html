@@ -245,16 +245,16 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;o
 @media(max-width:900px){
   .about-grid,.gi-grid,.pack-cards,.what-steps{grid-template-columns:1fr;}
   .what-step{border-right:none;border-bottom:1px solid rgba(212,79,16,.15);}
-  nav{position:relative;padding:14px 4%;}
+  nav{position:relative;padding:14px 4%;flex-wrap:wrap;gap:10px;}
   .nav-details{display:block;}
+  .nav-details summary{display:flex !important;align-items:center;justify-content:center;padding:12px 20px;min-height:44px;font-family:'Josefin Sans',sans-serif;font-size:.75rem;letter-spacing:2px;color:var(--bark);cursor:pointer;background:rgba(212,79,16,.12);border:1px solid rgba(212,79,16,.3);list-style:none;-webkit-tap-highlight-color:transparent;}
+  .nav-details summary::-webkit-details-marker{display:none;}
   .nav-details .nav-ul{display:none;}
   .nav-details:not([open]) .nav-ul{display:none !important;}
   .nav-details[open] .nav-ul{display:flex !important;flex-direction:column;gap:0;position:absolute;top:100%;left:0;right:0;background:rgba(250,240,220,.98);backdrop-filter:blur(14px);border-bottom:1px solid rgba(212,79,16,.2);box-shadow:0 8px 24px rgba(60,20,0,.12);padding:12px 0;z-index:600;}
-  .nav-details .nav-ul a{display:block;padding:14px 6%;border-bottom:1px solid rgba(212,79,16,.1);color:var(--bark);}
+  .nav-details .nav-ul a{display:flex !important;align-items:center;padding:14px 6%;min-height:44px;border-bottom:1px solid rgba(212,79,16,.1);color:var(--bark);}
   .nav-details .nav-ul li{list-style:none;}
-  .nav-summary{display:flex;align-items:center;justify-content:center;padding:10px 16px;font-family:'Josefin Sans',sans-serif;font-size:.7rem;letter-spacing:2px;color:var(--bark);cursor:pointer;background:rgba(212,79,16,.08);border:1px solid rgba(212,79,16,.25);list-style:none;}
-  .nav-summary::-webkit-details-marker{display:none;}
-  nav .nav-cta{display:inline-block;padding:10px 18px;font-size:.65rem;}
+  nav .nav-cta{display:inline-flex;align-items:center;justify-content:center;padding:12px 20px;min-height:44px;font-size:.65rem;}
   .footer-top{grid-template-columns:1fr;}
   .notify-form{flex-direction:column;}
   .notify-input{border-right:1px solid rgba(240,168,50,.3);}
