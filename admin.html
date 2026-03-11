@@ -31,6 +31,17 @@
     .orders-empty { color: var(--bark); font-style: italic; padding: 20px; }
     .back { display: inline-block; margin-bottom: 20px; font-family: 'Josefin Sans', sans-serif; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--clay); text-decoration: none; }
     .back:hover { text-decoration: underline; }
+    @media (max-width: 600px) {
+      body { padding: 16px 4%; }
+      section { padding: 16px; margin-bottom: 24px; }
+      h1 { font-size: 1.25rem; }
+      .sub { font-size: 0.8rem; margin-bottom: 20px; }
+      .row { flex-direction: column; gap: 4px; margin-bottom: 12px; }
+      .row span:first-child { min-width: auto; }
+      .wa-cta { width: 100%; justify-content: center; padding: 14px 16px; font-size: 0.7rem; }
+      .orders-list li { padding: 12px; font-size: 0.8rem; }
+      .orders-list .meta { word-break: break-word; }
+    }
   </style>
 </head>
 <body>

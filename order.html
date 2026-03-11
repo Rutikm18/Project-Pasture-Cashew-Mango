@@ -43,6 +43,9 @@ nav{position:sticky;top:0;z-index:500;display:flex;align-items:center;justify-co
 .cart-pill{display:flex;align-items:center;gap:10px;background:rgba(185,136,60,.1);border:1px solid var(--border);padding:9px 18px;cursor:pointer;transition:background .3s;}
 .cart-pill:hover{background:rgba(185,136,60,.18);}
 .cart-icon{font-size:1rem;}
+.nav-details{display:contents;}
+.nav-details summary{display:none;}
+.nav-details .nav-ul{display:flex;}
 .cart-count{font-family:'Josefin Sans',sans-serif;font-size:.7rem;letter-spacing:2px;color:var(--clay);text-transform:uppercase;}
 .cart-total{font-family:'Lora',serif;font-size:1rem;color:var(--mud);}
 
@@ -271,12 +274,53 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
 .footer-col a:hover{color:var(--cream);}
 .footer-bottom{border-top:1px solid rgba(255,255,255,.07);padding-top:20px;display:flex;justify-content:space-between;font-size:.76rem;}
 
+/* Mobile: touch-friendly, no custom cursor */
+@media(max-width:768px){body{cursor:auto;}#cur,#curR{display:none;}}
+
 @media(max-width:900px){
   .order-layout{grid-template-columns:1fr;}
-  .cart-col{position:relative;top:0;border-left:none;border-top:1px solid var(--border);}
+  .cart-col{position:relative;top:0;border-left:none;border-top:1px solid var(--border);padding:24px 16px;}
   .pack-grid{grid-template-columns:1fr 1fr;}
-  nav .nav-ul,nav .nav-cta{display:none;}
-  .footer-top{grid-template-columns:1fr;}
+  nav{position:relative;}
+  .nav-details{display:block;}
+  .nav-details .nav-ul{display:none;}
+  .nav-summary{display:flex;align-items:center;justify-content:center;padding:10px 16px;font-family:'Josefin Sans',sans-serif;font-size:.7rem;letter-spacing:2px;color:var(--bark);cursor:pointer;background:rgba(185,136,60,.08);border:1px solid var(--border);list-style:none;}
+  .nav-summary::-webkit-details-marker{display:none;}
+  .nav-details:not([open]) .nav-ul{display:none !important;}
+  .nav-details[open] .nav-ul{display:flex !important;flex-direction:column;gap:0;position:absolute;top:100%;left:0;right:0;background:rgba(250,240,220,.98);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);box-shadow:0 8px 24px rgba(60,20,0,.12);padding:12px 0;z-index:600;}
+  .nav-details .nav-ul a{display:block;padding:14px 6%;border-bottom:1px solid rgba(185,136,60,.1);}
+  .nav-details .nav-ul li{list-style:none;}
+  .page-header{padding:44px 4% 36px;}
+  .ph-title{font-size:clamp(1.6rem,6vw,2.5rem);}
+  .ph-badges{gap:8px;margin-top:14px;}
+  .ph-badge{font-size:.65rem;padding:5px 10px;}
+  .products-col{padding:28px 4%;}
+  .prod-card{grid-template-columns:auto 1fr auto;gap:12px;padding:16px 14px;}
+  .prod-icon-box{width:52px;height:52px;font-size:1.5rem;}
+  .prod-price{font-size:1.6rem;}
+  .add-btn,.qty-btn{min-height:44px;}
+  .cat-tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin-bottom:24px;}
+  .cat-tabs::-webkit-scrollbar{display:none;}
+  .cat-tab{flex-shrink:0;padding:10px 20px;font-size:.65rem;}
+  .farmer-strip>div{grid-template-columns:1fr !important;}
+  .footer-bottom{flex-direction:column;gap:12px;text-align:center;}
+  footer{padding:36px 4% 24px;}
+  .float-wa{bottom:20px;right:16px;width:52px;height:52px;font-size:1.4rem;}
+}
+@media(max-width:600px){
+  .pack-grid{grid-template-columns:1fr;}
+  .prod-card{grid-template-columns:1fr;text-align:left;}
+  .prod-card .prod-right{text-align:left;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+  .prod-card .qty-row{margin-top:0;}
+  .form-row{grid-template-columns:1fr;}
+  nav{padding:12px 4%;}
+  .cart-pill{padding:8px 14px;}
+  .cart-pill .cart-total{font-size:.9rem;}
+}
+@media(max-width:400px){
+  .ph-badges{flex-direction:column;}
+  .prod-price{font-size:1.4rem;}
+  .cart-row.total .cr-val{font-size:1.4rem;}
 }
 </style>
 </head>
@@ -300,11 +344,14 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
     <span class="logo-en">Pasture</span>
     <span class="logo-mr">आपली शेती · रत्नागिरी</span>
   </a>
-  <ul class="nav-ul">
-    <li><a href="cashew.html">Cashew · काजू</a></li>
-    <li><a href="hapus.html">Hapus · हापूस</a></li>
-    <li><a href="order.html" class="active">Order · ऑर्डर</a></li>
-  </ul>
+  <details class="nav-details">
+    <summary class="nav-summary">☰ Menu</summary>
+    <ul class="nav-ul">
+      <li><a href="cashew.html">Cashew · काजू</a></li>
+      <li><a href="hapus.html">Hapus · हापूस</a></li>
+      <li><a href="order.html" class="active">Order · ऑर्डर</a></li>
+    </ul>
+  </details>
   <div class="cart-pill" onclick="scrollToCart()">
     <span class="cart-icon">🛒</span>
     <span class="cart-count" id="navCartLabel">Cart</span>
