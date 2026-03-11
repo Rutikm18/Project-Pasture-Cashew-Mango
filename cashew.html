@@ -288,11 +288,41 @@ footer{background:var(--mud);padding:60px 6% 28px;color:rgba(250,240,220,.65);}
   .hero-eyebrow{font-size:1.3rem;}
   .hero-desc{font-size:.95rem;margin-top:14px;}
   .hero-btns{flex-direction:column;margin-top:20px;gap:10px;}
-  .btn-main,.btn-ghost{text-align:center;min-height:44px;display:flex;align-items:center;justify-content:center;padding:12px 24px;}
+  .btn-main,.btn-ghost{text-align:center;min-height:46px;display:flex;align-items:center;justify-content:center;padding:14px 20px;width:100%;max-width:280px;margin:0 auto;font-size:10px;}
+  .hero-btns{width:100%;align-items:center;}
   .hero-trust{flex-wrap:wrap;gap:12px;}
   section{padding:32px 3%;}
+  #about,#tree,#journey,#grades,#testimonials{padding:36px 3%;}
+  #farmer{padding:36px 3% !important;}
+  #farmer>div.reveal{grid-template-columns:1fr !important;gap:32px !important;}
+  #farmer .farm-visual,.farmer-letter{max-width:100%;}
+  .season-band{padding:16px 3%;gap:12px;}
+  .season-item .season-num{font-size:1.6rem;}
+  .season-lbl,.season-mr{font-size:.7rem;}
+  .tree-grid{gap:28px;margin-top:28px;}
+  .tree-facts{gap:14px;}
+  .tree-fact{padding:14px 16px;gap:12px;flex-direction:column;align-items:flex-start;}
+  .tree-fact .fact-icon{font-size:1.4rem;}
+  .tree-fact .fact-en,.tree-fact .fact-body{font-size:.82rem;}
+  #tree .btn-main{margin-top:20px;max-width:100%;}
+  .journey-header{margin-bottom:36px;}
+  .journey-step{padding:24px 20px;}
+  .step-num{font-size:3rem;}
+  .grade-cards{gap:14px;}
+  .grade-card{padding:20px 16px;}
+  .grade-code{font-size:1.8rem;}
+  .grade-btn{padding:10px 16px;font-size:.65rem;}
+  .cta-band{padding:40px 3%;}
+  .cta-title{font-size:clamp(1.4rem,5vw,2.2rem);}
+  .cta-mr{font-size:1.1rem;}
+  .cta-btns{flex-direction:column;align-items:center;gap:12px;margin-top:20px;}
+  .btn-white,.cta-btns a{width:100%;max-width:280px;text-align:center;padding:14px 20px;min-height:46px;display:flex;align-items:center;justify-content:center;font-size:10px;}
+  .testi-header{margin-bottom:32px;}
+  .testi-card{padding:24px 20px;}
+  .testi-text{font-size:.88rem;}
   .footer-bottom{flex-direction:column;gap:10px;text-align:center;padding-top:16px;}
   footer{padding:24px 3% 20px;}
+  #btt{bottom:24px;right:16px;width:40px;height:40px;font-size:1rem;}
 }
 @media(max-width:480px){
   .hero-tree{width:85%;max-width:280px;}
@@ -300,6 +330,13 @@ footer{background:var(--mud);padding:60px 6% 28px;color:rgba(250,240,220,.65);}
   .logo-en{font-size:15px;letter-spacing:2px;}
   #hero{padding:40px 2% 28px;padding-top:64px;}
   section{padding:28px 2%;}
+  #about,#tree,#journey,#grades,#testimonials{padding:28px 2%;}
+  #farmer{padding:28px 2% !important;}
+  .tree-fact{padding:12px 14px;}
+  .journey-step{padding:20px 16px;}
+  .grade-card{padding:18px 14px;}
+  .cta-band{padding:32px 2%;}
+  .season-band{padding:14px 2%;}
   footer{padding:20px 2% 16px;}
   nav{padding:8px 2%;}
   .nav-ul a{font-size:9px;}
