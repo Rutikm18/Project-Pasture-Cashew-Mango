@@ -117,7 +117,7 @@ Prices and the product list are in **`config/site.json`** under `products.cashew
 
 ## 💬 WHATSAPP — Direct link & order
 
-- **Contact number for WhatsApp:** `config/site.json` → `brand.phoneWhatsApp` (e.g. `"919876543210"`).
+- **Contact number for WhatsApp:** `config/site.json` → `brand.phoneWhatsApp` (e.g. `"919404598725"`).
 - **Order page:** “Order via WhatsApp” opens `wa.me/{phone}` with cart summary. A **floating WhatsApp button** (bottom-right on the order page) goes directly to chat using the same number.
 - **Admin:** Open **`/admin.html`** to see current contact, coupons, delivery settings, and a one-click **“Open WhatsApp”** link to chat.
 

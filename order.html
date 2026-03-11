@@ -595,7 +595,7 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
           <div class="form-field"><label class="form-label">Last Name · आडनाव</label><input class="form-in" id="lname" placeholder="Patil"></div>
         </div>
         <div class="form-row full">
-          <div class="form-field"><label class="form-label">Phone · फोन नंबर</label><input class="form-in" id="phone" placeholder="+91 98765 43210" type="tel"></div>
+          <div class="form-field"><label class="form-label">Phone · फोन नंबर</label><input class="form-in" id="phone" placeholder="+91 94045 98725" type="tel"></div>
         </div>
         <div class="form-row full">
           <div class="form-field"><label class="form-label">Address · पत्ता</label><input class="form-in" id="addr" placeholder="House / Flat / Street · घर नंबर, रस्ता"></div>
@@ -712,8 +712,8 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
     <div class="footer-col">
       <h5>Contact</h5>
       <ul>
-        <li><a href="tel:+919876543210" data-config="phone-href"><span data-config="phone">+91 98765 43210</span></a></li>
-        <li><a href="https://wa.me/919876543210" data-config="whatsapp-href">WhatsApp Us</a></li>
+        <li><a href="tel:+919404598725" data-config="phone-href"><span data-config="phone">+91 94045 98725</span></a></li>
+        <li><a href="https://wa.me/919404598725" data-config="whatsapp-href">WhatsApp Us</a></li>
         <li><a href="mailto:hello@pasture.in" data-config="email-href"><span data-config="email">hello@pasture.in</span></a></li>
         <li data-config="address">Ratnagiri, Konkan, Maharashtra</li>
       </ul>
@@ -726,7 +726,7 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
 </footer>
 
 <!-- Floating WhatsApp: direct link to chat (href set by app-config) -->
-<a id="floatWa" href="https://wa.me/919876543210" target="_blank" rel="noopener" class="float-wa" title="Chat on WhatsApp · व्हॉट्सअॅपवर चॅट करा" style="display:none;">💬</a>
+<a id="floatWa" href="https://wa.me/919404598725" target="_blank" rel="noopener" class="float-wa" title="Chat on WhatsApp · व्हॉट्सअॅपवर चॅट करा" style="display:none;">💬</a>
 <script>
   document.addEventListener('siteConfigReady', function(){
     var C = window.SITE_CONFIG;
@@ -752,7 +752,7 @@ document.querySelectorAll('a,button,input,select').forEach(el=>{
 let cart={},discount=0;
 var FREE_SHIP=999;
 var DELIVERY_CHARGE=80;
-var WHATSAPP_NUMBER='919876543210';
+var WHATSAPP_NUMBER='919404598725';
 document.addEventListener('siteConfigReady',function(ev){
   var C=ev.detail||window.SITE_CONFIG;
   if(C&&C.delivery){FREE_SHIP=C.delivery.freeAbove;DELIVERY_CHARGE=C.delivery.charge;}
@@ -887,7 +887,7 @@ function orderWhatsApp(){
   const sub=items.reduce((s,i)=>s+i.price*i.qty,0);
   const lines=items.map(i=>`• ${i.name} ${i.weight} × ${i.qty} = ₹${(i.price*i.qty).toLocaleString()}`).join('\n');
   const msg=`नमस्कार Pasture! 🌿\n\nमला ऑर्डर द्यायची आहे:\n\n${lines}\n\nTotal: ₹${sub.toLocaleString()}\n\nRatnagiri Konkan 🙏`;
-  window.open('https://wa.me/'+(WHATSAPP_NUMBER||'919876543210')+'?text='+encodeURIComponent(msg),'_blank');
+  window.open('https://wa.me/'+(WHATSAPP_NUMBER||'919404598725')+'?text='+encodeURIComponent(msg),'_blank');
 }
 
 function scrollToCart(){document.getElementById('cartCol').scrollIntoView({behavior:'smooth'});}
