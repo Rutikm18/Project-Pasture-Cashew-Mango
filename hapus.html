@@ -45,9 +45,6 @@ nav.scrolled .nav-ul a{color:var(--bark);}
 .nav-ul a:hover,.nav-ul a.active{color:var(--orange);border-bottom-color:var(--orange);}
 .nav-cta{font-family:'Josefin Sans',sans-serif;font-size:10px;letter-spacing:2.5px;background:var(--orange);color:var(--cream);padding:11px 24px;text-decoration:none;text-transform:uppercase;transition:all .3s;}
 .nav-cta:hover{background:var(--mud);transform:translateY(-1px);}
-.nav-details{display:contents;}
-.nav-details summary{display:none;}
-.nav-details .nav-ul{display:flex;}
 
 /* HERO */
 #hero{min-height:100vh;position:relative;overflow:hidden;
@@ -245,16 +242,10 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;o
 @media(max-width:900px){
   .about-grid,.gi-grid,.pack-cards,.what-steps{grid-template-columns:1fr;}
   .what-step{border-right:none;border-bottom:1px solid rgba(212,79,16,.15);}
-  nav{position:relative;padding:14px 4%;flex-wrap:wrap;gap:10px;}
-  .nav-details{display:block;}
-  .nav-details summary{display:flex !important;align-items:center;justify-content:center;padding:12px 20px;min-height:44px;font-family:'Josefin Sans',sans-serif;font-size:.75rem;letter-spacing:2px;color:var(--bark);cursor:pointer;background:rgba(212,79,16,.12);border:1px solid rgba(212,79,16,.3);list-style:none;-webkit-tap-highlight-color:transparent;}
-  .nav-details summary::-webkit-details-marker{display:none;}
-  .nav-details .nav-ul{display:none;}
-  .nav-details:not([open]) .nav-ul{display:none !important;}
-  .nav-details[open] .nav-ul{display:flex !important;flex-direction:column;gap:0;position:absolute;top:100%;left:0;right:0;background:rgba(250,240,220,.98);backdrop-filter:blur(14px);border-bottom:1px solid rgba(212,79,16,.2);box-shadow:0 8px 24px rgba(60,20,0,.12);padding:12px 0;z-index:600;}
-  .nav-details .nav-ul a{display:flex !important;align-items:center;padding:14px 6%;min-height:44px;border-bottom:1px solid rgba(212,79,16,.1);color:var(--bark);}
-  .nav-details .nav-ul li{list-style:none;}
-  nav .nav-cta{display:inline-flex;align-items:center;justify-content:center;padding:12px 20px;min-height:44px;font-size:.65rem;}
+  nav{flex-wrap:wrap;gap:10px 0;padding:14px 4%;}
+  .nav-ul{display:flex;flex-wrap:wrap;gap:10px 16px;margin:0;}
+  .nav-ul a{font-size:10px;letter-spacing:1.5px;padding-bottom:2px;}
+  nav .nav-cta{padding:10px 18px;font-size:.65rem;}
   .footer-top{grid-template-columns:1fr;}
   .notify-form{flex-direction:column;}
   .notify-input{border-right:1px solid rgba(240,168,50,.3);}
@@ -296,14 +287,11 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;o
     <span class="logo-en">Pasture</span>
     <span class="logo-mr">आपली शेती · रत्नागिरी</span>
   </a>
-  <details class="nav-details">
-    <summary class="nav-summary">☰ Menu</summary>
-    <ul class="nav-ul">
-      <li><a href="cashew.html">Cashew · काजू</a></li>
-      <li><a href="hapus.html" class="active">Hapus · हापूस</a></li>
-      <li><a href="order.html">Order · ऑर्डर</a></li>
-    </ul>
-  </details>
+  <ul class="nav-ul">
+    <li><a href="cashew.html">Cashew · काजू</a></li>
+    <li><a href="hapus.html" class="active">Hapus · हापूस</a></li>
+    <li><a href="order.html">Order · ऑर्डर</a></li>
+  </ul>
   <a href="order.html" class="nav-cta">Order Cashew · काजू</a>
 </nav>
 

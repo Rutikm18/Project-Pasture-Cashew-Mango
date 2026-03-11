@@ -43,9 +43,6 @@ nav{position:sticky;top:0;z-index:500;display:flex;align-items:center;justify-co
 .cart-pill{display:flex;align-items:center;gap:10px;background:rgba(185,136,60,.1);border:1px solid var(--border);padding:9px 18px;cursor:pointer;transition:background .3s;}
 .cart-pill:hover{background:rgba(185,136,60,.18);}
 .cart-icon{font-size:1rem;}
-.nav-details{display:contents;}
-.nav-details summary{display:none;}
-.nav-details .nav-ul{display:flex;}
 .cart-count{font-family:'Josefin Sans',sans-serif;font-size:.7rem;letter-spacing:2px;color:var(--clay);text-transform:uppercase;}
 .cart-total{font-family:'Lora',serif;font-size:1rem;color:var(--mud);}
 
@@ -281,17 +278,9 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
   .order-layout{grid-template-columns:1fr;}
   .cart-col{position:relative;top:0;border-left:none;border-top:1px solid var(--border);padding:24px 16px;}
   .pack-grid{grid-template-columns:1fr 1fr;}
-  nav{position:relative;flex-wrap:wrap;gap:10px;}
-  .nav-details{display:block;order:2;flex-basis:auto;}
-  .nav-details summary{display:flex !important;align-items:center;justify-content:center;padding:12px 20px;min-height:44px;font-family:'Josefin Sans',sans-serif;font-size:.75rem;letter-spacing:2px;color:var(--bark);cursor:pointer;background:rgba(185,136,60,.12);border:1px solid var(--border);list-style:none;-webkit-tap-highlight-color:transparent;}
-  .nav-details summary::-webkit-details-marker{display:none;}
-  .nav-details .nav-ul{display:none;}
-  .nav-details:not([open]) .nav-ul{display:none !important;}
-  .nav-details[open] .nav-ul{display:flex !important;flex-direction:column;gap:0;position:absolute;top:100%;left:0;right:0;background:rgba(250,240,220,.98);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);box-shadow:0 8px 24px rgba(60,20,0,.12);padding:12px 0;z-index:600;}
-  .nav-details .nav-ul a{display:block;padding:14px 6%;min-height:44px;line-height:1.4;display:flex;align-items:center;border-bottom:1px solid rgba(185,136,60,.1);}
-  .nav-details .nav-ul li{list-style:none;}
-  .logo-link{min-width:0;}
-  .cart-pill{order:3;margin-left:auto;}
+  nav{flex-wrap:wrap;gap:10px 0;padding:12px 4%;}
+  .nav-ul{display:flex;flex-wrap:wrap;gap:10px 16px;margin:0;}
+  .nav-ul a{font-size:10px;letter-spacing:1.5px;padding-bottom:2px;}
   .page-header{padding:44px 4% 36px;}
   .ph-title{font-size:clamp(1.6rem,6vw,2.5rem);}
   .ph-badges{gap:8px;margin-top:14px;}
@@ -318,8 +307,6 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
   nav{padding:12px 4%;}
   .cart-pill{padding:8px 14px;}
   .cart-pill .cart-total{font-size:.9rem;}
-  .logo-en{font-size:16px;letter-spacing:2px;}
-  .logo-mr{font-size:10px;}
 }
 @media(max-width:400px){
   .ph-badges{flex-direction:column;}
@@ -348,14 +335,11 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
     <span class="logo-en">Pasture</span>
     <span class="logo-mr">आपली शेती · रत्नागिरी</span>
   </a>
-  <details class="nav-details">
-    <summary class="nav-summary">☰ Menu</summary>
-    <ul class="nav-ul">
-      <li><a href="cashew.html">Cashew · काजू</a></li>
-      <li><a href="hapus.html">Hapus · हापूस</a></li>
-      <li><a href="order.html" class="active">Order · ऑर्डर</a></li>
-    </ul>
-  </details>
+  <ul class="nav-ul">
+    <li><a href="cashew.html">Cashew · काजू</a></li>
+    <li><a href="hapus.html">Hapus · हापूस</a></li>
+    <li><a href="order.html" class="active">Order · ऑर्डर</a></li>
+  </ul>
   <div class="cart-pill" onclick="scrollToCart()">
     <span class="cart-icon">🛒</span>
     <span class="cart-count" id="navCartLabel">Cart</span>
