@@ -36,34 +36,34 @@
 <body>
   <a href="order.html" class="back">← Back to Order</a>
   <h1>Pasture Admin</h1>
-  <p class="sub">Coupons, contact details & orders · सवलत कोड, संपर्क आणि ऑर्डर</p>
+  <p class="sub">Coupons, contact details and orders · सवलत कोड, संपर्क आणि ऑर्डर</p>
 
   <section id="contactSec">
-    <h2>Contact details</h2>
+    <h2>Contact Details</h2>
     <div class="row"><span>Name</span><span id="brandName">—</span></div>
     <div class="row"><span>Phone</span><span id="brandPhone">—</span></div>
     <div class="row"><span>Email</span><span id="brandEmail">—</span></div>
     <div class="row"><span>Address</span><span id="brandAddress">—</span></div>
     <a id="waLink" class="wa-cta" href="#" target="_blank" rel="noopener">💬 Open WhatsApp · व्हॉट्सअॅपवर जा</a>
-    <p class="note">To change contact info, edit <code>config/site.json</code> → <code>brand</code> and redeploy.</p>
+    <p class="note">To change contact info, edit <code>config/site.json</code> → <code>brand</code>, then redeploy.</p>
   </section>
 
   <section id="couponsSec">
-    <h2>Coupon codes</h2>
+    <h2>Coupon Codes</h2>
     <ul class="coupon-list" id="couponList"></ul>
-    <p class="note">To add or remove coupons, edit <code>config/site.json</code> → <code>coupons</code> and redeploy.</p>
+    <p class="note">To add or remove coupons, edit <code>config/site.json</code> → <code>coupons</code>, then redeploy.</p>
   </section>
 
   <section id="deliverySec">
     <h2>Delivery</h2>
-    <div class="row"><span>Free above</span><span id="freeAbove">—</span></div>
-    <div class="row"><span>Charge</span><span id="deliveryCharge">—</span></div>
+    <div class="row"><span>Free delivery above</span><span id="freeAbove">—</span></div>
+    <div class="row"><span>Delivery charge</span><span id="deliveryCharge">—</span></div>
   </section>
 
   <section id="ordersSec">
-    <h2>Recent orders</h2>
+    <h2>Recent Orders</h2>
     <ul class="orders-list" id="ordersList"></ul>
-    <p class="note">Orders placed via the site are listed here. On serverless, the list may reset on deploy; use Vercel KV for persistent storage (see README).</p>
+    <p class="note">Orders placed via the site appear here. On serverless, the list may reset on deploy; for persistent storage use Vercel KV (see README).</p>
   </section>
 
   <script>
@@ -129,7 +129,7 @@
             });
           })
           .catch(function () {
-            el('ordersList').innerHTML = '<li class="orders-empty">Could not load orders. Ensure /api/orders is available.</li>';
+            el('ordersList').innerHTML = '<li class="orders-empty">Could not load orders. Ensure /api/order is available.</li>';
           });
       }
 

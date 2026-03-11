@@ -1,5 +1,6 @@
 # 🌿 Pasture — Website Code Structure
-## Quick-fix Reference Guide
+
+Quick reference for the project layout, config, and deployment.
 
 ---
 
@@ -25,8 +26,9 @@ Project-Pashure/
 └── README.md             ← This file
 ```
 
-**Variables (prices, phone, email, coupons, free delivery)** are driven by `config/site.json`. The front end loads `/api/config` and applies values via `js/app-config.js`. Edit `config/site.json` and redeploy to change site-wide content.
-Bird video loads from: `https://supplant.me/wp-content/uploads/2022/03/Calibri_Q50.webm`
+**Variables** (prices, phone, email, coupons, free delivery) are driven by `config/site.json`. The front end loads `/api/config` and applies values via `js/app-config.js`. Edit `config/site.json` and redeploy to update site-wide content.
+
+Bird video source: `https://supplant.me/wp-content/uploads/2022/03/Calibri_Q50.webm`
 
 ---
 
@@ -106,7 +108,7 @@ After editing `config/site.json`, redeploy. No need to search-replace in HTML.
 
 ## 🛒 ORDER PAGE — Prices & orders
 
-Prices and product list are in **`config/site.json`** under `products.cashew` and `products.valuePacks`. The order page loads config from `/api/config` and updates displayed prices and add-to-cart behaviour. To add or change a product, edit the corresponding object in `site.json`.
+Prices and the product list are in **`config/site.json`** under `products.cashew` and `products.valuePacks`. The order page loads config from `/api/config` and updates displayed prices and add-to-cart behaviour. To add or change a product, edit the matching object in `site.json`.
 
 **Manage each order:** When a customer clicks “Confirm Order”, the order is sent to **`POST /api/order`** and appears under “Recent orders” on **`/admin.html`**. On Vercel serverless, the list resets on cold starts unless you add persistent storage (e.g. Vercel KV); see comments in `api/order.js`.
 
@@ -189,9 +191,9 @@ Change `data-target` to your real numbers.
 
 ## 🌐 DEPLOYMENT & CI/CD (Vercel)
 
-**Full step-by-step:** See **[DEPLOY.md](DEPLOY.md)** for a complete guide (Git setup, GitHub, first deploy, and automatic CI/CD).
+**Full step-by-step:** See **[DEPLOY.md](DEPLOY.md)** for the complete guide (Git setup, GitHub, first deploy, and automatic CI/CD).
 
-**Summary:** Connect your repo to Vercel once; then every **push to `main`** automatically triggers a new deploy (CI/CD). No extra pipeline config needed.
+**Summary:** Connect your repository to Vercel once. After that, every **push to `main`** triggers a new deploy automatically. No extra pipeline configuration is required.
 
 **Vercel** (recommended — uses API and config):
 
