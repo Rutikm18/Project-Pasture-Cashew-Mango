@@ -1,11 +1,8 @@
 name = "pasture"
-compatibility_date = "2026-03-12"
-
-# For Cloudflare Pages, deployment is handled by Pages itself.
-# This file is optional and mainly helpful for local Pages dev.
+compatibility_date = "2025-01-01"
 pages_build_output_dir = "."
 
 [[kv_namespaces]]
 binding = "PASTURE_KV"
-id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+id = "PASTE_YOUR_KV_NAMESPACE_ID_HERE"
 
