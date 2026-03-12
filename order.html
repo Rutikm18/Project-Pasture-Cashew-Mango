@@ -89,7 +89,8 @@ nav{position:sticky;top:0;z-index:500;display:flex;align-items:center;justify-co
 .prod-card.coming{opacity:.6;}
 .popular-tag{position:absolute;top:10px;right:10px;background:var(--clay);color:var(--cream);font-family:'Josefin Sans',sans-serif;font-size:.6rem;letter-spacing:2px;padding:3px 9px;text-transform:uppercase;}
 .soon-tag{position:absolute;top:10px;right:10px;background:rgba(232,185,74,.15);border:1px solid rgba(232,185,74,.35);color:var(--ochre);font-family:'Josefin Sans',sans-serif;font-size:.6rem;letter-spacing:2px;padding:3px 9px;text-transform:uppercase;}
-.prod-icon-box{width:64px;height:64px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.8rem;background:rgba(250,240,220,.5);flex-shrink:0;}
+.prod-icon-box{width:64px;height:64px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.8rem;background:rgba(250,240,220,.5);flex-shrink:0;overflow:hidden;}
+.prod-icon-box img{width:100%;height:100%;object-fit:cover;}
 .prod-grade{font-family:'Josefin Sans',sans-serif;font-size:.65rem;letter-spacing:2.5px;color:var(--clay);text-transform:uppercase;margin-bottom:3px;}
 .prod-name{font-family:'Josefin Sans',sans-serif;font-size:1rem;font-weight:700;color:var(--mud);letter-spacing:1px;margin-bottom:2px;}
 .prod-wt{font-size:.78rem;color:#7A3B1E;font-weight:600;margin-bottom:6px;}
@@ -420,7 +421,9 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
         <!-- W180 900g -->
         <div class="prod-card featured reveal" id="card-W180-250">
           <div class="popular-tag">Most Popular</div>
-          <div class="prod-icon-box">🥜</div>
+          <div class="prod-icon-box">
+            <img src="assets/cashew-fruit.png" alt="Konkan cashew on tree">
+          </div>
           <div>
             <div class="prod-grade" data-tip="w180">Premium Grade · W180</div>
             <div class="prod-tags-row">
@@ -430,42 +433,21 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
             </div>
           </div>
           <div class="prod-right">
-            <div class="prod-price"><span class="rs">₹</span>1,099<span class="pu">per 900g pack</span></div>
+            <div class="prod-price"><span class="rs">₹</span>1,099<span class="pu">per 900g</span></div>
             <div class="qty-row">
               <button class="qty-btn" onclick="changeQty('W180-250',-1)">−</button>
               <span class="qty-val" id="qty-W180-250">1</span>
               <button class="qty-btn" onclick="changeQty('W180-250',+1)">+</button>
             </div>
-            <button class="add-btn" id="add-W180-250" onclick="addToCart('W180-250','W180 Jumbo Cashew','900g',1099,'🥜')">Add · काटात टाका</button>
-          </div>
-        </div>
-
-        <!-- W180 500g -->
-        <div class="prod-card reveal" id="card-W180-500" style="transition-delay:.05s">
-          <div class="prod-icon-box">🥜</div>
-          <div>
-            <div class="prod-grade" data-tip="w180">Premium Grade · W180</div>
-            <div class="prod-name">W180 Jumbo Cashew</div>
-            <div class="prod-wt">500g · Large Whole Kernels</div>
-            <div class="prod-tags-row">
-              <span class="prod-tag">Best Value</span>
-              <span class="prod-tag">Vacuum Sealed</span>
-            </div>
-          </div>
-          <div class="prod-right">
-            <div class="prod-price"><span class="rs">₹</span>1,840<span class="pu">per 500g</span></div>
-            <div class="qty-row">
-              <button class="qty-btn" onclick="changeQty('W180-500',-1)">−</button>
-              <span class="qty-val" id="qty-W180-500">1</span>
-              <button class="qty-btn" onclick="changeQty('W180-500',+1)">+</button>
-            </div>
-            <button class="add-btn" id="add-W180-500" onclick="addToCart('W180-500','W180 Jumbo Cashew','500g',1840,'🥜')">Add · काटात टाका</button>
+            <button class="add-btn" id="add-W180-250" onclick="addToCart('W180-250','W180 Jumbo Cashew','900g',1099,'🌿')">Add · काटात टाका</button>
           </div>
         </div>
 
         <!-- W210 900g -->
         <div class="prod-card reveal" id="card-W210-250" style="transition-delay:.1s">
-          <div class="prod-icon-box">🥜</div>
+          <div class="prod-icon-box">
+            <img src="assets/cashew-fruit.png" alt="Konkan cashew on tree">
+          </div>
           <div>
             <div class="prod-grade" data-tip="w210">Select Grade · W210</div>
             <div class="prod-name">W210 Select Cashew</div>
@@ -476,19 +458,21 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
             </div>
           </div>
           <div class="prod-right">
-            <div class="prod-price"><span class="rs">₹</span>949<span class="pu">per 900g pack</span></div>
+            <div class="prod-price"><span class="rs">₹</span>949<span class="pu">per 900g</span></div>
             <div class="qty-row">
               <button class="qty-btn" onclick="changeQty('W210-250',-1)">−</button>
               <span class="qty-val" id="qty-W210-250">1</span>
               <button class="qty-btn" onclick="changeQty('W210-250',+1)">+</button>
             </div>
-            <button class="add-btn" id="add-W210-250" onclick="addToCart('W210-250','W210 Select Cashew','900g',949,'🥜')">Add · काटात टाका</button>
+            <button class="add-btn" id="add-W210-250" onclick="addToCart('W210-250','W210 Select Cashew','900g',949,'🌿')">Add · काटात टाका</button>
           </div>
         </div>
 
         <!-- W240 900g -->
         <div class="prod-card reveal" id="card-W240-250" style="transition-delay:.15s">
-          <div class="prod-icon-box">🥜</div>
+          <div class="prod-icon-box">
+            <img src="assets/cashew-fruit.png" alt="Konkan cashew on tree">
+          </div>
           <div>
             <div class="prod-grade" data-tip="w240">Standard Grade · W240</div>
             <div class="prod-name">W240 Standard Cashew</div>
@@ -499,15 +483,16 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
             </div>
           </div>
           <div class="prod-right">
-            <div class="prod-price"><span class="rs">₹</span>869<span class="pu">per 900g pack</span></div>
+            <div class="prod-price"><span class="rs">₹</span>869<span class="pu">per 900g</span></div>
             <div class="qty-row">
               <button class="qty-btn" onclick="changeQty('W240-250',-1)">−</button>
               <span class="qty-val" id="qty-W240-250">1</span>
               <button class="qty-btn" onclick="changeQty('W240-250',+1)">+</button>
             </div>
-            <button class="add-btn" id="add-W240-250" onclick="addToCart('W240-250','W240 Standard Cashew','900g',869,'🥜')">Add · काटात टाका</button>
+            <button class="add-btn" id="add-W240-250" onclick="addToCart('W240-250','W240 Standard Cashew','900g',869,'🌿')">Add · काटात टाका</button>
           </div>
         </div>
+
       </div>
 
       <!-- Value packs -->
@@ -520,26 +505,26 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
         <div class="st-line"></div>
       </div>
       <div class="pack-grid">
-        <div class="vpack reveal" data-pack-id="W180-1kg">
-          <div class="vp-wt">1 kg</div>
+        <div class="vpack reveal" data-pack-id="W180-1.5kg">
+          <div class="vp-wt">1.5 kg</div>
           <div class="vp-grade">W180 Premium</div>
-          <div class="vp-price">₹3,520</div>
-          <div class="vp-save">Save ₹320 vs 4×250g</div>
-          <button class="vpack-btn">Add to Cart</button>
+          <div class="vp-price">₹1,799</div>
+          <div class="vp-save">Save vs 900g single</div>
+          <button class="vpack-btn" onclick="addToCart('W180-1.5kg','W180 Jumbo Cashew','1.5 kg',1799,'📦')">Add to Cart</button>
         </div>
         <div class="vpack best reveal" style="transition-delay:.08s" data-pack-id="W180-2kg">
           <div class="vp-wt">2 kg</div>
           <div class="vp-grade">W180 Premium</div>
-          <div class="vp-price">₹6,400</div>
-          <div class="vp-save">Save ₹1,040 vs 8×250g</div>
-          <button class="vpack-btn">Add to Cart</button>
+          <div class="vp-price">₹2,399</div>
+          <div class="vp-save">Best value · जास्त घ्या</div>
+          <button class="vpack-btn" onclick="addToCart('W180-2kg','W180 Jumbo Cashew','2 kg',2399,'📦')">Add to Cart</button>
         </div>
         <div class="vpack reveal" style="transition-delay:.16s" data-pack-id="W180-gift">
-          <div class="vp-wt">Gift Box 🎁</div>
-          <div class="vp-grade">W180 · 500g Branded</div>
-          <div class="vp-price">₹2,200</div>
-          <div class="vp-save">Premium wooden gift box</div>
-          <button class="vpack-btn">Add to Cart</button>
+          <div class="vp-wt">Gift Pack 🎁</div>
+          <div class="vp-grade">Premium Cashew Gift Pack</div>
+          <div class="vp-price">₹1,999</div>
+          <div class="vp-save">Premium cashew gift box</div>
+          <button class="vpack-btn" onclick="addToCart('W180-gift','Premium Cashew Gift Pack','Gift Pack',1999,'🎁')">Add to Cart</button>
         </div>
       </div>
     </div>
@@ -732,7 +717,8 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
       <h5>Contact</h5>
       <ul>
         <li><a href="tel:+919404598725" data-config="phone-href"><span data-config="phone">+91 94045 98725</span></a></li>
-        <li><a href="https://wa.me/919404598725" data-config="whatsapp-href">WhatsApp Us</a></li>
+        <li><a href="https://wa.me/919404598725" data-config="whatsapp-href" target="_blank" rel="noopener">WhatsApp · 94045 98725</a></li>
+        <li><a href="https://wa.me/919325848094" data-config="whatsapp-href-2" target="_blank" rel="noopener">WhatsApp · 93258 48094</a></li>
         <li><a href="mailto:hello@pasture.in" data-config="email-href"><span data-config="email">hello@pasture.in</span></a></li>
         <li data-config="address">Ratnagiri, Konkan, Maharashtra</li>
       </ul>

@@ -4,9 +4,9 @@
     "taglineMr": "आपली शेती · रत्नागिरी",
     "email": "hello@pasture.in",
     "phone": "9404598725",
-    "phone2": "9325848094",
-    "phoneFormatted": "+91 94045 98725 / 93258 48094",
+    "phoneFormatted": "+91 94045 98725 · +91 93258 48094",
     "phoneWhatsApp": "919404598725",
+    "phoneWhatsApp2": "919325848094",
     "address": "Ratnagiri, Konkan, Maharashtra"
   },
   "delivery": {
@@ -21,9 +21,10 @@
         "weight": "900g",
         "price": 1099,
         "icon": "🥜",
+        "featured": true,
         "grade": "Premium Grade · W180",
         "description": "900g · Jumbo Whole Kernels",
-        "tags": ["Gift Quality", "Largest Grade"]
+        "tags": ["Gift Quality", "Vacuum Sealed", "Largest Grade"]
       },
       {
         "id": "W210-250",
@@ -32,8 +33,8 @@
         "price": 949,
         "icon": "🥜",
         "grade": "Select Grade · W210",
-        "description": "900g · Medium-Large Whole",
-        "tags": ["Mithai · Desserts"]
+        "description": "900g · Large Whole Kernels",
+        "tags": ["Mithai · Desserts", "Vacuum Sealed"]
       },
       {
         "id": "W240-250",
@@ -42,21 +43,43 @@
         "price": 869,
         "icon": "🥜",
         "grade": "Standard Grade · W240",
-        "description": "900g · Everyday Whole Kernels",
-        "tags": ["Cooking · स्वयंपाक"]
-      },
-      {
-        "id": "W320-900",
-        "name": "W320 Regular Cashew",
-        "weight": "900g",
-        "price": 819,
-        "icon": "🥜",
-        "grade": "Everyday Grade · W320",
-        "description": "900g · Regular Whole/Broken Mix",
-        "tags": ["Daily Snacking", "Best Value"]
+        "description": "900g · Whole Kernels",
+        "tags": ["Cooking · स्वयंपाक", "Vacuum Sealed"]
       }
     ],
-    "valuePacks": []
+    "valuePacks": [
+      {
+        "id": "W180-1.5kg",
+        "name": "W180 Jumbo Cashew",
+        "weight": "1.5 kg",
+        "price": 1799,
+        "icon": "📦",
+        "label": "1.5 kg",
+        "grade": "W180 Premium",
+        "saveText": "Save vs 900g single"
+      },
+      {
+        "id": "W180-2kg",
+        "name": "W180 Jumbo Cashew",
+        "weight": "2 kg",
+        "price": 2399,
+        "icon": "📦",
+        "best": true,
+        "label": "2 kg",
+        "grade": "W180 Premium",
+        "saveText": "Best value · जास्त घ्या"
+      },
+      {
+        "id": "W180-gift",
+        "name": "Premium Cashew Gift Pack",
+        "weight": "Gift Pack",
+        "price": 1999,
+        "icon": "🎁",
+        "label": "Gift Pack 🎁",
+        "grade": "W180 Premium",
+        "saveText": "Premium cashew gift box"
+      }
+    ]
   },
   "coupons": [
     {

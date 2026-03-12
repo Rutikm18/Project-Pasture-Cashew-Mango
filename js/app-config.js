@@ -16,6 +16,10 @@
     document.querySelectorAll('[data-config="whatsapp-href"]').forEach(function (el) {
       el.setAttribute('href', 'https://wa.me/' + (brand.phoneWhatsApp || '91' + (brand.phone || '').replace(/\D/g, '')));
     });
+    document.querySelectorAll('[data-config="whatsapp-href-2"]').forEach(function (el) {
+      var num = (brand.phoneWhatsApp2 || '').replace(/\D/g, '');
+      if (num) el.setAttribute('href', 'https://wa.me/' + (num.length === 10 ? '91' + num : num));
+    });
     document.querySelectorAll('[data-config="email"]').forEach(function (el) {
       el.textContent = brand.email || '';
     });
