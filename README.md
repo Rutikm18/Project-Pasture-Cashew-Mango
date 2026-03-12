@@ -223,3 +223,45 @@ Change `data-target` to your real numbers.
 ---
 
 *Pasture · Ratnagiri, Konkan · pasture.in*
+
+---
+
+## 🌐 DEPLOYMENT (Cloudflare Pages) — Recommended Alternative
+
+Cloudflare Pages can host the static site and also run APIs via **Pages Functions**.
+This repo includes Cloudflare handlers in `functions/api/` that implement:
+
+- `GET /api/config` (public) + `PUT /api/config` (admin)
+- `POST /api/order` (public) + `GET /api/order` (admin)
+- `POST /api/notify` (public) + `GET /api/notify` (admin)
+
+### Step-by-step
+
+1. **Push to GitHub** (already required).
+2. In Cloudflare Dashboard, go to **Workers & Pages → Create → Pages**.
+3. **Connect GitHub repo** and select this repository.
+4. **Build settings**:
+   - Framework preset: **None**
+   - Build command: **(empty)**
+   - Build output directory: **/** (root)
+5. Click **Save and Deploy**.
+6. Create KV:
+   - **Workers & Pages → KV → Create namespace**
+   - Name: `PASTURE_KV` (any name is fine)
+7. Bind KV to Pages project:
+   - Project → **Settings → Functions → KV namespace bindings**
+   - Add binding:
+     - Variable name: `PASTURE_KV`
+     - KV namespace: select the namespace you created
+8. Set admin secret (recommended):
+   - Project → **Settings → Environment variables**
+   - Add `ADMIN_SECRET` with a strong value (Production and Preview if you use it)
+   - Redeploy once after adding it
+9. Open admin:
+   - `https://<your-pages-domain>/admin.html`
+   - Enter the secret once to unlock orders/waitlist + config editing
+
+### Notes
+
+- Without KV binding, the APIs will return an error saying KV is not configured.
+- Config defaults to `config/site.json` until you save via admin (then KV becomes the source of truth).
