@@ -11,6 +11,8 @@ const PORT = process.env.PORT || 3000;
 
 // In-memory order store (same as api/order.js)
 let orders = [];
+// In-memory waitlist (Hapus notify signups)
+let waitlist = [];
 
 // JSON body parser for API routes
 app.use(express.json());
@@ -33,10 +35,17 @@ app.get('/api/config', (req, res) => {
   }
 });
 
+// GET /api/notify — return waitlist (for admin to see responses)
+app.get('/api/notify', (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Cache-Control', 'no-store');
+  res.status(200).json(waitlist);
+});
+
 // POST /api/notify (Hapus waitlist)
 app.post('/api/notify', (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   try {
     const body = req.body || {};
@@ -44,7 +53,9 @@ app.post('/api/notify', (req, res) => {
     if (!phone || phone.length < 10) {
       return res.status(400).json({ error: 'Valid phone number required' });
     }
-    console.log('[Hapus notify]', { phone, at: new Date().toISOString() });
+    const entry = { phone: '+91' + phone, at: new Date().toISOString() };
+    waitlist.push(entry);
+    console.log('[Hapus notify]', entry);
     res.status(200).json({ success: true, message: 'You are on the list!' });
   } catch (e) {
     console.error('[notify]', e);
@@ -54,7 +65,7 @@ app.post('/api/notify', (req, res) => {
 
 app.options('/api/notify', (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   res.status(204).end();
 });

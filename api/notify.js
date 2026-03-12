@@ -1,13 +1,23 @@
-// Hapus waitlist signup — stores submission and returns success.
-// For production you can wire this to Vercel KV, Airtable, or email.
+// Hapus waitlist signup — stores in memory; GET returns list for admin.
+// For production you can wire to Vercel KV, Airtable, or email.
+
+let waitlist = [];
+
+function allowCors(res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+}
 
 module.exports = async (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
+  allowCors(res);
   if (req.method === 'OPTIONS') {
     return res.status(204).end();
+  }
+
+  if (req.method === 'GET') {
+    res.setHeader('Cache-Control', 'no-store');
+    return res.status(200).json(waitlist);
   }
 
   if (req.method !== 'POST') {
@@ -22,8 +32,9 @@ module.exports = async (req, res) => {
       return res.status(400).json({ error: 'Valid phone number required' });
     }
 
-    // Optional: log to Vercel logs or send to external service
-    console.log('[Hapus notify]', { phone, at: new Date().toISOString() });
+    const entry = { phone: '+91' + phone, at: new Date().toISOString() };
+    waitlist.push(entry);
+    console.log('[Hapus notify]', entry);
 
     return res.status(200).json({ success: true, message: 'You are on the list!' });
   } catch (e) {

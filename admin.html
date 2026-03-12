@@ -31,6 +31,16 @@
     .orders-empty { color: var(--bark); font-style: italic; padding: 20px; }
     .back { display: inline-block; margin-bottom: 20px; font-family: 'Josefin Sans', sans-serif; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--clay); text-decoration: none; }
     .back:hover { text-decoration: underline; }
+    /* Backend responses */
+    .api-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .api-tab { font-family: 'Josefin Sans', sans-serif; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; padding: 10px 16px; background: rgba(185,84,31,.1); border: 1px solid var(--border); color: var(--bark); cursor: pointer; border-radius: 4px; }
+    .api-tab:hover { background: rgba(185,84,31,.18); border-color: var(--clay); }
+    .api-tab.active { background: var(--clay); color: var(--cream); border-color: var(--clay); }
+    .api-refresh { margin-left: auto; font-size: 0.65rem; padding: 8px 12px; }
+    .api-response { background: #1a1a1a; color: #e0e0e0; padding: 16px; border-radius: 6px; overflow-x: auto; font-family: 'Consolas', 'Monaco', monospace; font-size: 0.8rem; line-height: 1.5; white-space: pre-wrap; word-break: break-word; max-height: 400px; overflow-y: auto; }
+    .api-response.loading { color: #888; }
+    .api-response.error { color: #e57373; }
+    .api-endpoint { font-size: 0.7rem; color: var(--clay); margin-bottom: 8px; }
     @media (max-width: 600px) {
       body { padding: 16px 4%; }
       section { padding: 16px; margin-bottom: 24px; }
@@ -75,6 +85,19 @@
     <h2>Recent Orders</h2>
     <ul class="orders-list" id="ordersList"></ul>
     <p class="note">Orders placed via the site appear here. On serverless, the list may reset on deploy; for persistent storage use Vercel KV (see README).</p>
+  </section>
+
+  <section id="responsesSec">
+    <h2>Backend responses (raw JSON)</h2>
+    <p class="note" style="margin-bottom: 12px;">See exactly what each API returns. Use the tabs and Refresh to inspect config, orders, and waitlist.</p>
+    <div class="api-tabs">
+      <button type="button" class="api-tab active" data-api="config">GET /api/config</button>
+      <button type="button" class="api-tab" data-api="order">GET /api/order</button>
+      <button type="button" class="api-tab" data-api="notify">GET /api/notify</button>
+      <button type="button" class="api-refresh api-tab" id="apiRefresh">Refresh</button>
+    </div>
+    <div class="api-endpoint" id="apiEndpoint">GET /api/config</div>
+    <pre class="api-response" id="apiResponse">Loading…</pre>
   </section>
 
   <script>
@@ -146,6 +169,50 @@
 
       loadConfig();
       loadOrders();
+
+      // Backend responses viewer
+      var apiUrls = {
+        config: '/api/config',
+        order: '/api/order',
+        notify: '/api/notify'
+      };
+      var currentApi = 'config';
+      var preEl = document.getElementById('apiResponse');
+      var endpointEl = document.getElementById('apiEndpoint');
+
+      function showApiResponse(apiKey) {
+        currentApi = apiKey;
+        var url = apiUrls[apiKey];
+        endpointEl.textContent = 'GET ' + url;
+        preEl.textContent = 'Loading…';
+        preEl.className = 'api-response loading';
+        document.querySelectorAll('.api-tab[data-api]').forEach(function (b) {
+          b.classList.toggle('active', b.getAttribute('data-api') === apiKey);
+        });
+        fetch(url)
+          .then(function (r) {
+            if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
+            return r.json();
+          })
+          .then(function (data) {
+            preEl.textContent = JSON.stringify(data, null, 2);
+            preEl.className = 'api-response';
+          })
+          .catch(function (err) {
+            preEl.textContent = 'Error: ' + err.message;
+            preEl.className = 'api-response error';
+          });
+      }
+
+      document.querySelectorAll('.api-tab[data-api]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          showApiResponse(this.getAttribute('data-api'));
+        });
+      });
+      document.getElementById('apiRefresh').addEventListener('click', function () {
+        showApiResponse(currentApi);
+      });
+      showApiResponse('config');
     })();
   </script>
 </body>
