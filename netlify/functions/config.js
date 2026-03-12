@@ -1,8 +1,6 @@
-const path = require('path');
-const fs = require('fs');
+const defaultConfig = require('../../config/site.json');
 
 const ADMIN_SECRET = process.env.ADMIN_SECRET || '';
-const configPath = path.join(__dirname, '..', '..', 'config', 'site.json');
 
 function corsHeaders() {
   return {
@@ -20,36 +18,18 @@ function requireAdmin(event) {
   return key === ADMIN_SECRET;
 }
 
-function loadConfig() {
-  try {
-    return JSON.parse(fs.readFileSync(configPath, 'utf8'));
-  } catch (_) {
-    return null;
-  }
-}
-
 exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 204, headers: corsHeaders(), body: '' };
   }
 
   if (event.httpMethod === 'GET') {
-    try {
-      const siteConfig = loadConfig();
-      if (!siteConfig) throw new Error('Config not found');
-      return {
-        statusCode: 200,
-        headers: { ...corsHeaders(), 'Cache-Control': 'no-store' },
-        body: JSON.stringify(siteConfig)
-      };
-    } catch (e) {
-      console.error(e);
-      return {
-        statusCode: 500,
-        headers: corsHeaders(),
-        body: JSON.stringify({ error: 'Config not found' })
-      };
-    }
+    // On Netlify, we treat config as read-only and bundle site.json at build time.
+    return {
+      statusCode: 200,
+      headers: { ...corsHeaders(), 'Cache-Control': 'no-store' },
+      body: JSON.stringify(defaultConfig)
+    };
   }
 
   if (event.httpMethod === 'PUT') {
@@ -60,29 +40,16 @@ exports.handler = async (event) => {
         body: JSON.stringify({ error: 'Admin access required.' })
       };
     }
-    try {
-      const body = event.body ? JSON.parse(event.body) : {};
-      const current = loadConfig() || {};
-      const merged = {
-        brand: { ...(current.brand || {}), ...(body.brand || {}) },
-        delivery: { ...(current.delivery || {}), ...(body.delivery || {}) },
-        products: body.products !== undefined ? body.products : current.products,
-        coupons: body.coupons !== undefined ? body.coupons : current.coupons
-      };
-      fs.writeFileSync(configPath, JSON.stringify(merged, null, 2), 'utf8');
-      return {
-        statusCode: 200,
-        headers: corsHeaders(),
-        body: JSON.stringify({ ok: true, message: 'Config saved' })
-      };
-    } catch (e) {
-      console.error('[PUT /api/config]', e);
-      return {
-        statusCode: 500,
-        headers: corsHeaders(),
-        body: JSON.stringify({ error: 'Failed to save config: ' + (e.message || String(e)) })
-      };
-    }
+    // Netlify Functions cannot persist writes to the deployed filesystem.
+    // Make this explicit instead of failing with 500.
+    return {
+      statusCode: 501,
+      headers: corsHeaders(),
+      body: JSON.stringify({
+        error:
+          'Config editing is not supported on Netlify (read-only deploy). Run locally with "npm run dev" to edit config/site.json.'
+      })
+    };
   }
 
   return {

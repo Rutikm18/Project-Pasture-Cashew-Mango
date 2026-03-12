@@ -344,7 +344,7 @@
               msgEl.textContent = 'Admin access required. Unlock with your secret first.';
               msgEl.className = 'cfg-msg err';
             } else if (x.status === 501) {
-              msgEl.textContent = 'Config editing not available here. Run locally (npm run dev) or add Vercel KV.';
+              msgEl.textContent = 'Config editing not available on this host. Run locally (npm run dev) to edit config/site.json.';
               msgEl.className = 'cfg-msg err';
             } else {
               msgEl.textContent = (x.data && x.data.error) || 'Failed (status ' + x.status + ')';
@@ -501,10 +501,10 @@
             if (err.message === 'Failed to fetch' || err.message.indexOf('NetworkError') !== -1) {
               msg += '\n\nBackend not reachable. Open this page through a server:\n' +
                 '• Local: run "npm run dev" then open http://localhost:3000/admin.html\n' +
-                '• Deployed: use your live URL (e.g. https://yoursite.vercel.app/admin.html)\n' +
+                '• Deployed: use your live URL (e.g. your Netlify / Railway / other host URL)\n' +
                 'Do not open the HTML file directly (file://).';
             } else if (err.message.indexOf('500') !== -1) {
-              msg += '\n\nServer error. On Vercel, ensure config/site.json exists in the project root.';
+              msg += '\n\nServer error. Ensure `config/site.json` exists on the server and your backend/API routes are deployed correctly.';
             }
             preEl.textContent = msg;
             preEl.className = 'api-response error';
