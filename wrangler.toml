@@ -1,16 +1,11 @@
-name = "project-pasture"
+name = "pasture"
 compatibility_date = "2026-03-12"
 
-# For Cloudflare Pages, this file is mainly useful for local dev with:
-#   npx wrangler pages dev .
-#
-# Bindings must also be configured in the Cloudflare Pages dashboard.
+# For Cloudflare Pages, deployment is handled by Pages itself.
+# This file is optional and mainly helpful for local Pages dev.
+pages_build_output_dir = "."
 
 [[kv_namespaces]]
 binding = "PASTURE_KV"
 id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
-
-[vars]
-# Set this in Cloudflare Pages → Settings → Environment variables instead (recommended).
-ADMIN_SECRET = ""
 
