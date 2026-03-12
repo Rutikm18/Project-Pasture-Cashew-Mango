@@ -609,20 +609,15 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
           <div class="form-field"><label class="form-label">Pincode · पिनकोड</label><input class="form-in" id="pin" placeholder="400001"></div>
         </div>
         <div class="form-row full">
-          <div class="form-field"><label class="form-label">State · राज्य</label>
+          <div class="form-field">
+            <label class="form-label">State · राज्य</label>
             <select class="form-sel" id="state">
               <option value="">Select State · राज्य निवडा</option>
-              <option>Maharashtra · महाराष्ट्र</option>
-              <option>Karnataka · कर्नाटक</option>
-              <option>Goa · गोवा</option>
-              <option>Gujarat · गुजरात</option>
-              <option>Delhi · दिल्ली</option>
-              <option>Tamil Nadu</option>
-              <option>Telangana</option>
-              <option>Andhra Pradesh</option>
-              <option>Kerala</option>
-              <option>Other · इतर</option>
+              <option value="Maharashtra">Maharashtra · महाराष्ट्र</option>
             </select>
+            <small style="font-size:.7rem;color:#8B5E3C;display:block;margin-top:4px;">
+              Currently we deliver online orders within Maharashtra only. For other states, please order via WhatsApp.
+            </small>
           </div>
         </div>
         <button class="confirm-btn" onclick="confirmOrder()">Confirm Order · ऑर्डर निश्चित करा 🌿</button>
