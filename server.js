@@ -8,6 +8,12 @@ const express = require('express');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const ADMIN_SECRET = process.env.ADMIN_SECRET || '';
+
+function requireAdmin(req) {
+  if (!ADMIN_SECRET) return true;
+  return (req.headers['x-admin-key'] || '') === ADMIN_SECRET;
+}
 
 // In-memory order store (same as api/order.js)
 let orders = [];
@@ -16,18 +22,27 @@ let waitlist = [];
 
 // JSON body parser for API routes
 app.use(express.json());
-app.use(express.static(__dirname));
 
-// Root → cashew.html
-app.get('/', (req, res) => res.redirect(302, '/cashew.html'));
+const configPath = path.join(__dirname, 'config', 'site.json');
 
+function loadConfig() {
+  try {
+    return JSON.parse(fs.readFileSync(configPath, 'utf8'));
+  } catch (e) {
+    return null;
+  }
+}
+
+// API routes (must be before static so PUT /api/config is handled)
 // GET /api/config
 app.get('/api/config', (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
   res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate');
   try {
-    const configPath = path.join(__dirname, 'config', 'site.json');
-    const siteConfig = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+    const siteConfig = loadConfig();
+    if (!siteConfig) throw new Error('Config not found');
     res.status(200).json(siteConfig);
   } catch (e) {
     console.error(e);
@@ -35,21 +50,68 @@ app.get('/api/config', (req, res) => {
   }
 });
 
-// GET /api/notify — return waitlist (for admin to see responses)
+// PUT /api/config (admin only, writes to site.json)
+app.put('/api/config', (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Admin-Key');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  if (!requireAdmin(req)) {
+    return res.status(401).json({ error: 'Admin access required.' });
+  }
+  try {
+    const body = req.body || {};
+    const current = loadConfig() || {};
+    const merged = {
+      brand: { ...current.brand, ...body.brand },
+      delivery: { ...current.delivery, ...body.delivery },
+      products: body.products !== undefined ? body.products : current.products,
+      coupons: body.coupons !== undefined ? body.coupons : current.coupons
+    };
+    fs.writeFileSync(configPath, JSON.stringify(merged, null, 2), 'utf8');
+    res.status(200).json({ ok: true, message: 'Config saved' });
+  } catch (e) {
+    console.error('[PUT /api/config]', e);
+    res.status(500).json({ error: 'Failed to save config: ' + (e.message || String(e)) });
+  }
+});
+
+app.options('/api/config', (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Admin-Key');
+  res.status(204).end();
+});
+
+// GET /api/notify — return waitlist (admin only when ADMIN_SECRET set)
 app.get('/api/notify', (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Admin-Key');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
   res.setHeader('Cache-Control', 'no-store');
+  if (!requireAdmin(req)) {
+    return res.status(401).json({ error: 'Admin access required.' });
+  }
   res.status(200).json(waitlist);
 });
+
+// Security headers helper
+function securityHeaders(res) {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+}
 
 // POST /api/notify (Hapus waitlist)
 app.post('/api/notify', (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  securityHeaders(res);
   try {
     const body = req.body || {};
-    const phone = (body.phone || '').trim().replace(/\D/g, '').slice(-10);
+    const phone = String(body.phone || '').trim().replace(/\D/g, '').slice(-10);
     if (!phone || phone.length < 10) {
       return res.status(400).json({ error: 'Valid phone number required' });
     }
@@ -66,20 +128,27 @@ app.post('/api/notify', (req, res) => {
 app.options('/api/notify', (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Admin-Key');
   res.status(204).end();
 });
 
-// GET /api/order
+// GET /api/order (admin only when ADMIN_SECRET set)
 app.get('/api/order', (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Admin-Key');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
   res.setHeader('Cache-Control', 'no-store');
+  if (!requireAdmin(req)) {
+    return res.status(401).json({ error: 'Admin access required.' });
+  }
   res.status(200).json(orders);
 });
 
 // POST /api/order
 app.post('/api/order', (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
+  securityHeaders(res);
   try {
     const body = req.body || {};
     const {
@@ -120,9 +189,13 @@ app.post('/api/order', (req, res) => {
 app.options('/api/order', (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Admin-Key');
   res.status(204).end();
 });
+
+// Static files and root redirect (after API routes so PUT /api/config works)
+app.get('/', (req, res) => res.redirect(302, '/cashew.html'));
+app.use(express.static(__dirname));
 
 function startServer(port) {
   const server = app.listen(port, () => {
@@ -130,7 +203,7 @@ function startServer(port) {
     console.log('  Pasture — local server (no Vercel)');
     console.log('  Open: http://localhost:' + port);
     console.log('  Root redirects to /cashew.html');
-    console.log('  API: /api/config, /api/notify, /api/order');
+    console.log('  API: GET/PUT /api/config, /api/notify, /api/order');
     console.log('');
   });
   server.on('error', (err) => {

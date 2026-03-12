@@ -24,11 +24,13 @@
     .coupon-list li { padding: 8px 12px; margin-bottom: 6px; background: rgba(185,136,60,.08); border-radius: 4px; font-family: 'Josefin Sans', sans-serif; font-size: 0.8rem; }
     .coupon-list li strong { color: var(--clay); margin-right: 8px; }
     .note { font-size: 0.8rem; color: var(--bark); margin-top: 14px; padding: 12px; background: rgba(185,136,60,.06); border-radius: 4px; }
-    .orders-list { list-style: none; }
-    .orders-list li { padding: 14px; margin-bottom: 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.85rem; }
-    .orders-list .oid { font-family: 'Josefin Sans', sans-serif; font-weight: 700; color: var(--clay); margin-bottom: 4px; }
-    .orders-list .meta { color: var(--bark); font-size: 0.8rem; }
+    .orders-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    .orders-table th, .orders-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+    .orders-table th { font-family: 'Josefin Sans', sans-serif; font-size: 0.65rem; letter-spacing: 2px; color: var(--clay); text-transform: uppercase; background: rgba(185,84,31,.06); }
+    .orders-table tr:hover { background: rgba(185,84,31,.04); }
+    .orders-table .oid { font-family: 'Josefin Sans', sans-serif; font-weight: 700; color: var(--clay); }
     .orders-empty { color: var(--bark); font-style: italic; padding: 20px; }
+    .orders-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     .back { display: inline-block; margin-bottom: 20px; font-family: 'Josefin Sans', sans-serif; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--clay); text-decoration: none; }
     .back:hover { text-decoration: underline; }
     /* Backend responses */
@@ -41,50 +43,131 @@
     .api-response.loading { color: #888; }
     .api-response.error { color: #e57373; }
     .api-endpoint { font-size: 0.7rem; color: var(--clay); margin-bottom: 8px; }
+    /* Admin login overlay */
+    .admin-overlay { position: fixed; inset: 0; background: rgba(28,15,6,.92); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .admin-login { background: var(--cream); padding: 32px; border-radius: 8px; max-width: 360px; width: 100%; border: 1px solid var(--border); }
+    .admin-login h2 { font-family: 'Josefin Sans', sans-serif; font-size: .9rem; letter-spacing: 2px; margin-bottom: 8px; color: var(--bark); }
+    .admin-login p { font-size: .8rem; color: var(--bark); margin-bottom: 16px; opacity: .9; }
+    .admin-login input { width: 100%; padding: 12px 14px; border: 1px solid var(--border); font-size: 1rem; margin-bottom: 16px; border-radius: 4px; }
+    .admin-login input:focus { outline: none; border-color: var(--clay); }
+    .admin-login button { width: 100%; padding: 14px; background: var(--clay); color: var(--cream); border: none; font-family: 'Josefin Sans', sans-serif; font-size: .75rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 4px; }
+    .admin-login button:hover { background: var(--mud); }
+    .admin-login .err { font-size: .8rem; color: #c0392b; margin-top: 10px; display: none; }
+    .cfg-form { display: grid; gap: 12px; margin-bottom: 16px; }
+    .cfg-form label { font-size: .7rem; letter-spacing: 1.5px; color: var(--bark); display: block; margin-bottom: 4px; }
+    .cfg-form input, .cfg-form select { padding: 10px 12px; border: 1px solid var(--border); border-radius: 4px; font-size: .9rem; }
+    .cfg-form input:focus { outline: none; border-color: var(--clay); }
+    .cfg-save { padding: 12px 24px; background: var(--clay); color: var(--cream); border: none; font-family: 'Josefin Sans', sans-serif; font-size: .7rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 4px; margin-top: 8px; }
+    .cfg-save:hover { background: var(--mud); }
+    .cfg-save:disabled { opacity: .6; cursor: not-allowed; }
+    .cfg-msg { font-size: .8rem; margin-top: 8px; }
+    .cfg-msg.ok { color: var(--green); }
+    .cfg-msg.err { color: #c0392b; }
+    .coupon-edit { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }
+    .coupon-edit input { flex: 1; min-width: 100px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 4px; }
+    .coupon-edit select { padding: 8px 10px; border: 1px solid var(--border); border-radius: 4px; }
+    .coupon-edit button { padding: 8px 12px; background: rgba(185,84,31,.15); border: 1px solid var(--border); color: var(--clay); cursor: pointer; font-size: .75rem; border-radius: 4px; }
+    .coupon-edit button:hover { background: rgba(185,84,31,.25); }
+    .coupon-edit .rm { background: rgba(200,60,60,.1); color: #c0392b; }
     @media (max-width: 600px) {
-      body { padding: 16px 4%; }
+      body { padding: 16px 4%; padding-bottom: max(16px, env(safe-area-inset-bottom)); }
       section { padding: 16px; margin-bottom: 24px; }
       h1 { font-size: 1.25rem; }
       .sub { font-size: 0.8rem; margin-bottom: 20px; }
       .row { flex-direction: column; gap: 4px; margin-bottom: 12px; }
       .row span:first-child { min-width: auto; }
-      .wa-cta { width: 100%; justify-content: center; padding: 14px 16px; font-size: 0.7rem; }
-      .orders-list li { padding: 12px; font-size: 0.8rem; }
-      .orders-list .meta { word-break: break-word; }
+      .wa-cta { width: 100%; justify-content: center; padding: 14px 16px; font-size: 0.7rem; min-height: 44px; }
+      .orders-table th, .orders-table td { padding: 8px 10px; font-size: 0.75rem; }
+      .orders-table th { font-size: 0.6rem; }
+      .api-tab { padding: 12px 14px; min-height: 44px; display: inline-flex; align-items: center; }
+      .api-response { max-height: 300px; font-size: 0.75rem; padding: 12px; }
     }
   </style>
 </head>
 <body>
+  <div class="admin-overlay" id="adminOverlay">
+    <div class="admin-login">
+      <h2>Admin Access</h2>
+      <p>Enter your admin secret to view orders and waitlist.</p>
+      <input type="password" id="adminSecretIn" placeholder="Admin secret" autocomplete="off">
+      <button type="button" id="adminLoginBtn">Unlock</button>
+      <p class="err" id="adminErr">Wrong secret. Try again.</p>
+    </div>
+  </div>
   <a href="order.html" class="back">← Back to Order</a>
   <h1>Pasture Admin</h1>
-  <p class="sub">Coupons, contact details and orders · सवलत कोड, संपर्क आणि ऑर्डर</p>
+  <p class="sub">Coupons, contact details and orders · सवलत कोड, संपर्क आणि ऑर्डर · <span style="font-size:.75rem;opacity:.8">Auto-refreshes every 5 min</span> <span id="logoutSpan" style="display:none;">· <a href="#" id="logoutLink" style="color:var(--clay);font-size:.75rem;">Logout</a></span></p>
+
+  <section id="configSec">
+    <h2>Site Config Editor</h2>
+    <p class="note" style="margin-bottom: 16px;">Edit brand, delivery, and coupons below. Save writes to <code>config/site.json</code> (local) or Vercel KV (production).</p>
+
+    <h3 style="font-size:.8rem;letter-spacing:2px;color:var(--clay);margin-bottom:12px;">Brand</h3>
+    <div class="cfg-form">
+      <label>Name</label><input type="text" id="cfgBrandName" placeholder="Pasture">
+      <label>Phone (10 digits)</label><input type="text" id="cfgPhone" placeholder="9404598725">
+      <label>Email</label><input type="email" id="cfgEmail" placeholder="hello@pasture.in">
+      <label>Address</label><input type="text" id="cfgAddress" placeholder="Ratnagiri, Konkan, Maharashtra">
+    </div>
+    <button type="button" class="cfg-save" id="saveBrand">Save Brand</button>
+    <p class="cfg-msg" id="brandMsg"></p>
+
+    <h3 style="font-size:.8rem;letter-spacing:2px;color:var(--clay);margin:24px 0 12px;">Delivery</h3>
+    <div class="cfg-form">
+      <label>Free delivery above (₹)</label><input type="number" id="cfgFreeAbove" placeholder="999" min="0">
+      <label>Delivery charge (₹)</label><input type="number" id="cfgCharge" placeholder="80" min="0">
+    </div>
+    <button type="button" class="cfg-save" id="saveDelivery">Save Delivery</button>
+    <p class="cfg-msg" id="deliveryMsg"></p>
+
+    <h3 style="font-size:.8rem;letter-spacing:2px;color:var(--clay);margin:24px 0 12px;">Coupons</h3>
+    <div id="couponEditor"></div>
+    <button type="button" class="cfg-save" id="addCoupon">+ Add Coupon</button>
+    <button type="button" class="cfg-save" id="saveCoupons" style="margin-left:8px;">Save Coupons</button>
+    <p class="cfg-msg" id="couponsMsg"></p>
+  </section>
 
   <section id="contactSec">
-    <h2>Contact Details</h2>
+    <h2>Contact Details (read-only preview)</h2>
     <div class="row"><span>Name</span><span id="brandName">—</span></div>
     <div class="row"><span>Phone</span><span id="brandPhone">—</span></div>
     <div class="row"><span>Email</span><span id="brandEmail">—</span></div>
     <div class="row"><span>Address</span><span id="brandAddress">—</span></div>
     <a id="waLink" class="wa-cta" href="#" target="_blank" rel="noopener">💬 Open WhatsApp · व्हॉट्सअॅपवर जा</a>
-    <p class="note">To change contact info, edit <code>config/site.json</code> → <code>brand</code>, then redeploy.</p>
-  </section>
-
-  <section id="couponsSec">
-    <h2>Coupon Codes</h2>
-    <ul class="coupon-list" id="couponList"></ul>
-    <p class="note">To add or remove coupons, edit <code>config/site.json</code> → <code>coupons</code>, then redeploy.</p>
   </section>
 
   <section id="deliverySec">
-    <h2>Delivery</h2>
+    <h2>Delivery (preview)</h2>
     <div class="row"><span>Free delivery above</span><span id="freeAbove">—</span></div>
     <div class="row"><span>Delivery charge</span><span id="deliveryCharge">—</span></div>
   </section>
 
+  <section id="couponsSec">
+    <h2>Coupon Codes (preview)</h2>
+    <ul class="coupon-list" id="couponList"></ul>
+  </section>
+
+  <section id="waitlistSec">
+    <h2>Hapus Waitlist</h2>
+    <div class="orders-wrap">
+      <table class="orders-table" id="waitlistTable">
+        <thead><tr><th>Phone</th><th>Signed up</th></tr></thead>
+        <tbody id="waitlistBody"></tbody>
+      </table>
+    </div>
+    <p id="waitlistEmpty" class="orders-empty" style="display:none;">No waitlist signups yet.</p>
+  </section>
+
   <section id="ordersSec">
     <h2>Recent Orders</h2>
-    <ul class="orders-list" id="ordersList"></ul>
-    <p class="note">Orders placed via the site appear here. On serverless, the list may reset on deploy; for persistent storage use Vercel KV (see README).</p>
+    <div class="orders-wrap">
+      <table class="orders-table" id="ordersTable">
+        <thead><tr><th>Order ID</th><th>Name</th><th>Phone</th><th>Address</th><th>City</th><th>Pincode</th><th>Total</th><th>Date</th></tr></thead>
+        <tbody id="ordersBody"></tbody>
+      </table>
+    </div>
+    <p id="ordersEmpty" class="orders-empty" style="display:none;">No orders yet. Orders appear when customers confirm on the order page.</p>
+    <p class="note">On serverless, the list may reset on deploy; for persistent storage use Vercel KV (see README).</p>
   </section>
 
   <section id="responsesSec">
@@ -104,26 +187,98 @@
     (function () {
       const CONFIG_URL = '/api/config';
       const ORDERS_URL = '/api/order';
+      const NOTIFY_URL = '/api/notify';
+      const STORAGE_KEY = 'pasture_admin_key';
 
       function el(id) { return document.getElementById(id); }
+      function getAdminKey() { return sessionStorage.getItem(STORAGE_KEY) || ''; }
+      function setAdminKey(k) { sessionStorage.setItem(STORAGE_KEY, k); }
+      function clearAdminKey() { sessionStorage.removeItem(STORAGE_KEY); }
+
+      function authHeaders() {
+        var k = getAdminKey();
+        return k ? { 'X-Admin-Key': k } : {};
+      }
+
+      function fetchAuth(url) {
+        return fetch(url, { headers: authHeaders() });
+      }
+
+      function showLogin() {
+        el('adminOverlay').style.display = 'flex';
+        el('adminErr').style.display = 'none';
+      }
+      function hideLogin() {
+        el('adminOverlay').style.display = 'none';
+        if (getAdminKey()) el('logoutSpan').style.display = 'inline';
+      }
+      el('logoutLink').onclick = function (e) { e.preventDefault(); clearAdminKey(); el('logoutSpan').style.display = 'none'; showLogin(); };
+
+      el('adminLoginBtn').onclick = function () {
+        var key = el('adminSecretIn').value.trim();
+        if (!key) { el('adminErr').textContent = 'Enter your secret.'; el('adminErr').style.display = 'block'; return; }
+        fetch(ORDERS_URL, { headers: { 'X-Admin-Key': key } })
+          .then(function (r) {
+            if (r.status === 401) {
+              el('adminErr').textContent = 'Wrong secret. Try again.';
+              el('adminErr').style.display = 'block';
+              return;
+            }
+            setAdminKey(key);
+            el('adminSecretIn').value = '';
+            hideLogin();
+            loadOrders();
+            loadWaitlist();
+            if (currentApi === 'order' || currentApi === 'notify') showApiResponse(currentApi);
+          })
+          .catch(function () {
+            el('adminErr').textContent = 'Could not verify. Check connection.';
+            el('adminErr').style.display = 'block';
+          });
+      };
+      el('adminSecretIn').onkeydown = function (e) { if (e.key === 'Enter') el('adminLoginBtn').click(); };
+
+      function initAuth() {
+        var key = getAdminKey();
+        if (key) {
+          fetch(ORDERS_URL, { headers: { 'X-Admin-Key': key } }).then(function (r) {
+            if (r.status === 401) { clearAdminKey(); showLogin(); }
+            else { hideLogin(); loadOrders(); loadWaitlist(); }
+          });
+          return;
+        }
+        fetch(ORDERS_URL).then(function (r) {
+          if (r.status === 401) showLogin();
+          else { hideLogin(); loadOrders(); loadWaitlist(); el('logoutSpan').style.display = 'none'; }
+        });
+      }
+      initAuth();
+
+      var siteConfigCache = null;
 
       function loadConfig() {
         fetch(CONFIG_URL)
           .then(function (r) { return r.json(); })
           .then(function (data) {
+            siteConfigCache = data;
             var brand = data.brand || {};
             el('brandName').textContent = brand.name || '—';
             el('brandPhone').textContent = brand.phoneFormatted || brand.phone || '—';
             el('brandEmail').textContent = brand.email || '—';
             el('brandAddress').textContent = brand.address || '—';
-            var wa = 'https://wa.me/' + (brand.phoneWhatsApp || ('91' + (brand.phone || '').replace(/\D/g, '')));
-            var waLink = el('waLink');
-            waLink.href = wa;
-            waLink.target = '_blank';
+            el('cfgBrandName').value = brand.name || '';
+            el('cfgPhone').value = (brand.phone || '').replace(/\D/g, '');
+            el('cfgEmail').value = brand.email || '';
+            el('cfgAddress').value = brand.address || '';
 
             var delivery = data.delivery || {};
             el('freeAbove').textContent = delivery.freeAbove != null ? '₹' + delivery.freeAbove : '—';
             el('deliveryCharge').textContent = delivery.charge != null ? '₹' + delivery.charge : '—';
+            el('cfgFreeAbove').value = delivery.freeAbove != null ? delivery.freeAbove : '';
+            el('cfgCharge').value = delivery.charge != null ? delivery.charge : '';
+
+            var wa = 'https://wa.me/' + (brand.phoneWhatsApp || ('91' + (brand.phone || '').replace(/\D/g, '')));
+            el('waLink').href = wa;
 
             var coupons = data.coupons || [];
             var ul = el('couponList');
@@ -134,41 +289,182 @@
               ul.appendChild(li);
             });
             if (!coupons.length) ul.innerHTML = '<li>No coupons in config</li>';
+
+            renderCouponEditor(coupons);
           })
           .catch(function () {
             var sec = el('contactSec');
-            if (sec) sec.querySelector('h2').insertAdjacentHTML('afterend', '<p class="note">Failed to load config. Check /api/config.</p>');
+            if (sec) sec.querySelector('h2').insertAdjacentHTML('afterend', '<p class="note">Backend failed: could not load config. Open this page via a server (npm run dev or your deployed URL), not as a file.</p>');
           });
       }
 
+      var couponRows = [];
+      function renderCouponEditor(coupons) {
+        couponRows = (coupons || []).map(function (c) { return { code: c.code || '', type: c.type || 'percent', value: c.value || 0 }; });
+        var div = el('couponEditor');
+        div.innerHTML = '';
+        couponRows.forEach(function (row, i) {
+          var ed = document.createElement('div');
+          ed.className = 'coupon-edit';
+          ed.innerHTML = '<input placeholder="Code" value="' + escapeHtml(row.code) + '" data-idx="' + i + '" data-field="code">' +
+            '<select data-idx="' + i + '" data-field="type"><option value="percent"' + (row.type === 'percent' ? ' selected' : '') + '>% off</option><option value="fixed"' + (row.type === 'fixed' ? ' selected' : '') + '>₹ off</option></select>' +
+            '<input type="number" placeholder="Value" value="' + row.value + '" data-idx="' + i + '" data-field="value" style="width:80px">' +
+            '<button type="button" class="rm" data-idx="' + i + '">Remove</button>';
+          div.appendChild(ed);
+        });
+        div.querySelectorAll('button.rm').forEach(function (btn) {
+          btn.onclick = function () {
+            couponRows.splice(parseInt(btn.dataset.idx, 10), 1);
+            renderCouponEditor(couponRows);
+          };
+        });
+      }
+
+      el('addCoupon').onclick = function () {
+        couponRows.push({ code: '', type: 'percent', value: 10 });
+        renderCouponEditor(couponRows);
+      };
+
+      function saveConfig(payload, msgEl) {
+        var opts = { method: 'PUT', headers: { 'Content-Type': 'application/json', ...authHeaders() }, body: JSON.stringify(payload) };
+        msgEl.textContent = 'Saving…';
+        msgEl.className = 'cfg-msg';
+        fetch(CONFIG_URL, opts)
+          .then(function (r) {
+            return r.text().then(function (txt) {
+              try { return { status: r.status, data: JSON.parse(txt) }; } catch (_) { return { status: r.status, data: { error: txt || 'Unknown error' } }; }
+            });
+          })
+          .then(function (x) {
+            if (x.status >= 200 && x.status < 300) {
+              msgEl.textContent = 'Saved.';
+              msgEl.className = 'cfg-msg ok';
+              loadConfig();
+            } else if (x.status === 401) {
+              msgEl.textContent = 'Admin access required. Unlock with your secret first.';
+              msgEl.className = 'cfg-msg err';
+            } else if (x.status === 501) {
+              msgEl.textContent = 'Config editing not available here. Run locally (npm run dev) or add Vercel KV.';
+              msgEl.className = 'cfg-msg err';
+            } else {
+              msgEl.textContent = (x.data && x.data.error) || 'Failed (status ' + x.status + ')';
+              msgEl.className = 'cfg-msg err';
+            }
+          })
+          .catch(function (err) {
+            msgEl.textContent = 'Request failed. Open this page via your server (e.g. http://localhost:3000/admin.html), not as a file.';
+            msgEl.className = 'cfg-msg err';
+            console.error('[saveConfig]', err);
+          });
+      }
+
+      el('saveBrand').onclick = function () {
+        var ph = el('cfgPhone').value.replace(/\D/g, '').slice(-10);
+        if (!ph || ph.length < 10) { el('brandMsg').textContent = 'Valid 10-digit phone required.'; el('brandMsg').className = 'cfg-msg err'; return; }
+        saveConfig({
+          brand: {
+            name: el('cfgBrandName').value.trim() || 'Pasture',
+            phone: ph,
+            phoneFormatted: '+91 ' + ph.slice(0, 5) + ' ' + ph.slice(5),
+            phoneWhatsApp: '91' + ph,
+            email: el('cfgEmail').value.trim() || '',
+            address: el('cfgAddress').value.trim() || ''
+          }
+        }, el('brandMsg'));
+      };
+
+      el('saveDelivery').onclick = function () {
+        var fa = parseInt(el('cfgFreeAbove').value, 10);
+        var ch = parseInt(el('cfgCharge').value, 10);
+        saveConfig({ delivery: { freeAbove: isNaN(fa) ? 999 : fa, charge: isNaN(ch) ? 80 : ch } }, el('deliveryMsg'));
+      };
+
+      el('saveCoupons').onclick = function () {
+        var list = [];
+        el('couponEditor').querySelectorAll('.coupon-edit').forEach(function (ed) {
+          var code = ((ed.querySelector('input[data-field="code"]') || {}).value || '').trim();
+          var type = ((ed.querySelector('select[data-field="type"]') || {}).value || 'percent');
+          var val = parseInt((ed.querySelector('input[data-field="value"]') || {}).value, 10) || 0;
+          if (code) list.push({ code: code.toUpperCase(), type: type, value: val });
+        });
+        saveConfig({ coupons: list }, el('couponsMsg'));
+      };
+
       function loadOrders() {
-        fetch(ORDERS_URL)
+        fetchAuth(ORDERS_URL)
           .then(function (r) { return r.json(); })
           .then(function (orders) {
-            var list = el('ordersList');
-            list.innerHTML = '';
+            var tbody = el('ordersBody');
+            var empty = el('ordersEmpty');
+            tbody.innerHTML = '';
             if (!orders || !orders.length) {
-              list.innerHTML = '<li class="orders-empty">No orders yet. Orders appear when customers confirm on the order page.</li>';
+              empty.style.display = 'block';
               return;
             }
+            empty.style.display = 'none';
             orders.forEach(function (o) {
-              var li = document.createElement('li');
               var c = o.customer || {};
-              li.innerHTML =
-                '<div class="oid">' + (o.id || '—') + '</div>' +
-                '<div class="meta">' + (c.firstName || '') + ' ' + (c.lastName || '') + ' · ' + (c.phone || '') + '</div>' +
-                '<div class="meta">' + (c.address || '') + ', ' + (c.city || '') + ' ' + (c.pincode || '') + '</div>' +
-                '<div class="meta">Total ₹' + (o.total != null ? o.total : o.subtotal) + '</div>';
-              list.appendChild(li);
+              var tr = document.createElement('tr');
+              tr.innerHTML =
+                '<td class="oid">' + escapeHtml(o.id || '—') + '</td>' +
+                '<td>' + escapeHtml((c.firstName || '') + ' ' + (c.lastName || '')) + '</td>' +
+                '<td>' + escapeHtml(c.phone || '—') + '</td>' +
+                '<td>' + escapeHtml(c.address || '—') + '</td>' +
+                '<td>' + escapeHtml(c.city || '—') + '</td>' +
+                '<td>' + escapeHtml(c.pincode || '—') + '</td>' +
+                '<td>₹' + (o.total != null ? o.total : o.subtotal || 0) + '</td>' +
+                '<td>' + escapeHtml((o.at || '').slice(0, 10)) + '</td>';
+              tbody.appendChild(tr);
             });
           })
           .catch(function () {
-            el('ordersList').innerHTML = '<li class="orders-empty">Could not load orders. Ensure /api/order is available.</li>';
+            el('ordersEmpty').textContent = 'Backend failed: could not load orders. Open this page via a server (npm run dev or your deployed URL), not as a file.';
+            el('ordersEmpty').style.display = 'block';
           });
+      }
+      function loadOrdersMaybe() {
+        if (getAdminKey()) loadOrders();
+      }
+      function escapeHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+      function loadWaitlist() {
+        fetchAuth(NOTIFY_URL)
+          .then(function (r) { return r.json(); })
+          .then(function (list) {
+            var tbody = el('waitlistBody');
+            var empty = el('waitlistEmpty');
+            tbody.innerHTML = '';
+            if (!list || !list.length) {
+              empty.style.display = 'block';
+              return;
+            }
+            empty.style.display = 'none';
+            list.forEach(function (w) {
+              var tr = document.createElement('tr');
+              tr.innerHTML = '<td><a href="https://wa.me/' + (w.phone || '').replace(/\D/g,'') + '" target="_blank">' + escapeHtml(w.phone || '—') + '</a></td><td>' + escapeHtml((w.at || '').slice(0, 19)) + '</td>';
+              tbody.appendChild(tr);
+            });
+          })
+          .catch(function () {
+            el('waitlistEmpty').textContent = 'Could not load waitlist.';
+            el('waitlistEmpty').style.display = 'block';
+          });
+      }
+      function loadWaitlistMaybe() {
+        if (getAdminKey()) loadWaitlist();
       }
 
       loadConfig();
-      loadOrders();
+
+      // Auto-refresh backend data every 5 minutes
+      setInterval(function () {
+        loadConfig();
+        loadOrdersMaybe();
+        loadWaitlistMaybe();
+        if (currentApi === 'config' || currentApi === 'order' || currentApi === 'notify') {
+          showApiResponse(currentApi);
+        }
+      }, 5 * 60 * 1000);
 
       // Backend responses viewer
       var apiUrls = {
@@ -189,7 +485,9 @@
         document.querySelectorAll('.api-tab[data-api]').forEach(function (b) {
           b.classList.toggle('active', b.getAttribute('data-api') === apiKey);
         });
-        fetch(url)
+        var opts = { headers: {} };
+        if (apiKey === 'order' || apiKey === 'notify') Object.assign(opts.headers, authHeaders());
+        fetch(url, opts)
           .then(function (r) {
             if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
             return r.json();
@@ -199,7 +497,16 @@
             preEl.className = 'api-response';
           })
           .catch(function (err) {
-            preEl.textContent = 'Error: ' + err.message;
+            var msg = 'Error: ' + err.message;
+            if (err.message === 'Failed to fetch' || err.message.indexOf('NetworkError') !== -1) {
+              msg += '\n\nBackend not reachable. Open this page through a server:\n' +
+                '• Local: run "npm run dev" then open http://localhost:3000/admin.html\n' +
+                '• Deployed: use your live URL (e.g. https://yoursite.vercel.app/admin.html)\n' +
+                'Do not open the HTML file directly (file://).';
+            } else if (err.message.indexOf('500') !== -1) {
+              msg += '\n\nServer error. On Vercel, ensure config/site.json exists in the project root.';
+            }
+            preEl.textContent = msg;
             preEl.className = 'api-response error';
           });
       }

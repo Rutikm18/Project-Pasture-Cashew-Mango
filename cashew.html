@@ -275,10 +275,10 @@ footer{background:var(--mud);padding:60px 6% 28px;color:rgba(250,240,220,.65);}
   .about-grid,.tree-grid,.testi-grid,.grade-cards{grid-template-columns:1fr;}
   .journey-steps{grid-template-columns:1fr;}
   .journey-step{border-right:none;border-bottom:1px solid var(--border);}
-  nav{flex-wrap:wrap;gap:8px 0;padding:10px 3%;}
-  .nav-ul{display:flex;flex-wrap:wrap;gap:8px 12px;margin:0;}
-  .nav-ul a{font-size:10px;letter-spacing:1.5px;padding-bottom:2px;}
-  nav .nav-cta{padding:8px 14px;font-size:.62rem;}
+  nav{flex-wrap:wrap;gap:8px 0;padding:12px 3%;}
+  .nav-ul{display:flex;flex-wrap:wrap;gap:6px 10px;margin:0;}
+  .nav-ul a{font-size:10px;letter-spacing:1.5px;padding:8px 4px;min-height:44px;display:inline-flex;align-items:center;}
+  nav .nav-cta{padding:12px 18px;font-size:.7rem;min-height:44px;display:inline-flex;align-items:center;justify-content:center;}
   .footer-top{grid-template-columns:1fr;gap:24px;margin-bottom:28px;}
   #hero{padding:50px 3% 32px;min-height:auto;padding-top:72px;}
   .hero-content{max-width:100%;}
@@ -325,8 +325,9 @@ footer{background:var(--mud);padding:60px 6% 28px;color:rgba(250,240,220,.65);}
   .testi-card{padding:24px 20px;}
   .testi-text{font-size:.88rem;}
   .footer-bottom{flex-direction:column;gap:10px;text-align:center;padding-top:16px;}
-  footer{padding:24px 3% 20px;}
-  #btt{bottom:24px;right:16px;width:40px;height:40px;font-size:1rem;}
+  footer{padding:24px 3% 20px;padding-bottom:max(20px,env(safe-area-inset-bottom));}
+  #btt{bottom:max(24px,env(safe-area-inset-bottom));right:16px;width:44px;height:44px;font-size:1rem;}
+  .trust-chip{padding:8px 12px;min-height:44px;align-items:center;}
 }
 @media(max-width:480px){
   .hero-tree{width:85%;max-width:280px;}
@@ -342,9 +343,16 @@ footer{background:var(--mud);padding:60px 6% 28px;color:rgba(250,240,220,.65);}
   .cta-band{padding:32px 2%;}
   .season-band{padding:14px 2%;flex-wrap:wrap;justify-content:center;}
   .season-item{min-width:0;}
-  footer{padding:20px 2% 16px;}
-  nav{padding:8px 2%;}
-  .nav-ul a{font-size:9px;}
+  footer{padding:20px 2% 16px;padding-bottom:max(16px,env(safe-area-inset-bottom));}
+  nav{padding:10px 2%;}
+  .nav-ul a{font-size:9px;padding:10px 2px;}
+  #hero{min-height:min(100vh,100dvh);}
+  .hero-marathi{font-size:clamp(1.2rem,4vw,1.8rem);}
+}
+@media(max-width:380px){
+  .hero-tree{width:75%;max-width:220px;}
+  .hero-title{font-size:1.4rem;}
+  .season-item{flex:1 1 40%;}
 }
 </style>
 </head>

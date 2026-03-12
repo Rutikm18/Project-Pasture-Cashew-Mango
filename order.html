@@ -278,9 +278,9 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
   .order-layout{grid-template-columns:1fr;}
   .cart-col{position:relative;top:0;border-left:none;border-top:1px solid var(--border);padding:16px 12px;}
   .pack-grid{grid-template-columns:1fr 1fr;gap:12px;margin-bottom:32px;}
-  nav{flex-wrap:wrap;gap:8px 0;padding:10px 3%;}
-  .nav-ul{display:flex;flex-wrap:wrap;gap:8px 12px;margin:0;}
-  .nav-ul a{font-size:10px;letter-spacing:1.5px;padding-bottom:2px;}
+  nav{flex-wrap:wrap;gap:8px 0;padding:12px 3%;}
+  .nav-ul{display:flex;flex-wrap:wrap;gap:6px 10px;margin:0;}
+  .nav-ul a{font-size:10px;letter-spacing:1.5px;padding:8px 4px;min-height:44px;display:inline-flex;align-items:center;}
   .page-header{padding:28px 3% 24px;}
   .ph-title{font-size:clamp(1.5rem,6vw,2.4rem);}
   .ph-eyebrow{font-size:1.1rem;margin-bottom:6px;}
@@ -293,17 +293,21 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
   .prod-icon-box{width:48px;height:48px;font-size:1.4rem;}
   .prod-price{font-size:1.5rem;}
   .prod-name{font-size:.9rem;}
-  .add-btn,.qty-btn{min-height:42px;}
+  .add-btn,.qty-btn{min-height:44px;min-width:44px;}
+  .qty-btn{padding:0;font-size:1.2rem;}
+  .form-in,.form-sel,.coupon-in,.coupon-btn{min-height:44px;}
+  .checkout-btn,.wa-btn,.confirm-btn{min-height:48px;padding:16px;}
   .sec-title{margin-bottom:18px;}
   .cat-tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin-bottom:18px;}
   .cat-tabs::-webkit-scrollbar{display:none;}
-  .cat-tab{flex-shrink:0;padding:8px 14px;font-size:.62rem;}
+  .cat-tab{flex-shrink:0;padding:12px 16px;font-size:.65rem;min-height:44px;display:inline-flex;align-items:center;}
   .farmer-strip>div{grid-template-columns:1fr !important;}
   .farmer-strip>div>div{padding:32px 3% !important;}
   .footer-bottom{flex-direction:column;gap:10px;text-align:center;padding-top:16px;}
   .footer-top{gap:24px;margin-bottom:28px;}
-  footer{padding:24px 3% 20px;}
-  .float-wa{bottom:16px;right:12px;width:48px;height:48px;font-size:1.3rem;}
+  footer{padding:24px 3% 20px;padding-bottom:max(20px,env(safe-area-inset-bottom));}
+  .float-wa{bottom:max(16px,env(safe-area-inset-bottom));right:12px;width:52px;height:52px;font-size:1.3rem;}
+  .cart-pill{min-height:44px;padding:10px 16px;}
   .cart-heading{margin-bottom:16px;}
   .addr-section,.form-row{margin-bottom:10px;}
   .trust-strip{gap:6px;margin-top:10px;}
@@ -316,25 +320,29 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
 }
 @media(max-width:600px){
   .pack-grid{grid-template-columns:1fr;gap:10px;}
-  .prod-card{grid-template-columns:1fr;text-align:left;padding:12px 10px;}
-  .prod-card .prod-right{text-align:left;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-  .prod-card .qty-row{margin-top:0;}
+  .prod-card{grid-template-columns:1fr;text-align:left;padding:14px 12px;}
+  .prod-card .prod-right{text-align:left;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+  .prod-card .qty-row{margin-top:0;gap:12px;}
+  .ci-qbtn{min-width:44px;min-height:44px;font-size:1rem;}
   .form-row{grid-template-columns:1fr;}
-  nav{padding:8px 3%;}
-  .cart-col{padding:14px 10px;}
-  .cart-pill{padding:6px 12px;}
+  nav{padding:10px 3%;}
+  .cart-col{padding:16px 12px;}
+  .cart-pill{padding:10px 14px;}
   .cart-pill .cart-total{font-size:.85rem;}
   .page-header{padding:22px 3% 20px;}
   .products-col{padding:16px 3%;}
+  .vpack{padding:20px 16px;}
+  .vp-price{font-size:1.5rem;}
 }
 @media(max-width:400px){
   .ph-badges{flex-direction:column;gap:4px;}
-  .ph-badge{padding:4px 6px;font-size:.58rem;}
+  .ph-badge{padding:6px 12px;font-size:.6rem;}
   .prod-price{font-size:1.35rem;}
   .cart-row.total .cr-val{font-size:1.35rem;}
-  nav{padding:8px 2%;}
-  .nav-ul a{font-size:9px;}
-  footer{padding:20px 2% 16px;}
+  nav{padding:10px 2%;}
+  .nav-ul a{font-size:9px;padding:10px 2px;}
+  footer{padding:20px 2% 16px;padding-bottom:max(16px,env(safe-area-inset-bottom));}
+  .float-wa{width:48px;height:48px;right:10px;}
 }
 </style>
 </head>

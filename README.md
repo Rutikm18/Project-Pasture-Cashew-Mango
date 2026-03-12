@@ -210,6 +210,12 @@ Change `data-target` to your real numbers.
 **Test locally (with API):** In the project root run `npm run dev` or `npx vercel dev`. Open the URL shown (e.g. http://localhost:3000). Config, notify, and order API will work.  
 **Test locally (static only):** Run `python3 -m http.server 8000` and open http://localhost:8000/cashew.html. Pages work; config uses fallback defaults and notify will fail.
 
+**Admin-only access (orders & waitlist):** To restrict `GET /api/order` and `GET /api/notify` to only you:
+1. Set env var `ADMIN_SECRET` (e.g. a strong random string) in Vercel: Project → Settings → Environment Variables.
+2. For local dev: `ADMIN_SECRET=your-secret npm run dev` or add to a `.env` file (requires `dotenv`).
+3. Open `/admin.html` — you’ll be prompted for the secret. Enter it once; it’s stored in the session.
+4. Without `ADMIN_SECRET` set, the APIs stay public (no prompt).
+
 **Deploy on Netlify:** Yes. The static site works on Netlify; `netlify.toml` is included (root → `/cashew.html`). **Note:** The `api/` folder is for Vercel serverless. On Netlify, `/api/config`, `/api/notify`, and `/api/order` will not work unless you add [Netlify Functions](https://docs.netlify.com/functions/overview/) equivalents. The order page will fall back to default values (prices, phone, free delivery) when the config API is missing.
 
 **Other static hosts (GitHub Pages, FTP):** Same as Netlify — pages work; APIs do not. For full config-driven behaviour and order storage, use Vercel.

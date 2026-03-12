@@ -242,10 +242,11 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;o
 @media(max-width:900px){
   .about-grid,.gi-grid,.pack-cards,.what-steps{grid-template-columns:1fr;}
   .what-step{border-right:none;border-bottom:1px solid rgba(212,79,16,.15);}
-  nav{flex-wrap:wrap;gap:8px 0;padding:10px 3%;}
-  .nav-ul{display:flex;flex-wrap:wrap;gap:8px 12px;margin:0;}
-  .nav-ul a{font-size:10px;letter-spacing:1.5px;padding-bottom:2px;}
-  nav .nav-cta{padding:8px 14px;font-size:.62rem;}
+  nav{flex-wrap:wrap;gap:8px 0;padding:12px 3%;}
+  .nav-ul{display:flex;flex-wrap:wrap;gap:6px 10px;margin:0;}
+  .nav-ul a{font-size:10px;letter-spacing:1.5px;padding:8px 4px;min-height:44px;display:inline-flex;align-items:center;}
+  nav .nav-cta{padding:12px 18px;font-size:.7rem;min-height:44px;display:inline-flex;align-items:center;justify-content:center;}
+  .hero-eyebrow{display:none;}
   .footer-top{grid-template-columns:1fr;gap:24px;margin-bottom:28px;}
   .notify-form{flex-direction:column;}
   .notify-input{border-right:1px solid rgba(240,168,50,.3);}
@@ -254,7 +255,6 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;o
   .hero-mango-tree{width:70%;right:0;max-width:320px;}
   .hero-title{font-size:clamp(1.6rem,7vw,2.8rem);}
   .hero-marathi{font-size:clamp(1.4rem,4.5vw,2.2rem);}
-  .hero-eyebrow{font-size:1.3rem;}
   .hero-desc{font-size:.95rem;margin-top:14px;}
   .hero-btns{flex-direction:column;margin-top:20px;gap:10px;}
   .btn-notify,.btn-cashew{text-align:center;min-height:46px;display:inline-flex;align-items:center;justify-content:center;padding:14px 20px;width:100%;max-width:280px;margin:0 auto;font-size:10px;}
@@ -266,7 +266,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;o
   .notify-section{padding:40px 3%;}
   .notify-title{font-size:clamp(1.5rem,5vw,2.2rem);}
   .notify-form{max-width:100%;}
-  .notify-input,.notify-btn{padding:12px 16px;min-height:46px;font-size:.85rem;}
+  .notify-input,.notify-btn{padding:14px 18px;min-height:48px;font-size:.9rem;}
   .hapus-band{padding:16px 3%;gap:12px;}
   .band-num{font-size:1.6rem;}
   .band-lbl,.band-mr{font-size:.7rem;}
@@ -292,7 +292,8 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;o
   #packs{padding:40px 3%;}
   .packs-header{margin-bottom:24px;}
   .footer-bottom{flex-direction:column;gap:10px;text-align:center;padding-top:16px;}
-  footer{padding:24px 3% 20px;}
+  footer{padding:24px 3% 20px;padding-bottom:max(20px,env(safe-area-inset-bottom));}
+  .pack-btn,.btn-notify,.btn-cashew{min-height:44px;}
 }
 @media(max-width:480px){
   .hero-mango-tree{width:85%;max-width:280px;}
@@ -309,9 +310,15 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;o
   section:has(a[href="cashew.html"]:not(.btn-cashew)){padding:28px 2% !important;}
   #packs{padding:28px 2%;}
   .coming-ribbon{font-size:8px;padding:6px 20px 6px 12px;}
-  footer{padding:20px 2% 16px;}
-  nav{padding:8px 2%;}
-  .nav-ul a{font-size:9px;}
+  footer{padding:20px 2% 16px;padding-bottom:max(16px,env(safe-area-inset-bottom));}
+  nav{padding:10px 2%;}
+  .nav-ul a{font-size:9px;padding:10px 2px;}
+  #hero{min-height:min(100vh,100dvh);}
+  .hero-marathi{font-size:clamp(1.2rem,4vw,1.8rem);}
+}
+@media(max-width:380px){
+  .hero-mango-tree{width:75%;max-width:220px;}
+  .hero-title{font-size:1.4rem;}
 }
 </style>
 </head>
@@ -806,7 +813,12 @@ let waitlistCount=247;
 function registerNotify(){
   const ph=document.getElementById('notifyPhone').value.trim();
   if(!ph){alert('Please enter your WhatsApp number · व्हॉट्सअॅप नंबर टाका');return;}
-  fetch('/api/notify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone:ph})}).then(function(r){if(r.ok)return r.json();throw new Error('Request failed');}).then(function(){showNotifySuccess();}).catch(function(){showNotifySuccess();});
+  var btn=document.querySelector('.notify-btn');if(btn){btn.disabled=true;btn.textContent='Sending…';}
+  fetch('/api/notify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone:ph})})
+    .then(function(r){return r.json().then(function(d){if(!r.ok)throw new Error(d.error||'Request failed');return d;});})
+    .then(function(){showNotifySuccess();})
+    .catch(function(e){alert(e.message||'Could not register. Try again.');})
+    .finally(function(){var b=document.querySelector('.notify-btn');if(b){b.disabled=false;b.textContent='Notify Me 🥭';}});
 }
 function showNotifySuccess(){
   document.getElementById('notifySuccess').style.display='block';
