@@ -877,7 +877,13 @@ function confirmOrder(){
   const ph=document.getElementById('phone').value.trim();
   const ad=document.getElementById('addr').value.trim();
   const ci=document.getElementById('city').value.trim();
-  if(!f||!ph||!ad||!ci){showToast('Please fill required fields · सर्व माहिती भरा');return;}
+  const st=document.getElementById('state').value;
+  if(!f||!ph||!ad||!ci||!st){showToast('Please fill required fields · सर्व माहिती भरा');return;}
+  if(st.indexOf('Maharashtra')===-1 && st.indexOf('महाराष्ट्र')===-1){
+    showToast('Currently we only process online orders within Maharashtra. For other states, please order via WhatsApp.');
+    try{orderWhatsApp();}catch(e){}
+    return;
+  }
   const code='YH-'+Math.random().toString(36).substr(2,6).toUpperCase();
   document.getElementById('osCode').textContent=code;
   document.getElementById('cartMain').style.display='none';
@@ -891,7 +897,7 @@ function confirmOrder(){
   var del=isNaN(delRaw)?0:delRaw;
   var disc=isNaN(discount)?0:discount;
   var total=sub-disc+del;
-  var payload={orderId:code,items:items.map(i=>({id:i.id,name:i.name,weight:i.weight,price:i.price,qty:i.qty})),subtotal:sub,discount:discount,delivery:del,total:total,firstName:f,lastName:document.getElementById('lname').value.trim(),phone:ph,address:ad,city:ci,pincode:document.getElementById('pin').value.trim(),state:document.getElementById('state').value};
+  var payload={orderId:code,items:items.map(i=>({id:i.id,name:i.name,weight:i.weight,price:i.price,qty:i.qty})),subtotal:sub,discount:discount,delivery:del,total:total,firstName:f,lastName:document.getElementById('lname').value.trim(),phone:ph,address:ad,city:ci,pincode:document.getElementById('pin').value.trim(),state:st};
   fetch('/api/order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(function(){});
   cart={};discount=0;updateNavCart();
 }
