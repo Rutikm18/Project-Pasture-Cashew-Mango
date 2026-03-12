@@ -774,7 +774,12 @@ var DELIVERY_CHARGE=80;
 var WHATSAPP_NUMBER='919404598725';
 document.addEventListener('siteConfigReady',function(ev){
   var C=ev.detail||window.SITE_CONFIG;
-  if(C&&C.delivery){FREE_SHIP=C.delivery.freeAbove;DELIVERY_CHARGE=C.delivery.charge;}
+  if(C&&C.delivery){
+    var fa=parseInt(C.delivery.freeAbove,10);
+    var ch=parseInt(C.delivery.charge,10);
+    if(!isNaN(fa)&&fa>0)FREE_SHIP=fa;
+    if(!isNaN(ch)&&ch>=0)DELIVERY_CHARGE=ch;
+  }
   if(C&&C.brand&&C.brand.phoneWhatsApp)WHATSAPP_NUMBER=C.brand.phoneWhatsApp;
 });
 
@@ -827,8 +832,10 @@ function renderCart(){
     </div>
   `).join('');
   const sub=items.reduce((s,i)=>s+i.price*i.qty,0);
-  const del=sub>=FREE_SHIP?0:DELIVERY_CHARGE;
-  const total=sub-discount+del;
+  const delRaw=sub>=FREE_SHIP?0:DELIVERY_CHARGE;
+  const del=isNaN(delRaw)?0:delRaw;
+  const disc=isNaN(discount)?0:discount;
+  const total=sub-disc+del;
   document.getElementById('subTotal').textContent='₹'+sub.toLocaleString();
   document.getElementById('delivVal').textContent=del===0?'FREE 🎉':'₹'+DELIVERY_CHARGE;
   document.getElementById('cartTotalAmt').textContent='₹'+total.toLocaleString();
@@ -853,7 +860,20 @@ function applyCoupon(){
   const code=document.getElementById('couponIn').value.trim().toUpperCase();
   const coupons=window.SITE_CONFIG&&window.SITE_CONFIG.coupons?window.SITE_CONFIG.coupons:[{code:'KONKAN10',type:'percent',value:10},{code:'YOURHARVEST',type:'fixed',value:100}];
   const c=coupons.find(x=>x.code===code);
-  if(c){if(c.type==='percent')discount=Math.round(Object.values(cart).reduce((s,i)=>s+i.price*i.qty,0)*c.value/100);else discount=c.value;showToast('✓ Discount applied!');renderCart();}
+  if(c){
+    const base=Object.values(cart).reduce((s,i)=>s+i.price*i.qty,0);
+    if(c.type==='percent'){
+      let v=Number(c.value);
+      if(isNaN(v))v=0;
+      discount=Math.max(0,Math.round(base*v/100));
+    }else{
+      let fv=Number(c.value);
+      if(isNaN(fv))fv=0;
+      discount=Math.max(0,fv);
+    }
+    showToast('✓ Discount applied!');
+    renderCart();
+  }
   else showToast('Invalid code · चुकीचा कोड');
 }
 
@@ -881,8 +901,10 @@ function confirmOrder(){
   showToast('🎉 ऑर्डर मिळाली! Order placed!');
   var items=Object.values(cart);
   var sub=items.reduce((s,i)=>s+i.price*i.qty,0);
-  var del=sub>=FREE_SHIP?0:DELIVERY_CHARGE;
-  var total=sub-discount+del;
+  var delRaw=sub>=FREE_SHIP?0:DELIVERY_CHARGE;
+  var del=isNaN(delRaw)?0:delRaw;
+  var disc=isNaN(discount)?0:discount;
+  var total=sub-disc+del;
   var payload={orderId:code,items:items.map(i=>({id:i.id,name:i.name,weight:i.weight,price:i.price,qty:i.qty})),subtotal:sub,discount:discount,delivery:del,total:total,firstName:f,lastName:document.getElementById('lname').value.trim(),phone:ph,address:ad,city:ci,pincode:document.getElementById('pin').value.trim(),state:document.getElementById('state').value};
   fetch('/api/order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(function(){});
   cart={};discount=0;updateNavCart();

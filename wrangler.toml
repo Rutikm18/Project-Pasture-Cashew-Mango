@@ -1,8 +1,0 @@
-name = "pasture"
-compatibility_date = "2025-01-01"
-pages_build_output_dir = "."
-
-[[kv_namespaces]]
-binding = "PASTURE_KV"
-id = "PASTE_YOUR_KV_NAMESPACE_ID_HERE"
-

@@ -1,8 +1,7 @@
 {
-  "name": "pasture-dev-server",
+  "name": "pasture",
   "version": "1.0.0",
-  "private": true,
-  "description": "Local dev server for Pasture (Express + APIs)",
+  "description": "Pasture — Farm-direct Cashew & Hapus, Ratnagiri",
   "scripts": {
     "dev": "node server.js",
     "start": "node server.js"

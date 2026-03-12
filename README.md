@@ -8,10 +8,6 @@ Quick reference for the project layout, config, and deployment.
 
 ```
 Project-Pashure/
-├── api/                  ← Vercel serverless (backend)
-│   ├── config.js         ← GET: returns site config (prices, brand, coupons)
-│   ├── notify.js         ← POST: Hapus waitlist signup
-│   └── order.js          ← GET: list orders; POST: save order (for admin)
 ├── config/
 │   └── site.json         ← Single source of truth: brand, delivery, products, coupons
 ├── js/
@@ -20,9 +16,9 @@ Project-Pashure/
 ├── hapus.html            ← Hapus Alphonso page (coming soon)
 ├── order.html            ← Order + cart page
 ├── admin.html            ← Admin: view contact, coupons, orders; direct WhatsApp link
+├── server.js             ← Node/Express backend (APIs for config, order, notify)
 ├── cashew_tree.jpg       ← About section image
 ├── mango_tree.jpg        ← About section image (hapus)
-├── vercel.json           ← Vercel config (rewrites)
 ├── netlify.toml          ← Netlify config (redirects; static only, no API)
 └── README.md             ← This file
 ```
@@ -111,7 +107,7 @@ After editing `config/site.json`, redeploy. No need to search-replace in HTML.
 
 Prices and the product list are in **`config/site.json`** under `products.cashew` and `products.valuePacks`. The order page loads config from `/api/config` and updates displayed prices and add-to-cart behaviour. To add or change a product, edit the matching object in `site.json`.
 
-**Manage each order:** When a customer clicks “Confirm Order”, the order is sent to **`POST /api/order`** and appears under “Recent orders” on **`/admin.html`**. On Vercel serverless, the list resets on cold starts unless you add persistent storage (e.g. Vercel KV); see comments in `api/order.js`.
+**Manage each order:** When a customer clicks “Confirm Order”, the order is sent to **`POST /api/order`** and appears under “Recent orders” on **`/admin.html`**.
 
 ---
 
@@ -190,84 +186,28 @@ Change `data-target` to your real numbers.
 
 ---
 
-## 🌐 DEPLOYMENT & CI/CD (Vercel)
+## 🌐 DEPLOYMENT
 
-**Full step-by-step:** See **[DEPLOY.md](DEPLOY.md)** for the complete guide (Git setup, GitHub, first deploy, and automatic CI/CD).
+This project is a plain Node/Express app serving static files and JSON APIs.
 
-**Summary:** Connect your repository to Vercel once. After that, every **push to `main`** triggers a new deploy automatically. No extra pipeline configuration is required.
+**Run locally (with API):**
 
-**Vercel** (recommended — uses API and config):
+```bash
+npm install
+npm run dev
+```
 
-1. Push the project to GitHub (or use Vercel CLI).
-2. In [vercel.com](https://vercel.com), import the repo.
-3. Leave build settings default (no build command; root is output).
-4. Deploy. The `api/` folder becomes serverless functions:
-   - `GET /api/config` → returns `config/site.json`
-   - `POST /api/notify` → Hapus waitlist signup (body: `{ "phone": "..." }`)
-   - `GET /api/order` → list recent orders; `POST /api/order` → save order (JSON body)
-5. Root URL is rewritten to `cashew.html` (see `vercel.json`).
+Open `http://localhost:3000`. The root redirects to `/cashew.html` and the following endpoints are available:
 
-**Test locally (with API):** Run the local dev server:
+- `GET /api/config` — returns `config/site.json`
+- `PUT /api/config` — updates `config/site.json` (admin-only when `ADMIN_SECRET` is set)
+- `POST /api/notify` — Hapus waitlist signup (body: `{ "phone": "..." }`)
+- `GET /api/order` — list recent orders (admin-only when `ADMIN_SECRET` is set)
+- `POST /api/order` — save order (JSON body)
 
-- `cd dev-server`
-- `npm install`
-- `npm run dev`
+**Admin-only access (orders & waitlist):**
 
-Open the URL shown (e.g. http://localhost:3000). Config, notify, and order API will work.  
-**Test locally (static only):** Run `python3 -m http.server 8000` and open http://localhost:8000/cashew.html. Pages work; config uses fallback defaults and notify will fail.
-
-**Admin-only access (orders & waitlist):** To restrict `GET /api/order` and `GET /api/notify` to only you:
-1. Set env var `ADMIN_SECRET` (e.g. a strong random string) in Vercel: Project → Settings → Environment Variables.
-2. For local dev: `ADMIN_SECRET=your-secret npm run dev` or add to a `.env` file (requires `dotenv`).
-3. Open `/admin.html` — you’ll be prompted for the secret. Enter it once; it’s stored in the session.
-4. Without `ADMIN_SECRET` set, the APIs stay public (no prompt).
-
-**Deploy on Netlify:** Yes. The static site works on Netlify; `netlify.toml` is included (root → `/cashew.html`). **Note:** The `api/` folder is for Vercel serverless. On Netlify, `/api/config`, `/api/notify`, and `/api/order` will not work unless you add [Netlify Functions](https://docs.netlify.com/functions/overview/) equivalents. The order page will fall back to default values (prices, phone, free delivery) when the config API is missing.
-
-**Other static hosts (GitHub Pages, FTP):** Same as Netlify — pages work; APIs do not. For full config-driven behaviour and order storage, use Vercel.
-
----
-
-*Pasture · Ratnagiri, Konkan · pasture.in*
-
----
-
-## 🌐 DEPLOYMENT (Cloudflare Pages) — Recommended Alternative
-
-Cloudflare Pages can host the static site and also run APIs via **Pages Functions**.
-This repo includes Cloudflare handlers in `functions/api/` that implement:
-
-- `GET /api/config` (public) + `PUT /api/config` (admin)
-- `POST /api/order` (public) + `GET /api/order` (admin)
-- `POST /api/notify` (public) + `GET /api/notify` (admin)
-
-### Step-by-step
-
-1. **Push to GitHub** (already required).
-2. In Cloudflare Dashboard, go to **Workers & Pages → Create → Pages**.
-3. **Connect GitHub repo** and select this repository.
-4. **Build settings**:
-   - Framework preset: **None**
-   - Build command: **(empty)**
-   - Build output directory: **/** (root)
-5. Click **Save and Deploy**.
-6. Create KV:
-   - **Workers & Pages → KV → Create namespace**
-   - Name: `PASTURE_KV` (any name is fine)
-7. Bind KV to Pages project:
-   - Project → **Settings → Functions → KV namespace bindings**
-   - Add binding:
-     - Variable name: `PASTURE_KV`
-     - KV namespace: select the namespace you created
-8. Set admin secret (recommended):
-   - Project → **Settings → Environment variables**
-   - Add `ADMIN_SECRET` with a strong value (Production and Preview if you use it)
-   - Redeploy once after adding it
-9. Open admin:
-   - `https://<your-pages-domain>/admin.html`
-   - Enter the secret once to unlock orders/waitlist + config editing
-
-### Notes
-
-- Without KV binding, the APIs will return an error saying KV is not configured.
-- Config defaults to `config/site.json` until you save via admin (then KV becomes the source of truth).
+1. Set env var `ADMIN_SECRET` (e.g. a strong random string) before starting the server:
+   - `ADMIN_SECRET=your-secret npm run dev`
+2. Open `/admin.html` — you’ll be prompted for the secret. Enter it once; it’s stored in the session.
+3. Without `ADMIN_SECRET` set, the APIs stay public (no prompt).
