@@ -1,0 +1,14 @@
+{
+  "name": "pasture-dev-server",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local dev server for Pasture (Express + APIs)",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
+

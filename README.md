@@ -207,7 +207,13 @@ Change `data-target` to your real numbers.
    - `GET /api/order` → list recent orders; `POST /api/order` → save order (JSON body)
 5. Root URL is rewritten to `cashew.html` (see `vercel.json`).
 
-**Test locally (with API):** In the project root run `npm run dev` or `npx vercel dev`. Open the URL shown (e.g. http://localhost:3000). Config, notify, and order API will work.  
+**Test locally (with API):** Run the local dev server:
+
+- `cd dev-server`
+- `npm install`
+- `npm run dev`
+
+Open the URL shown (e.g. http://localhost:3000). Config, notify, and order API will work.  
 **Test locally (static only):** Run `python3 -m http.server 8000` and open http://localhost:8000/cashew.html. Pages work; config uses fallback defaults and notify will fail.
 
 **Admin-only access (orders & waitlist):** To restrict `GET /api/order` and `GET /api/notify` to only you:
