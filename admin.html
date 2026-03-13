@@ -162,7 +162,7 @@
     <h2>Recent Orders</h2>
     <div class="orders-wrap">
       <table class="orders-table" id="ordersTable">
-        <thead><tr><th>Order ID</th><th>Name</th><th>Phone</th><th>Address</th><th>City</th><th>Pincode</th><th>Total</th><th>Date</th></tr></thead>
+        <thead><tr><th>Order ID</th><th>Name</th><th>Phone</th><th>Address</th><th>City</th><th>Pincode</th><th>Total</th><th>Payment</th><th>Date &amp; Time</th></tr></thead>
         <tbody id="ordersBody"></tbody>
       </table>
     </div>
@@ -392,12 +392,26 @@
 
       function loadOrders() {
         fetchAuth(ORDERS_URL)
-          .then(function (r) { return r.json(); })
+          .then(function (r) {
+            if (!r.ok) {
+              if (r.status === 401) {
+                el('ordersEmpty').textContent = 'Unlock with your admin secret (above) to view orders.';
+              } else {
+                el('ordersEmpty').textContent = 'Could not load orders (status ' + r.status + ').';
+              }
+              el('ordersBody').innerHTML = '';
+              el('ordersEmpty').style.display = 'block';
+              return null;
+            }
+            return r.json();
+          })
           .then(function (orders) {
+            if (orders === null) return;
             var tbody = el('ordersBody');
             var empty = el('ordersEmpty');
             tbody.innerHTML = '';
-            if (!orders || !orders.length) {
+            if (!Array.isArray(orders) || !orders.length) {
+              empty.textContent = 'No orders yet. Place an order from the Order page (same server). Orders are stored in memory — restarting the server clears them.';
               empty.style.display = 'block';
               return;
             }
@@ -405,6 +419,7 @@
             orders.forEach(function (o) {
               var c = o.customer || {};
               var tr = document.createElement('tr');
+              var dateTime = o.time || (o.at ? (o.at.slice(0, 10) + ' ' + (o.at.slice(11, 16) || '')) : '—');
               tr.innerHTML =
                 '<td class="oid">' + escapeHtml(o.id || '—') + '</td>' +
                 '<td>' + escapeHtml((c.firstName || '') + ' ' + (c.lastName || '')) + '</td>' +
@@ -413,13 +428,15 @@
                 '<td>' + escapeHtml(c.city || '—') + '</td>' +
                 '<td>' + escapeHtml(c.pincode || '—') + '</td>' +
                 '<td>₹' + (o.total != null ? o.total : o.subtotal || 0) + '</td>' +
-                '<td>' + escapeHtml((o.at || '').slice(0, 10)) + '</td>';
+                '<td>' + escapeHtml(o.paymentMethod || '—') + '</td>' +
+                '<td>' + escapeHtml(dateTime) + '</td>';
               tbody.appendChild(tr);
             });
           })
           .catch(function () {
-            el('ordersEmpty').textContent = 'Backend failed: could not load orders. Open this page via a server (npm run dev or your deployed URL), not as a file.';
+            el('ordersEmpty').textContent = 'Backend failed: could not load orders. Open this page via your server (e.g. http://localhost:3000/admin.html), not as a file.';
             el('ordersEmpty').style.display = 'block';
+            el('ordersBody').innerHTML = '';
           });
       }
       function loadOrdersMaybe() {

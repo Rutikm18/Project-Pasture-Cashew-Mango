@@ -164,9 +164,11 @@ app.post('/api/order', (req, res) => {
       address,
       city,
       pincode,
-      state
+      state,
+      paymentMethod
     } = body;
 
+    const now = new Date();
     const order = {
       id: orderId || 'YH-' + Date.now(),
       items,
@@ -175,7 +177,13 @@ app.post('/api/order', (req, res) => {
       delivery,
       total,
       customer: { firstName, lastName, phone, address, city, pincode, state },
-      at: new Date().toISOString()
+      at: now.toISOString(),
+      time: now.toLocaleString('en-IN', {
+        timeZone: 'Asia/Kolkata',
+        dateStyle: 'medium',
+        timeStyle: 'short'
+      }),
+      paymentMethod: paymentMethod || 'COD'
     };
     orders.push(order);
     console.log('Order received:', order.id, phone, total);

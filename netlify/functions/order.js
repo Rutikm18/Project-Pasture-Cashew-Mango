@@ -61,10 +61,12 @@ exports.handler = async (event) => {
       address,
       city,
       pincode,
-      state
+      state,
+      paymentMethod
     } = body;
 
     const id = orderId || 'YH-' + Date.now();
+    const now = new Date();
     const order = {
       id,
       items,
@@ -73,7 +75,13 @@ exports.handler = async (event) => {
       delivery,
       total,
       customer: { firstName, lastName, phone, address, city, pincode, state },
-      at: new Date().toISOString()
+      at: now.toISOString(),
+      time: now.toLocaleString('en-IN', {
+        timeZone: 'Asia/Kolkata',
+        dateStyle: 'medium',
+        timeStyle: 'short'
+      }),
+      paymentMethod: paymentMethod || 'COD'
     };
     orders.push(order);
     console.log('Order received:', id, phone, total);

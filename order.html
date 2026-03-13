@@ -168,9 +168,180 @@ nav{position:sticky;top:0;z-index:500;display:flex;align-items:center;justify-co
 .checkout-btn:hover::before{transform:translateX(115%) skewX(-15deg);}
 .checkout-btn:hover{background:var(--mud);transform:translateY(-2px);box-shadow:0 12px 30px rgba(181,84,31,.35);}
 .checkout-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none;}
-.wa-btn{width:100%;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.3);color:#25D366;padding:13px;font-family:'Josefin Sans',sans-serif;font-size:.68rem;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;transition:all .3s;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.wa-btn{width:100%;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.3);color:#25D366;padding:13px;font-family:'Josefin Sans',sans-serif;font-size:.68rem;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;transition:all .3s;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px;}
 .wa-btn:hover{background:rgba(37,211,102,.18);border-color:#25D366;}
 .wa-btn:disabled{opacity:.35;cursor:not-allowed;}
+
+/* ── UPI PAYMENT BUTTON ── */
+.upi-btn{
+  width:100%;
+  background:linear-gradient(135deg,rgba(91,54,183,.12),rgba(91,54,183,.06));
+  border:1px solid rgba(91,54,183,.35);
+  color:#5B36B7;
+  padding:13px;
+  font-family:'Josefin Sans',sans-serif;
+  font-size:.68rem;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+  cursor:pointer;
+  transition:all .3s;
+  margin-bottom:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  position:relative;
+  overflow:hidden;
+}
+.upi-btn::before{
+  content:'';position:absolute;inset:0;
+  background:rgba(255,255,255,.18);
+  transform:translateX(-100%) skewX(-15deg);
+  transition:transform .4s;
+}
+.upi-btn:hover::before{transform:translateX(115%) skewX(-15deg);}
+.upi-btn:hover{
+  background:linear-gradient(135deg,rgba(91,54,183,.22),rgba(91,54,183,.12));
+  border-color:rgba(91,54,183,.6);
+  transform:translateY(-1px);
+  box-shadow:0 8px 24px rgba(91,54,183,.2);
+}
+.upi-btn:disabled{opacity:.35;cursor:not-allowed;transform:none;box-shadow:none;}
+.upi-logo{font-size:1.1rem;line-height:1;}
+
+/* ── UPI MODAL OVERLAY ── */
+.upi-overlay{
+  display:none;
+  position:fixed;inset:0;
+  background:rgba(28,15,6,.72);
+  backdrop-filter:blur(8px);
+  z-index:800;
+  align-items:center;justify-content:center;
+  padding:20px;
+}
+.upi-overlay.open{display:flex;}
+.upi-modal{
+  background:var(--cream);
+  border:1px solid var(--border);
+  max-width:380px;width:100%;
+  padding:0;
+  overflow:hidden;
+  animation:modalPop .35s cubic-bezier(.17,.67,.35,1.3);
+  position:relative;
+}
+@keyframes modalPop{from{opacity:0;transform:scale(.88) translateY(20px)}to{opacity:1;transform:none}}
+.upi-modal-head{
+  background:linear-gradient(135deg,#1C0F06,#1a2e0a);
+  padding:22px 26px 18px;
+  border-bottom:2px solid var(--clay);
+}
+.upi-modal-title{
+  font-family:'Josefin Sans',sans-serif;
+  font-size:.75rem;letter-spacing:3px;
+  color:var(--cream);text-transform:uppercase;
+  margin-bottom:4px;
+}
+.upi-modal-amount{
+  font-family:'Josefin Sans',sans-serif;
+  font-size:2rem;font-weight:700;
+  color:var(--sun);line-height:1;
+}
+.upi-modal-sub{
+  font-size:.72rem;color:rgba(250,240,220,.55);
+  margin-top:4px;letter-spacing:1px;
+  font-family:'Josefin Sans',sans-serif;
+}
+.upi-modal-body{padding:22px 26px;}
+.upi-apps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;}
+.upi-app-btn{
+  display:flex;flex-direction:column;align-items:center;gap:7px;
+  padding:14px 8px;
+  background:rgba(255,255,255,.7);
+  border:1px solid var(--border);
+  cursor:pointer;
+  transition:all .25s;
+  text-decoration:none;
+}
+.upi-app-btn:hover{
+  border-color:rgba(91,54,183,.4);
+  background:rgba(91,54,183,.05);
+  transform:translateY(-2px);
+  box-shadow:0 6px 18px rgba(91,54,183,.12);
+}
+.upi-app-icon{font-size:1.8rem;line-height:1;}
+.upi-app-name{
+  font-family:'Josefin Sans',sans-serif;
+  font-size:.6rem;letter-spacing:1.5px;
+  color:var(--bark);text-transform:uppercase;
+}
+.upi-divider{
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:16px;
+}
+.upi-divider span{font-family:'Josefin Sans',sans-serif;font-size:.62rem;letter-spacing:2px;color:rgba(59,31,12,.35);text-transform:uppercase;white-space:nowrap;}
+.upi-divider::before,.upi-divider::after{content:'';flex:1;height:1px;background:var(--border);}
+.upi-id-row{display:flex;gap:0;margin-bottom:6px;}
+.upi-id-display{
+  flex:1;
+  background:rgba(255,255,255,.8);
+  border:1px solid rgba(185,136,60,.25);
+  border-right:none;
+  padding:11px 14px;
+  font-family:'Josefin Sans',sans-serif;
+  font-size:.85rem;
+  font-weight:700;
+  color:var(--mud);
+  letter-spacing:1px;
+}
+.upi-copy-btn{
+  background:rgba(185,136,60,.12);
+  border:1px solid rgba(185,136,60,.25);
+  color:var(--clay);
+  padding:11px 16px;
+  font-family:'Josefin Sans',sans-serif;
+  font-size:.65rem;letter-spacing:2px;
+  text-transform:uppercase;cursor:pointer;
+  transition:all .3s;white-space:nowrap;
+}
+.upi-copy-btn:hover{background:var(--clay);color:var(--cream);}
+.upi-hint{
+  font-size:.7rem;color:rgba(59,31,12,.45);
+  line-height:1.6;text-align:center;
+  font-family:'Josefin Sans',sans-serif;
+  letter-spacing:.5px;
+  margin-bottom:18px;
+}
+.upi-confirm-strip{
+  background:rgba(45,122,53,.07);
+  border:1px solid rgba(45,122,53,.2);
+  padding:12px 16px;
+  margin-bottom:16px;
+  font-size:.75rem;
+  color:#2D5A1B;
+  line-height:1.6;
+  font-family:'Josefin Sans',sans-serif;
+  letter-spacing:.5px;
+}
+.upi-confirm-strip strong{display:block;margin-bottom:2px;letter-spacing:1px;}
+.upi-done-btn{
+  width:100%;
+  background:var(--green);border:none;
+  color:#fff;padding:15px;
+  font-family:'Josefin Sans',sans-serif;
+  font-size:.72rem;letter-spacing:3px;
+  text-transform:uppercase;cursor:pointer;
+  transition:all .3s;
+}
+.upi-done-btn:hover{background:#1f5c24;transform:translateY(-1px);box-shadow:0 8px 24px rgba(45,122,53,.3);}
+.upi-close{
+  position:absolute;top:14px;right:16px;
+  background:none;border:none;
+  color:rgba(250,240,220,.5);
+  font-size:1.2rem;cursor:pointer;
+  line-height:1;transition:color .2s;
+}
+.upi-close:hover{color:var(--cream);}
+
 .float-wa{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:#25D366;color:#fff;font-size:1.6rem;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,.45);text-decoration:none;z-index:400;transition:transform .2s,box-shadow .2s;}
 .float-wa:hover{transform:scale(1.08);box-shadow:0 6px 24px rgba(37,211,102,.5);}
 
@@ -297,7 +468,7 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
   .add-btn,.qty-btn{min-height:44px;min-width:44px;}
   .qty-btn{padding:0;font-size:1.2rem;}
   .form-in,.form-sel,.coupon-in,.coupon-btn{min-height:44px;}
-  .checkout-btn,.wa-btn,.confirm-btn{min-height:48px;padding:16px;}
+  .checkout-btn,.wa-btn,.confirm-btn,.upi-btn{min-height:48px;padding:16px;}
   .sec-title{margin-bottom:18px;}
   .cat-tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin-bottom:18px;}
   .cat-tabs::-webkit-scrollbar{display:none;}
@@ -318,6 +489,8 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
   .coupon-row{flex-wrap:wrap;}
   .coupon-in{min-width:0;}
   .ph-title,.st-en{word-break:break-word;overflow-wrap:break-word;}
+  .upi-apps{grid-template-columns:repeat(3,1fr);}
+  .upi-modal{max-width:100%;margin:0;}
 }
 @media(max-width:600px){
   .pack-grid{grid-template-columns:1fr;gap:10px;}
@@ -334,6 +507,10 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
   .products-col{padding:16px 3%;}
   .vpack{padding:20px 16px;}
   .vp-price{font-size:1.5rem;}
+  .upi-apps{grid-template-columns:repeat(3,1fr);gap:8px;}
+  .upi-app-btn{padding:12px 6px;}
+  .upi-modal-body{padding:18px 18px;}
+  .upi-modal-head{padding:18px 18px 14px;}
 }
 @media(max-width:400px){
   .ph-badges{flex-direction:column;gap:4px;}
@@ -354,6 +531,109 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
 <div id="cur"></div>
 <div id="curR"></div>
 <div class="toast" id="toast"></div>
+
+<!-- ══ UPI PAYMENT MODAL ══ -->
+<div class="upi-overlay" id="upiOverlay" onclick="closeUpiModal(event)">
+  <div class="upi-modal" id="upiModal">
+    <button class="upi-close" onclick="closeUpiModal(null,true)">✕</button>
+
+    <!-- Header: amount -->
+    <div class="upi-modal-head">
+      <div class="upi-modal-title">Pay via UPI · यूपीआय द्वारे पेमेंट करा</div>
+      <div class="upi-modal-amount" id="upiModalAmount">₹0</div>
+      <div class="upi-modal-sub" id="upiModalSub">Pasture · Ratnagiri Cashew</div>
+    </div>
+
+    <div class="upi-modal-body">
+      <!-- App deep-links (generated dynamically) -->
+      <div class="upi-apps" id="upiApps">
+        <a class="upi-app-btn" id="upiGpay" href="#" target="_blank" rel="noopener">
+          <svg width="36" height="36" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M24 4C13 4 4 13 4 24s9 20 20 20 20-9 20-20S35 4 24 4z" fill="#fff"/>
+            <path d="M35.2 24.2c0-.7-.1-1.4-.2-2H24v3.8h6.3a5.4 5.4 0 01-2.3 3.5v2.9h3.7c2.2-2 3.5-5 3.5-8.2z" fill="#4285F4"/>
+            <path d="M24 36c3.2 0 5.8-1 7.7-2.8l-3.7-2.9c-1 .7-2.4 1.1-4 1.1-3 0-5.6-2-6.6-4.8H13.6v3c1.9 3.8 5.7 6.4 10.4 6.4z" fill="#34A853"/>
+            <path d="M17.4 26.6a7.3 7.3 0 010-4.6v-3h-3.8a12 12 0 000 10.6l3.8-3z" fill="#FBBC05"/>
+            <path d="M24 16.6c1.7 0 3.2.6 4.4 1.7l3.3-3.3C29.8 13.1 27.2 12 24 12c-4.7 0-8.5 2.6-10.4 6.4l3.8 3c1-2.8 3.6-4.8 6.6-4.8z" fill="#EA4335"/>
+          </svg>
+          <span class="upi-app-name">GPay</span>
+        </a>
+        
+        <a class="upi-app-btn" id="upiPhonepe" href="#" target="_blank" rel="noopener">
+          <svg width="36" height="36" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="48" height="48" rx="12" fill="#5F259F"/>
+            <path d="M15 13h10.5c5.2 0 8.5 3.1 8.5 7.8 0 5.3-3.7 8.2-9.3 8.2H20v7H15V13zm5 12h4.8c2.8 0 4.3-1.4 4.3-4s-1.5-4-4.3-4H20v8z" fill="#fff"/>
+          </svg>
+          <span class="upi-app-name">PhonePe</span>
+        </a>
+        
+        <a class="upi-app-btn" id="upiPaytm" href="#" target="_blank" rel="noopener">
+          <svg width="36" height="36" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="48" height="48" rx="12" fill="#002970"/>
+            <path d="M8 20.5C8 16 11.5 13 16 13h16c4.5 0 8 3 8 7.5v.5H32v-.5c0-2-1.5-3.5-3.5-3.5H20c-2 0-3.5 1.5-3.5 3.5V28c0 2 1.5 3.5 3.5 3.5h4v-5h4v9H16c-4.5 0-8-3-8-7.5v-7.5z" fill="#00BAF2"/>
+          </svg>
+          <span class="upi-app-name">Paytm</span>
+        </a>
+        
+        <a class="upi-app-btn" id="upiBhim" href="#" target="_blank" rel="noopener">
+          <svg width="36" height="36" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="48" height="48" rx="12" fill="#fff"/>
+            <rect width="48" height="16" rx="0" fill="#FF9933"/>
+            <rect y="16" width="48" height="16" fill="#fff"/>
+            <rect y="32" width="48" height="16" rx="0" fill="#138808"/>
+            <circle cx="24" cy="24" r="6" fill="none" stroke="#000080" stroke-width="1.5"/>
+            <circle cx="24" cy="24" r="1.2" fill="#000080"/>
+            <line x1="24" y1="18.5" x2="24" y2="29.5" stroke="#000080" stroke-width="1" opacity=".4"/>
+            <line x1="18.5" y1="24" x2="29.5" y2="24" stroke="#000080" stroke-width="1" opacity=".4"/>
+            <text x="24" y="42" font-size="5" fill="#138808" text-anchor="middle" font-family="sans-serif" font-weight="bold">BHIM</text>
+          </svg>
+          <span class="upi-app-name">BHIM</span>
+        </a>
+        
+        <a class="upi-app-btn" id="upiAmazon" href="#" target="_blank" rel="noopener">
+          <svg width="36" height="36" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="48" height="48" rx="12" fill="#FF9900"/>
+            <text x="24" y="28" font-size="11" fill="#fff" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold">amazon</text>
+            <path d="M13 32c5.5 2.5 16 2.5 22 0" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+            <path d="M33 30l3 2-1.5 2" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="upi-app-name">Amazon</span>
+        </a>
+        
+        <a class="upi-app-btn" id="upiOther" href="#" target="_blank" rel="noopener">
+          <svg width="36" height="36" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="48" height="48" rx="12" fill="#1C0F06"/>
+            <path d="M10 24h28M24 10v28" stroke="#C98B2A" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="24" cy="24" r="11" stroke="#C98B2A" stroke-width="2"/>
+            <path d="M13 17c3 2 5 4.5 5 7s-2 5-5 7M35 17c-3 2-5 4.5-5 7s2 5 5 7" stroke="#C98B2A" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <span class="upi-app-name">Any UPI</span>
+        </a>
+      </div>
+
+      <!-- Manual UPI ID copy -->
+      <div class="upi-divider"><span>or copy UPI ID · किंवा</span></div>
+      <div class="upi-id-row">
+        <div class="upi-id-display" id="upiIdDisplay">pasture@upi</div>
+        <button class="upi-copy-btn" onclick="copyUpiId()">Copy · कॉपी</button>
+      </div>
+      <div class="upi-hint">
+        Open any UPI app · Enter this ID · Enter amount · Pay<br>
+        कोणतेही UPI अॅप उघडा · हे ID टाका · रक्कम टाका · पेमेंट करा
+      </div>
+
+      <!-- After-payment instructions -->
+      <div class="upi-confirm-strip">
+        <strong>After paying · पेमेंट केल्यानंतर:</strong>
+        Screenshot your payment &amp; send it on WhatsApp — or click below to share your order details. We'll confirm within 2 hours.
+      </div>
+
+      <!-- Send order on WhatsApp after UPI -->
+      <button class="upi-done-btn" onclick="upiDoneWhatsApp()">
+        ✓ Paid — Send Order on WhatsApp · व्हॉट्सअॅपवर ऑर्डर पाठवा
+      </button>
+    </div>
+  </div>
+</div>
 
 <div id="bird">
   <video autoplay muted loop playsinline>
@@ -587,11 +867,12 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
       <div class="divider"></div>
       <div class="cart-row total"><span class="cr-lbl">Total · एकूण</span><span class="cr-val" id="cartTotalAmt">₹0</span></div>
       <div class="free-delivery" id="freeDel">Add ₹<span id="freeLeft">999</span> more for free delivery</div>
-
+      
+      <!-- ── SECONDARY: WhatsApp Order ── -->
       <button class="checkout-btn" onclick="proceedCheckout()">Checkout · पुढे जा</button>
       <button class="wa-btn" id="waBtn" onclick="orderWhatsApp()"><span>💬</span> Order via WhatsApp · व्हॉट्सअॅपवर ऑर्डर</button>
 
-      <!-- Address form -->
+      <!-- Address form + payment choice -->
       <div class="addr-section" id="addrSec">
         <div class="addr-title">Delivery Details · पत्ता सांगा</div>
         <div class="form-row">
@@ -620,11 +901,39 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
             </small>
           </div>
         </div>
-        <button class="confirm-btn" onclick="confirmOrder()">Confirm Order · ऑर्डर निश्चित करा 🌿</button>
+        
+        <!-- Payment options after address -->
+        <div style="margin-top:10px;margin-bottom:4px;font-family:'Josefin Sans',sans-serif;font-size:.7rem;letter-spacing:2px;color:#7A4A28;text-transform:uppercase;">
+          Select Payment Method · पेमेंट कसे कराल?
+        </div>
+        <div class="form-row full" style="margin-bottom:10px;">
+          <div class="form-field">
+            <div style="display:flex;gap:14px;align-items:center;font-size:.8rem;color:#3B1F0C;">
+              <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+                <input type="radio" name="payMethod" value="UPI" onclick="selectPaymentMethod('UPI')" checked>
+                <span>UPI</span>
+              </label>
+              <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+                <input type="radio" name="payMethod" value="COD" onclick="selectPaymentMethod('COD')">
+                <span>Cash on Delivery · COD</span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div id="payUpiWrap">
+          <button class="upi-btn" id="upiPayBtn" onclick="openUpiModal()">
+            <span class="upi-logo">💳</span>
+            Pay via UPI · यूपीआय ने पेमेंट करा
+          </button>
+        </div>
+        <div id="payCodWrap" style="display:none;">
+          <button class="confirm-btn" onclick="confirmOrder()">Place Order (COD) · कॅश ऑन डिलिव्हरी</button>
+        </div>
       </div>
 
       <div class="trust-strip">
-        <div class="trust-item"><span>🔒</span><span>Secure · Cash on delivery available · COD उपलब्ध</span></div>
+        <div class="trust-item"><span>💳</span><span>UPI · GPay · PhonePe · Paytm accepted</span></div>
+        <div class="trust-item"><span>🔒</span><span>Cash on delivery also available · COD उपलब्ध</span></div>
         <div class="trust-item"><span>🚚</span><span>Delivery in 3–5 days · ३-५ दिवसात पोहोचणार</span></div>
       </div>
 
@@ -643,7 +952,6 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
 <!-- ══════════════ FARMER PROMISE STRIP ══════════════ -->
 <div class="farmer-strip">
   <div style="display:grid;grid-template-columns:1fr 1fr;align-items:stretch;">
-    <!-- Left: farmer letter -->
     <div style="padding:56px 7%;border-right:1px solid rgba(185,136,60,.15);">
       <span style="font-family:'Caveat',cursive;font-size:1.3rem;color:var(--sage);display:block;margin-bottom:14px;">From the hands that picked your cashew</span>
       <h2 style="font-family:'Josefin Sans',sans-serif;font-size:clamp(1.4rem,2.5vw,2rem);font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--cream);line-height:1.2;margin-bottom:20px;">Why We Don't<br>Use <em style="font-style:italic;color:var(--sun);font-family:'Lora',serif;">Middlemen</em></h2>
@@ -652,38 +960,24 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
       <div style="font-family:'Caveat',cursive;font-size:1.3rem;color:var(--cream);">— Ramchandra Sawant, Ratnagiri</div>
       <div style="font-family:'Josefin Sans',sans-serif;font-size:.6rem;letter-spacing:2px;color:rgba(250,240,220,.4);text-transform:uppercase;margin-top:4px;">Third-Generation Cashew Farmer</div>
     </div>
-
-    <!-- Right: what happens when you order -->
     <div style="padding:56px 7%;">
       <span style="font-family:'Josefin Sans',sans-serif;font-size:.65rem;letter-spacing:3px;color:var(--sun);text-transform:uppercase;display:block;margin-bottom:22px;">What Happens When You Order</span>
       <div style="display:flex;flex-direction:column;gap:0;">
         <div style="display:flex;gap:16px;padding:16px 0;border-bottom:1px solid rgba(255,255,255,.05);">
           <div style="font-family:'Josefin Sans',sans-serif;font-size:.7rem;letter-spacing:2px;color:var(--sun);width:28px;flex-shrink:0;padding-top:2px;">01</div>
-          <div>
-            <div style="font-family:'Josefin Sans',sans-serif;font-size:.75rem;letter-spacing:1.5px;color:var(--cream);text-transform:uppercase;margin-bottom:3px;">Order Received</div>
-            <div style="font-size:.8rem;color:rgba(250,240,220,.55);line-height:1.6;">Your order arrives on our phone. We confirm within a few hours — sometimes, my son calls you himself.</div>
-          </div>
+          <div><div style="font-family:'Josefin Sans',sans-serif;font-size:.75rem;letter-spacing:1.5px;color:var(--cream);text-transform:uppercase;margin-bottom:3px;">Order Received</div><div style="font-size:.8rem;color:rgba(250,240,220,.55);line-height:1.6;">Your order arrives on our phone. We confirm within a few hours — sometimes, my son calls you himself.</div></div>
         </div>
         <div style="display:flex;gap:16px;padding:16px 0;border-bottom:1px solid rgba(255,255,255,.05);">
           <div style="font-family:'Josefin Sans',sans-serif;font-size:.7rem;letter-spacing:2px;color:var(--sun);width:28px;flex-shrink:0;padding-top:2px;">02</div>
-          <div>
-            <div style="font-family:'Josefin Sans',sans-serif;font-size:.75rem;letter-spacing:1.5px;color:var(--cream);text-transform:uppercase;margin-bottom:3px;">Graded by Hand</div>
-            <div style="font-size:.8rem;color:rgba(250,240,220,.55);line-height:1.6;">Village women from our community sort the exact grade you ordered — W180, W210, or W240 — by eye and touch. This is skill passed through generations.</div>
-          </div>
+          <div><div style="font-family:'Josefin Sans',sans-serif;font-size:.75rem;letter-spacing:1.5px;color:var(--cream);text-transform:uppercase;margin-bottom:3px;">Graded by Hand</div><div style="font-size:.8rem;color:rgba(250,240,220,.55);line-height:1.6;">Village women from our community sort the exact grade you ordered — W180, W210, or W240 — by eye and touch.</div></div>
         </div>
         <div style="display:flex;gap:16px;padding:16px 0;border-bottom:1px solid rgba(255,255,255,.05);">
           <div style="font-family:'Josefin Sans',sans-serif;font-size:.7rem;letter-spacing:2px;color:var(--sun);width:28px;flex-shrink:0;padding-top:2px;">03</div>
-          <div>
-            <div style="font-family:'Josefin Sans',sans-serif;font-size:.75rem;letter-spacing:1.5px;color:var(--cream);text-transform:uppercase;margin-bottom:3px;">Vacuum Sealed & Labelled</div>
-            <div style="font-size:.8rem;color:rgba(250,240,220,.55);line-height:1.6;">Your cashews go into food-grade vacuum pouches, sealed to lock in crunch and freshness. Each pack is labelled by hand with the harvest date.</div>
-          </div>
+          <div><div style="font-family:'Josefin Sans',sans-serif;font-size:.75rem;letter-spacing:1.5px;color:var(--cream);text-transform:uppercase;margin-bottom:3px;">Vacuum Sealed & Labelled</div><div style="font-size:.8rem;color:rgba(250,240,220,.55);line-height:1.6;">Your cashews go into food-grade vacuum pouches, sealed to lock in crunch and freshness.</div></div>
         </div>
         <div style="display:flex;gap:16px;padding:16px 0;">
           <div style="font-family:'Josefin Sans',sans-serif;font-size:.7rem;letter-spacing:2px;color:var(--sun);width:28px;flex-shrink:0;padding-top:2px;">04</div>
-          <div>
-            <div style="font-family:'Josefin Sans',sans-serif;font-size:.75rem;letter-spacing:1.5px;color:var(--cream);text-transform:uppercase;margin-bottom:3px;">Shipped Within 48 Hours</div>
-            <div style="font-size:.8rem;color:rgba(250,240,220,.55);line-height:1.6;">We hand the parcel to the courier ourselves. From our farm gate to your kitchen door. No warehouse. No cold room. No middleman.</div>
-          </div>
+          <div><div style="font-family:'Josefin Sans',sans-serif;font-size:.75rem;letter-spacing:1.5px;color:var(--cream);text-transform:uppercase;margin-bottom:3px;">Shipped Within 48 Hours</div><div style="font-size:.8rem;color:rgba(250,240,220,.55);line-height:1.6;">We hand the parcel to the courier ourselves. From our farm gate to your kitchen door. No warehouse. No middleman.</div></div>
         </div>
       </div>
     </div>
@@ -724,7 +1018,6 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
   </div>
 </footer>
 
-<!-- Floating WhatsApp: direct link to chat (href set by app-config) -->
 <a id="floatWa" href="https://wa.me/919404598725" target="_blank" rel="noopener" class="float-wa" title="Chat on WhatsApp · व्हॉट्सअॅपवर चॅट करा" style="display:none;">💬</a>
 <script>
   document.addEventListener('siteConfigReady', function(){
@@ -737,7 +1030,7 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
 </script>
 
 <script>
-// Cursor
+// ── Cursor ──────────────────────────────────────────────────────────────────
 const cur=document.getElementById('cur'),curR=document.getElementById('curR');
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
@@ -747,11 +1040,18 @@ document.querySelectorAll('a,button,input,select').forEach(el=>{
   el.addEventListener('mouseleave',()=>{cur.style.width='10px';cur.style.height='10px';curR.style.width='36px';curR.style.height='36px';});
 });
 
-// CART STATE — uses SITE_CONFIG (from js/app-config.js) after siteConfigReady
+// ── CONFIG ──────────────────────────────────────────────────────────────────
 let cart={},discount=0;
 var FREE_SHIP=999;
 var DELIVERY_CHARGE=80;
 var WHATSAPP_NUMBER='919404598725';
+
+// ── ⚠️  SET YOUR UPI ID HERE ──────────────────────────────────────────────
+// Replace with your actual UPI ID (e.g. yourname@okicici, 9876543210@upi)
+var UPI_ID = 'pasture@upi';
+var UPI_NAME = 'Pasture';   // Name shown in UPI apps
+// ─────────────────────────────────────────────────────────────────────────
+
 document.addEventListener('siteConfigReady',function(ev){
   var C=ev.detail||window.SITE_CONFIG;
   if(C&&C.delivery){
@@ -761,8 +1061,12 @@ document.addEventListener('siteConfigReady',function(ev){
     if(!isNaN(ch)&&ch>=0)DELIVERY_CHARGE=ch;
   }
   if(C&&C.brand&&C.brand.phoneWhatsApp)WHATSAPP_NUMBER=C.brand.phoneWhatsApp;
+  // Optional: load UPI ID from site config if you add it there
+  if(C&&C.upiId) UPI_ID=C.upiId;
+  if(C&&C.brand&&C.brand.name) UPI_NAME=C.brand.name;
 });
 
+// ── CART ────────────────────────────────────────────────────────────────────
 function getQtyEl(id){return document.getElementById('qty-'+id);}
 function changeQty(id,d){
   const el=getQtyEl(id);if(!el)return;
@@ -783,7 +1087,6 @@ function addToCart(id,name,weight,price,icon){
     setTimeout(()=>{btn.textContent='Add · काटात टाका';btn.classList.remove('added');},2000);}
   showToast(icon+' '+name+' added!');
   updateNavCart();
-  // Pulse cart pill
   const pill=document.querySelector('.cart-pill');
   pill.classList.remove('pulse');void pill.offsetWidth;pill.classList.add('pulse');
   setTimeout(()=>pill.classList.remove('pulse'),700);
@@ -842,42 +1145,160 @@ function applyCoupon(){
   const c=coupons.find(x=>x.code===code);
   if(c){
     const base=Object.values(cart).reduce((s,i)=>s+i.price*i.qty,0);
-    if(c.type==='percent'){
-      let v=Number(c.value);
-      if(isNaN(v))v=0;
-      discount=Math.max(0,Math.round(base*v/100));
-    }else{
-      let fv=Number(c.value);
-      if(isNaN(fv))fv=0;
-      discount=Math.max(0,fv);
-    }
-    showToast('✓ Discount applied!');
-    renderCart();
+    if(c.type==='percent'){let v=Number(c.value);if(isNaN(v))v=0;discount=Math.max(0,Math.round(base*v/100));}
+    else{let fv=Number(c.value);if(isNaN(fv))fv=0;discount=Math.max(0,fv);}
+    showToast('✓ Discount applied!');renderCart();
   }
   else showToast('Invalid code · चुकीचा कोड');
 }
 
+// ── UPI MODAL ───────────────────────────────────────────────────────────────
+function getCartTotal(){
+  const items=Object.values(cart);
+  const sub=items.reduce((s,i)=>s+i.price*i.qty,0);
+  const del=sub>=FREE_SHIP?0:DELIVERY_CHARGE;
+  return Math.max(0,sub-(isNaN(discount)?0:discount)+del);
+}
+
+function buildUpiLink(app,amount){
+  // Universal UPI deep-link — works on Android; iOS opens App Store or browser
+  const base='upi://pay?';
+  const params=new URLSearchParams({
+    pa: UPI_ID,
+    pn: UPI_NAME,
+    am: amount.toFixed(2),
+    cu: 'INR',
+    tn: 'Pasture Order'
+  });
+  const link=base+params.toString();
+  // App-specific intent links (Android)
+  const intents={
+    gpay:    'intent://pay?'+params+'#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;end',
+    phonepe: 'intent://pay?'+params+'#Intent;scheme=upi;package=com.phonepe.app;end',
+    paytm:   'intent://pay?'+params+'#Intent;scheme=upi;package=net.one97.paytm;end',
+    bhim:    'intent://pay?'+params+'#Intent;scheme=upi;package=in.org.npci.upiapp;end',
+    amazon:  'intent://pay?'+params+'#Intent;scheme=upi;package=in.amazon.mShop.android.shopping;end',
+  };
+  return intents[app]||link;
+}
+
+function openUpiModal(){
+  if(!Object.keys(cart).length){showToast('Add items first · आधी काजू निवडा');return;}
+  if(paymentMethod!=='UPI'){showToast('Please select UPI payment · UPI निवडा');return;}
+  // Require address to be filled before showing UPI options
+  const addr=getValidatedAddress();
+  if(!addr)return;
+  const total=getCartTotal();
+  // Update modal header
+  document.getElementById('upiModalAmount').textContent='₹'+total.toLocaleString();
+  const items=Object.values(cart);
+  document.getElementById('upiModalSub').textContent=
+    items.map(i=>i.name+' ×'+i.qty).join(', ').substring(0,60)+(items.length>2?'…':'');
+  // Set UPI ID display
+  document.getElementById('upiIdDisplay').textContent=UPI_ID;
+  // Wire up app buttons
+  document.getElementById('upiGpay').href=buildUpiLink('gpay',total);
+  document.getElementById('upiPhonepe').href=buildUpiLink('phonepe',total);
+  document.getElementById('upiPaytm').href=buildUpiLink('paytm',total);
+  document.getElementById('upiBhim').href=buildUpiLink('bhim',total);
+  document.getElementById('upiAmazon').href=buildUpiLink('amazon',total);
+  document.getElementById('upiOther').href='upi://pay?pa='+encodeURIComponent(UPI_ID)+'&pn='+encodeURIComponent(UPI_NAME)+'&am='+total.toFixed(2)+'&cu=INR&tn=Pasture+Order';
+  // Open
+  document.getElementById('upiOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeUpiModal(e,force){
+  if(force||!e||e.target===document.getElementById('upiOverlay')){
+    document.getElementById('upiOverlay').classList.remove('open');
+    document.body.style.overflow='';
+  }
+}
+
+function copyUpiId(){
+  navigator.clipboard.writeText(UPI_ID).then(()=>{
+    showToast('✓ UPI ID copied! · कॉपी झाले!');
+    const btn=document.querySelector('.upi-copy-btn');
+    btn.textContent='Copied ✓';
+    setTimeout(()=>{btn.textContent='Copy · कॉपी';},2000);
+  }).catch(()=>{
+    // Fallback for older browsers
+    const el=document.createElement('textarea');
+    el.value=UPI_ID;document.body.appendChild(el);el.select();
+    document.execCommand('copy');document.body.removeChild(el);
+    showToast('✓ UPI ID copied!');
+  });
+}
+
+function upiDoneWhatsApp(){
+  closeUpiModal(null,true);
+  const items=Object.values(cart);
+  if(!items.length){showToast('Cart is empty');return;}
+  const addr=getValidatedAddress();
+  if(!addr)return;
+  const total=getCartTotal();
+  const lines=items.map(i=>`• ${i.name} ${i.weight} × ${i.qty} = ₹${(i.price*i.qty).toLocaleString()}`).join('\n');
+  const msg=
+    `नमस्कार Pasture! 🌿\n\n`+
+    `मी UPI द्वारे पेमेंट केले आहे.\n`+
+    `I have paid via UPI.\n\n`+
+    `Order:\n${lines}\n\n`+
+    `Total Paid: ₹${total.toLocaleString()}\n`+
+    `UPI ID: ${UPI_ID}\n\n`+
+    `Please confirm my order. 🙏`;
+  window.open('https://wa.me/'+(WHATSAPP_NUMBER||'919404598725')+'?text='+encodeURIComponent(msg),'_blank');
+  // Auto-place order in system as prepaid UPI
+  placeOrder(addr,'UPI');
+}
+
+// ── CHECKOUT & PAYMENT ──────────────────────────────────────────────────────
 let checkoutOpen=false;
+let paymentMethod='UPI';
+
+function selectPaymentMethod(m){
+  paymentMethod=m;
+  const upi=document.getElementById('payUpiWrap');
+  const cod=document.getElementById('payCodWrap');
+  if(upi)upi.style.display=m==='UPI'?'block':'none';
+  if(cod)cod.style.display=m==='COD'?'block':'none';
+}
+
 function proceedCheckout(){
   if(!Object.keys(cart).length){showToast('Add items first · आधी काजू निवडा');return;}
   checkoutOpen=!checkoutOpen;
   const a=document.getElementById('addrSec');
   a.classList.toggle('open',checkoutOpen);
-  if(checkoutOpen)a.scrollIntoView({behavior:'smooth',block:'nearest'});
+  if(checkoutOpen){
+    a.scrollIntoView({behavior:'smooth',block:'nearest'});
+    // default to UPI selected when opening
+    selectPaymentMethod(paymentMethod||'UPI');
+  }
 }
 
-function confirmOrder(){
+function getValidatedAddress(){
   const f=document.getElementById('fname').value.trim();
   const ph=document.getElementById('phone').value.trim();
   const ad=document.getElementById('addr').value.trim();
   const ci=document.getElementById('city').value.trim();
   const st=document.getElementById('state').value;
   if(!f||!ph||!ad||!ci||!st){showToast('Please fill required fields · सर्व माहिती भरा');return;}
-  if(st.indexOf('Maharashtra')===-1 && st.indexOf('महाराष्ट्र')===-1){
-    showToast('Currently we only process online orders within Maharashtra. For other states, please order via WhatsApp.');
+  if(st.indexOf('Maharashtra')===-1&&st.indexOf('महाराष्ट्र')===-1){
+    showToast('Currently we only deliver within Maharashtra online. Please order via WhatsApp for other states.');
     try{orderWhatsApp();}catch(e){}
-    return;
+    return null;
   }
+  return {
+    firstName:f,
+    lastName:document.getElementById('lname').value.trim(),
+    phone:ph,
+    address:ad,
+    city:ci,
+    pincode:document.getElementById('pin').value.trim(),
+    state:st
+  };
+}
+
+function placeOrder(addr,method){
   const code='YH-'+Math.random().toString(36).substr(2,6).toUpperCase();
   document.getElementById('osCode').textContent=code;
   document.getElementById('cartMain').style.display='none';
@@ -887,22 +1308,40 @@ function confirmOrder(){
   showToast('🎉 ऑर्डर मिळाली! Order placed!');
   var items=Object.values(cart);
   var sub=items.reduce((s,i)=>s+i.price*i.qty,0);
-  var delRaw=sub>=FREE_SHIP?0:DELIVERY_CHARGE;
-  var del=isNaN(delRaw)?0:delRaw;
-  var disc=isNaN(discount)?0:discount;
-  var total=sub-disc+del;
-  var payload={orderId:code,items:items.map(i=>({id:i.id,name:i.name,weight:i.weight,price:i.price,qty:i.qty})),subtotal:sub,discount:discount,delivery:del,total:total,firstName:f,lastName:document.getElementById('lname').value.trim(),phone:ph,address:ad,city:ci,pincode:document.getElementById('pin').value.trim(),state:st};
+  var del=sub>=FREE_SHIP?0:DELIVERY_CHARGE;
+  var total=sub-(isNaN(discount)?0:discount)+del;
+  var payload={
+    orderId:code,
+    items:items.map(i=>({id:i.id,name:i.name,weight:i.weight,price:i.price,qty:i.qty})),
+    subtotal:sub,
+    discount:discount,
+    delivery:del,
+    total:total,
+    firstName:addr.firstName,
+    lastName:addr.lastName,
+    phone:addr.phone,
+    address:addr.address,
+    city:addr.city,
+    pincode:addr.pincode,
+    state:addr.state,
+    paymentMethod:method||'COD'
+  };
   fetch('/api/order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(function(){});
   cart={};discount=0;updateNavCart();
+}
+
+function confirmOrder(){
+  if(paymentMethod!=='COD'){showToast('Please select Cash on Delivery · COD निवडा');return;}
+  const addr=getValidatedAddress();
+  if(!addr)return;
+  placeOrder(addr,'COD');
 }
 
 function resetOrder(){
   document.getElementById('orderSuccess').classList.remove('show');
   document.getElementById('orderSuccess').style.display='none';
   document.getElementById('cartEmpty').style.display='block';
-  document.getElementById('fname').value='';document.getElementById('lname').value='';
-  document.getElementById('phone').value='';document.getElementById('addr').value='';
-  document.getElementById('city').value='';document.getElementById('pin').value='';
+  ['fname','lname','phone','addr','city','pin'].forEach(id=>{document.getElementById(id).value='';});
   document.getElementById('state').value='';
   document.getElementById('addrSec').classList.remove('open');
   checkoutOpen=false;
@@ -919,7 +1358,7 @@ function orderWhatsApp(){
 
 function scrollToCart(){document.getElementById('cartCol').scrollIntoView({behavior:'smooth'});}
 
-// Tabs
+// ── TABS ────────────────────────────────────────────────────────────────────
 function switchTab(t){
   const cs=document.getElementById('cashewSec'),hs=document.getElementById('hapusSec');
   document.querySelectorAll('.cat-tab').forEach(tb=>tb.classList.remove('active'));
@@ -928,7 +1367,7 @@ function switchTab(t){
   if(t==='hapus'){cs.style.display='none';hs.style.display='block';document.getElementById('tabHapus').classList.add('active');}
 }
 
-// Toast
+// ── TOAST ───────────────────────────────────────────────────────────────────
 let toastT;
 function showToast(msg){
   const t=document.getElementById('toast');
@@ -936,17 +1375,17 @@ function showToast(msg){
   clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2800);
 }
 
-// Progress bar
+// ── PROGRESS BAR ─────────────────────────────────────────────────────────────
 window.addEventListener('scroll',()=>{
   const h=document.documentElement.scrollHeight-window.innerHeight;
   if(h>0)document.getElementById('progress-bar').style.width=(scrollY/h*100)+'%';
 });
 
-// Reveals — improved threshold
+// ── REVEAL ───────────────────────────────────────────────────────────────────
 const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}}),{threshold:.08,rootMargin:'0px 0px -30px 0px'});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
-// Leaf particles on scroll
+// ── LEAF PARTICLES ───────────────────────────────────────────────────────────
 let lastLeaf=0;
 window.addEventListener('scroll',()=>{
   const now=Date.now();if(now-lastLeaf<1200)return;lastLeaf=now;
@@ -959,7 +1398,7 @@ const lf=document.createElement('style');
 lf.textContent='@keyframes lf{0%{transform:translateY(0) rotate(0deg);opacity:0}10%{opacity:1}100%{transform:translateY(120vh) rotate(120deg);opacity:0}}';
 document.head.appendChild(lf);
 
-// ══ GRADE INFO TOOLTIPS ══
+// ── GRADE TOOLTIPS ───────────────────────────────────────────────────────────
 const gradeTips={
   w180:{title:'W180 — Jumbo Grade',mr:'सर्वात मोठा काजू · Most Prized',body:'Only 180 whole kernels per pound. The largest, rarest, most expensive grade. Butter-soft texture. Ideal for gifting & premium snacking.'},
   w210:{title:'W210 — Select Large',mr:'निवडक मोठा · Mithai Grade',body:'210 kernels per pound. Excellent for Indian sweets — retains shape perfectly when cooked in ghee. Popular for Diwali gifts & halwa.'},
@@ -986,8 +1425,8 @@ document.querySelectorAll('[data-tip]').forEach(el=>{
   el.addEventListener('mouseleave',()=>{ptHide=setTimeout(()=>ptip.classList.remove('show'),150);});
 });
 
-// Magnetic buttons
-document.querySelectorAll('.checkout-btn,.btn-white,.wa-btn').forEach(btn=>{
+// ── MAGNETIC BUTTONS ─────────────────────────────────────────────────────────
+document.querySelectorAll('.checkout-btn,.wa-btn,.upi-btn').forEach(btn=>{
   btn.addEventListener('mousemove',e=>{
     const r=btn.getBoundingClientRect();
     const x=(e.clientX-r.left-r.width/2)*.18;
