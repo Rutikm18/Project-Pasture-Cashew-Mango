@@ -19,6 +19,9 @@ function requireAdmin(req) {
 let orders = [];
 // In-memory waitlist (Hapus notify signups)
 let waitlist = [];
+// Analytics events (pageviews, clicks) — last 2000, in-memory
+const ANALYTICS_MAX = 2000;
+let analyticsEvents = [];
 
 // JSON body parser for API routes
 app.use(express.json());
@@ -132,6 +135,60 @@ app.options('/api/notify', (req, res) => {
   res.status(204).end();
 });
 
+// GET /api/analytics (admin only when ADMIN_SECRET set)
+app.get('/api/analytics', (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Admin-Key');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('Cache-Control', 'no-store');
+  if (!requireAdmin(req)) {
+    return res.status(401).json({ error: 'Admin access required.' });
+  }
+  const pageviews = analyticsEvents.filter((e) => e.type === 'pageview').length;
+  const clicks = analyticsEvents.filter((e) => e.type === 'click').length;
+  res.status(200).json({
+    events: analyticsEvents,
+    summary: { pageviews, clicks, total: analyticsEvents.length }
+  });
+});
+
+// POST /api/analytics (record pageview / click from frontend)
+app.post('/api/analytics', (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  securityHeaders(res);
+  try {
+    const body = req.body || {};
+    const ip = req.ip || req.headers['x-forwarded-for'] || (req.connection && req.connection.remoteAddress) || '';
+    const event = {
+      type: body.type || 'event',
+      page: body.page || '',
+      url: body.url || '',
+      referrer: body.referrer || '',
+      userAgent: (body.userAgent || '').slice(0, 400),
+      screen: body.screen || {},
+      element: body.element || '',
+      text: (body.text || '').slice(0, 120),
+      href: (body.href || '').slice(0, 300),
+      timestamp: body.timestamp || new Date().toISOString(),
+      serverTime: new Date().toISOString(),
+      ip: (typeof ip === 'string' ? ip : (ip && ip[0]) || '').slice(0, 45)
+    };
+    analyticsEvents.push(event);
+    if (analyticsEvents.length > ANALYTICS_MAX) analyticsEvents = analyticsEvents.slice(-ANALYTICS_MAX);
+    res.status(200).json({ ok: true });
+  } catch (e) {
+    console.error('[analytics]', e);
+    res.status(400).json({ error: 'Invalid payload' });
+  }
+});
+
+app.options('/api/analytics', (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Admin-Key');
+  res.status(204).end();
+});
+
 // GET /api/order (admin only when ADMIN_SECRET set)
 app.get('/api/order', (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -211,7 +268,7 @@ function startServer(port) {
     console.log('  Pasture — local server (no Vercel)');
     console.log('  Open: http://localhost:' + port);
     console.log('  Root redirects to /cashew.html');
-    console.log('  API: GET/PUT /api/config, /api/notify, /api/order');
+    console.log('  API: GET/PUT /api/config, /api/notify, /api/order, /api/analytics');
     console.log('');
   });
   server.on('error', (err) => {

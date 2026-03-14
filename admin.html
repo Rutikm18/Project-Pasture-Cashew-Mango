@@ -170,13 +170,32 @@
     <p class="note">On serverless, the list may reset on deploy; for persistent storage use Vercel KV (see README).</p>
   </section>
 
+  <section id="analyticsSec">
+    <h2>Analytics · Clicks &amp; pageviews</h2>
+    <p class="note" style="margin-bottom: 12px;">Pageviews and button/link clicks from cashew, order, and hapus pages. Includes time, page, browser (user agent), IP, and element clicked. Stored in memory — resets on server restart.</p>
+    <div class="row" style="margin-bottom: 14px;">
+      <span><strong>Pageviews</strong></span><span id="analyticsPageviews">0</span>
+    </div>
+    <div class="row" style="margin-bottom: 14px;">
+      <span><strong>Number of clicks</strong></span><span id="analyticsClicks">0</span>
+    </div>
+    <div class="orders-wrap">
+      <table class="orders-table" id="analyticsTable">
+        <thead><tr><th>Time</th><th>Type</th><th>Page</th><th>Element / Text</th><th>IP</th><th>Browser</th></tr></thead>
+        <tbody id="analyticsBody"></tbody>
+      </table>
+    </div>
+    <p id="analyticsEmpty" class="orders-empty" style="display:none;">No analytics events yet. Browse cashew / order / hapus pages to generate pageviews and clicks.</p>
+  </section>
+
   <section id="responsesSec">
     <h2>Backend responses (raw JSON)</h2>
-    <p class="note" style="margin-bottom: 12px;">See exactly what each API returns. Use the tabs and Refresh to inspect config, orders, and waitlist.</p>
+    <p class="note" style="margin-bottom: 12px;">See exactly what each API returns. Use the tabs and Refresh to inspect config, orders, waitlist, and analytics.</p>
     <div class="api-tabs">
       <button type="button" class="api-tab active" data-api="config">GET /api/config</button>
       <button type="button" class="api-tab" data-api="order">GET /api/order</button>
       <button type="button" class="api-tab" data-api="notify">GET /api/notify</button>
+      <button type="button" class="api-tab" data-api="analytics">GET /api/analytics</button>
       <button type="button" class="api-refresh api-tab" id="apiRefresh">Refresh</button>
     </div>
     <div class="api-endpoint" id="apiEndpoint">GET /api/config</div>
@@ -188,6 +207,7 @@
       const CONFIG_URL = '/api/config';
       const ORDERS_URL = '/api/order';
       const NOTIFY_URL = '/api/notify';
+      const ANALYTICS_URL = '/api/analytics';
       const STORAGE_KEY = 'pasture_admin_key';
 
       function el(id) { return document.getElementById(id); }
@@ -229,7 +249,8 @@
             hideLogin();
             loadOrders();
             loadWaitlist();
-            if (currentApi === 'order' || currentApi === 'notify') showApiResponse(currentApi);
+            loadAnalyticsMaybe();
+            if (currentApi === 'order' || currentApi === 'notify' || currentApi === 'analytics') showApiResponse(currentApi);
           })
           .catch(function () {
             el('adminErr').textContent = 'Could not verify. Check connection.';
@@ -243,13 +264,13 @@
         if (key) {
           fetch(ORDERS_URL, { headers: { 'X-Admin-Key': key } }).then(function (r) {
             if (r.status === 401) { clearAdminKey(); showLogin(); }
-            else { hideLogin(); loadOrders(); loadWaitlist(); }
+            else { hideLogin(); loadOrders(); loadWaitlist(); loadAnalyticsMaybe(); }
           });
           return;
         }
         fetch(ORDERS_URL).then(function (r) {
           if (r.status === 401) showLogin();
-          else { hideLogin(); loadOrders(); loadWaitlist(); el('logoutSpan').style.display = 'none'; }
+          else { hideLogin(); loadOrders(); loadWaitlist(); loadAnalyticsMaybe(); el('logoutSpan').style.display = 'none'; }
         });
       }
       initAuth();
@@ -471,6 +492,64 @@
         if (getAdminKey()) loadWaitlist();
       }
 
+      function loadAnalytics() {
+        fetchAuth(ANALYTICS_URL)
+          .then(function (r) {
+            if (!r.ok) {
+              if (r.status === 401) {
+                el('analyticsEmpty').textContent = 'Unlock with your admin secret (above) to view analytics.';
+              } else {
+                el('analyticsEmpty').textContent = 'Could not load analytics (status ' + r.status + ').';
+              }
+              el('analyticsBody').innerHTML = '';
+              el('analyticsEmpty').style.display = 'block';
+              return null;
+            }
+            return r.json();
+          })
+          .then(function (data) {
+            if (data === null) return;
+            var events = Array.isArray(data) ? data : (data.events || []);
+            var summary = data.summary || { pageviews: 0, clicks: 0 };
+            if (el('analyticsPageviews')) el('analyticsPageviews').textContent = summary.pageviews != null ? summary.pageviews : events.filter(function (e) { return e.type === 'pageview'; }).length;
+            if (el('analyticsClicks')) el('analyticsClicks').textContent = summary.clicks != null ? summary.clicks : events.filter(function (e) { return e.type === 'click'; }).length;
+            var tbody = el('analyticsBody');
+            var empty = el('analyticsEmpty');
+            tbody.innerHTML = '';
+            if (!events.length) {
+              empty.textContent = 'No analytics events yet. Browse cashew, order, or hapus pages to generate pageviews and clicks.';
+              empty.style.display = 'block';
+              return;
+            }
+            empty.style.display = 'none';
+            var list = events.slice(-400).reverse();
+            list.forEach(function (ev) {
+              var tr = document.createElement('tr');
+              var time = ev.serverTime || ev.timestamp || '—';
+              time = time.slice(0, 19).replace('T', ' ');
+              var elemText = (ev.element || '') + (ev.text ? ' · ' + ev.text : '');
+              var ua = (ev.userAgent || '').slice(0, 50);
+              if ((ev.userAgent || '').length > 50) ua += '…';
+              tr.innerHTML =
+                '<td>' + escapeHtml(time) + '</td>' +
+                '<td>' + escapeHtml(ev.type || '—') + '</td>' +
+                '<td>' + escapeHtml(ev.page || '—') + '</td>' +
+                '<td>' + escapeHtml(elemText || '—') + '</td>' +
+                '<td>' + escapeHtml(ev.ip || '—') + '</td>' +
+                '<td style="font-size:.7rem;">' + escapeHtml(ua) + '</td>';
+              tbody.appendChild(tr);
+            });
+          })
+          .catch(function () {
+            el('analyticsEmpty').textContent = 'Could not load analytics. Open this page via your server (e.g. http://localhost:3000/admin.html).';
+            el('analyticsEmpty').style.display = 'block';
+            el('analyticsBody').innerHTML = '';
+          });
+      }
+      function loadAnalyticsMaybe() {
+        loadAnalytics();
+      }
+
       loadConfig();
 
       // Auto-refresh backend data every 5 minutes
@@ -478,7 +557,8 @@
         loadConfig();
         loadOrdersMaybe();
         loadWaitlistMaybe();
-        if (currentApi === 'config' || currentApi === 'order' || currentApi === 'notify') {
+        loadAnalyticsMaybe();
+        if (currentApi === 'config' || currentApi === 'order' || currentApi === 'notify' || currentApi === 'analytics') {
           showApiResponse(currentApi);
         }
       }, 5 * 60 * 1000);
@@ -487,7 +567,8 @@
       var apiUrls = {
         config: '/api/config',
         order: '/api/order',
-        notify: '/api/notify'
+        notify: '/api/notify',
+        analytics: '/api/analytics'
       };
       var currentApi = 'config';
       var preEl = document.getElementById('apiResponse');
@@ -503,7 +584,7 @@
           b.classList.toggle('active', b.getAttribute('data-api') === apiKey);
         });
         var opts = { headers: {} };
-        if (apiKey === 'order' || apiKey === 'notify') Object.assign(opts.headers, authHeaders());
+        if (apiKey === 'order' || apiKey === 'notify' || apiKey === 'analytics') Object.assign(opts.headers, authHeaders());
         fetch(url, opts)
           .then(function (r) {
             if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
