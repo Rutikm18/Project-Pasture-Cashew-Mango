@@ -45,7 +45,9 @@ steps:
       - '--max-instances'
       - '5'
       - '--set-env-vars'
-      - 'NODE_ENV=production'
+      - 'NODE_ENV=production,ADMIN_SECRET=${_ADMIN_SECRET}'
+      - '--project'
+      - '$PROJECT_ID'
 
 images:
   - 'gcr.io/$PROJECT_ID/pashure:$COMMIT_SHA'

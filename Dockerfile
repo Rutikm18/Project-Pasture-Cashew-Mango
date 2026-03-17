@@ -14,6 +14,9 @@ RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# Give appuser ownership of all files
+RUN chown -R appuser:appgroup /app
+
 # Cloud Run injects PORT=8080; server.js already reads process.env.PORT
 ENV PORT=8080
 EXPOSE 8080
