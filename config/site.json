@@ -88,9 +88,9 @@
       "value": 10
     },
     {
-      "code": "YOURHARVEST",
-      "type": "fixed",
-      "value": 20
+      "code": "GUDIPADVA26",
+      "type": "percent",
+      "value": 15
     }
   ]
 }

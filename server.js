@@ -268,7 +268,8 @@ function startServer(port) {
     console.log('  Pasture — local server (no Vercel)');
     console.log('  Open: http://localhost:' + port);
     console.log('  Root redirects to /cashew.html');
-    console.log('  API: GET/PUT /api/config, /api/notify, /api/order, /api/analytics');
+    console.log('  Pages: cashew.html, mango.html, order.html, admin.html');
+  console.log('  API: GET/PUT /api/config, /api/notify, /api/order, /api/analytics');
     console.log('');
   });
   server.on('error', (err) => {
