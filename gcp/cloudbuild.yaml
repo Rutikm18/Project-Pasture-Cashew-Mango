@@ -1,5 +1,5 @@
 # Cloud Build CI/CD — builds image and deploys to Cloud Run
-# Region: asia-south1 (Mumbai) — closest to Ratnagiri customers
+# Region: us-central1 — matches domain mapping region
 # Trigger this via Cloud Build GitHub trigger or: gcloud builds submit
 
 steps:
@@ -30,7 +30,7 @@ steps:
       - '--image'
       - 'gcr.io/$PROJECT_ID/pashure:$COMMIT_SHA'
       - '--region'
-      - 'asia-south1'
+      - 'us-central1'
       - '--platform'
       - 'managed'
       - '--allow-unauthenticated'
