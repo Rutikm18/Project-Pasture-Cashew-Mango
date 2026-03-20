@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pasture — Order Cashew · काजू ऑर्डर</title>
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/favicon.png">
 <link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Marathi:ital@0;1&family=Josefin+Sans:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,600;1,400;1,600&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
 <script src="js/app-config.js"></script>
 <script src="js/analytics.js"></script>
@@ -597,11 +599,32 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
   .cart-col{padding:12px 10px;}
   .coupon-in,.coupon-btn{min-height:44px;}
 }
+
+/* ── PHOTO TICKER ── */
+#photo-ticker{background:#120A02;overflow:hidden;border-bottom:1px solid rgba(232,185,74,.18);height:38px;display:flex;align-items:center;position:relative;z-index:200;}
+.ticker-track{display:flex;white-space:nowrap;animation:tickerScroll 22s linear infinite;}
+.ticker-track:hover{animation-play-state:paused;}
+.ticker-item{font-family:'Josefin Sans',sans-serif;font-size:.6rem;letter-spacing:2.8px;color:rgba(242,217,139,.72);text-decoration:none;text-transform:uppercase;padding:0 52px;transition:color .2s;}
+.ticker-item:hover{color:#E8B94A;}
+.ticker-dot{color:rgba(232,185,74,.35);padding:0 8px;}
+@keyframes tickerScroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
 </style>
 </head>
 <body>
 
 <div id="progress-bar"></div>
+
+<!-- PHOTO TICKER -->
+<div id="photo-ticker" onclick="window.location.href='cashew.html#actual-photos'" style="cursor:pointer;" title="See actual product photos">
+  <div class="ticker-track">
+    <a href="cashew.html#actual-photos" class="ticker-item">📸 Real Product Photos · हे आमचे खरे काजू — See what you're actually buying</a><span class="ticker-dot">✦</span>
+    <a href="cashew.html#actual-photos" class="ticker-item">Actual photos · थेट आमच्या शेतातून — Ratnagiri Farm, Konkan</a><span class="ticker-dot">✦</span>
+    <a href="cashew.html#actual-photos" class="ticker-item">📸 Real Product Photos · हे आमचे खरे काजू — See what you're actually buying</a><span class="ticker-dot">✦</span>
+    <a href="cashew.html#actual-photos" class="ticker-item">What you're buying  · थेट आमच्या शेतातून — Ratnagiri Farm, Konkan</a><span class="ticker-dot">✦</span>
+    <a href="cashew.html#actual-photos" class="ticker-item">📸 Real Product Photos · हे आमचे खरे काजू — See what you're actually buying</a><span class="ticker-dot">✦</span>
+    <a href="cashew.html#actual-photos" class="ticker-item">Actual photos · थेट आमच्या शेतातून — Ratnagiri Farm, Konkan</a><span class="ticker-dot">✦</span>
+  </div>
+</div>
 <div id="prod-tooltip"><strong id="pt-title"></strong><em id="pt-mr"></em><span id="pt-body"></span></div>
 <div id="cur"></div>
 <div id="curR"></div>

@@ -1,6 +1,9 @@
 # Dependencies
 node_modules/
 
+# Persistent data (orders, waitlist, analytics) — do not commit
+data/
+
 # Vercel
 .vercel/
 .env*.local
