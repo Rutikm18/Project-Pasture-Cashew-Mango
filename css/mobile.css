@@ -1,0 +1,141 @@
+/**
+ * Pasture — shared mobile layout & touch baseline
+ */
+
+/* ── Notch / safe-area + prevent horizontal drift ── */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  overflow-x: clip; /* clip avoids creating a scroll container that breaks IntersectionObserver */
+  scroll-padding-top: max(12px, env(safe-area-inset-top));
+}
+body {
+  overflow-x: clip; /* clip avoids creating a scroll container (which breaks IntersectionObserver on iOS Safari) */
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* In-flow spacer: fixed nav does not consume layout height — reserve space so
+   ticker / hero content starts below the nav (cashew, mango, hapus). */
+.nav-spacer {
+  display: none;
+}
+@media (max-width: 900px) {
+  .nav-spacer {
+    display: block;
+    width: 100%;
+    height: calc(env(safe-area-inset-top) + 96px); /* two-row nav is taller */
+    flex-shrink: 0;
+    pointer-events: none;
+  }
+  .nav-spacer--ticker {
+    background: #120a02;
+    border-bottom: 1px solid rgba(232, 185, 74, 0.18);
+  }
+  .nav-spacer--hero-dark {
+    background: linear-gradient(180deg, #1a0800 0%, #140a04 100%);
+  }
+  /* Reading progress line sits under notch */
+  #progress-bar {
+    top: env(safe-area-inset-top);
+  }
+  /* Order page: ticker is first in flow — clear notch (no nav-spacer above it) */
+  body:not(.nav-spacer-page) #photo-ticker {
+    padding-top: env(safe-area-inset-top);
+    height: auto;
+    min-height: 38px;
+    box-sizing: border-box;
+  }
+}
+
+/* Grids: stop flex children from forcing page overflow */
+.order-layout,
+.products-col,
+.cart-col,
+.pack-grid,
+.footer-top,
+.tree-grid,
+.testi-grid,
+.grade-notify-row,
+.grade-featured,
+.about-grid,
+.journey-steps {
+  min-width: 0;
+}
+
+/* Raster images / video: never spill past viewport */
+img:not([width]):not([height]),
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Faster taps on primary controls */
+a,
+button,
+input,
+select,
+textarea,
+.nav-cta,
+.btn-main,
+.btn-ghost,
+.btn-white,
+.add-btn,
+.checkout-btn,
+.qty-btn,
+.ci-qbtn,
+.upi-btn,
+.confirm-btn,
+.wa-btn,
+.cart-pill,
+.cat-tab,
+.vpack-btn,
+.mc-close,
+#btt {
+  touch-action: manipulation;
+}
+
+/* ── Fixed nav: safe-area padding (cashew / mango / hapus) ── */
+@media (max-width: 900px) {
+  nav {
+    padding-left: max(3%, env(safe-area-inset-left));
+    padding-right: max(3%, env(safe-area-inset-right));
+    padding-top: max(12px, env(safe-area-inset-top));
+  }
+  /* Mini-cart dropdown: stay inside screen on notched devices */
+  #mini-cart {
+    top: max(64px, calc(env(safe-area-inset-top) + 52px));
+    right: max(12px, env(safe-area-inset-right));
+    width: min(300px, calc(100vw - 24px - env(safe-area-inset-left) - env(safe-area-inset-right)));
+  }
+}
+
+/* Sticky order page nav already has padding; add safe horizontal inset */
+@media (max-width: 900px) {
+  body:has(.order-layout) nav {
+    padding-left: max(3%, env(safe-area-inset-left));
+    padding-right: max(3%, env(safe-area-inset-right));
+    padding-top: max(12px, env(safe-area-inset-top));
+  }
+  .cart-col {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+    padding-bottom: max(24px, env(safe-area-inset-bottom));
+  }
+  .products-col {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+  }
+  .page-header {
+    padding-left: max(3%, env(safe-area-inset-left));
+    padding-right: max(3%, env(safe-area-inset-right));
+  }
+}
+
+/* Very narrow: slightly larger nav link tap targets without breaking layout */
+@media (max-width: 400px) {
+  .nav-ul a {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+}

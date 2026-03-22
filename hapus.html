@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Pasture — Ratnagiri Hapus Alphonso · हापूस आंबा</title>
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="apple-touch-icon" href="assets/favicon.png">
+<link rel="stylesheet" href="css/mobile.css">
 <script src="js/app-config.js"></script>
 <script src="js/analytics.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Marathi:ital@0;1&family=Josefin+Sans:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,600;1,400;1,600&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
@@ -21,7 +22,7 @@
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{font-family:'Lora',serif;background:var(--cream);color:var(--mud);overflow-x:hidden;cursor:none;}
+body{font-family:'Lora',serif;background:var(--cream);color:var(--mud);overflow-x:clip;cursor:none;}
 
 #cur{position:fixed;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;}
 #curR{position:fixed;width:36px;height:36px;border:1.5px solid var(--orange);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.5;}
@@ -241,7 +242,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;o
 .reveal-r{opacity:0;transform:translateX(40px);transition:opacity .8s,transform .8s;}
 .reveal-r.visible{opacity:1;transform:none;}
 
-@media(max-width:768px){body{cursor:auto;overflow-x:hidden;}#cur,#curR{display:none;}#bird{width:100px;}}
+@media(max-width:768px){body{cursor:auto;overflow-x:clip;}#cur,#curR{display:none;}#bird{width:100px;}}
 @media(max-width:900px){
   .about-grid,.gi-grid,.pack-cards,.what-steps{grid-template-columns:1fr;}
   .what-step{border-right:none;border-bottom:1px solid rgba(212,79,16,.15);}
@@ -253,7 +254,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;o
   .footer-top{grid-template-columns:1fr;gap:24px;margin-bottom:28px;}
   .notify-form{flex-direction:column;}
   .notify-input{border-right:1px solid rgba(240,168,50,.3);}
-  #hero{padding:50px 3% 32px;min-height:auto;padding-top:72px;}
+  #hero{padding:28px 3% 32px;min-height:auto;}
   .hero-content{max-width:100%;}
   .hero-mango-tree{width:70%;right:0;max-width:320px;}
   .hero-title{font-size:clamp(1.6rem,7vw,2.8rem);}
@@ -303,7 +304,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;o
   .hero-desc{font-size:.9rem;}
   .logo-en{font-size:15px;letter-spacing:2px;}
   .notify-title{font-size:1.35rem;}
-  #hero{padding:40px 2% 28px;padding-top:64px;}
+  #hero{padding:22px 2% 28px;}
   .notify-section{padding:32px 2%;}
   #about,#gi,#what{padding:28px 2% !important;}
   .hapus-band{padding:14px 2%;flex-wrap:wrap;justify-content:center;}
@@ -315,7 +316,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;o
   .coming-ribbon{font-size:8px;padding:6px 20px 6px 12px;}
   footer{padding:20px 2% 16px;padding-bottom:max(16px,env(safe-area-inset-bottom));}
   nav{padding:10px 2%;}
-  .nav-ul a{font-size:9px;padding:10px 2px;}
+  .nav-ul a{font-size:10px;letter-spacing:1px;padding:10px 6px;}
   #hero{min-height:min(100vh,100dvh);}
   .hero-marathi{font-size:clamp(1.2rem,4vw,1.8rem);}
 }
@@ -325,10 +326,11 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;o
 }
 </style>
 </head>
-<body>
+<body class="nav-spacer-page">
 
 <div id="progress-bar"></div>
 <button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
+<div class="nav-spacer nav-spacer--hero-dark" aria-hidden="true"></div>
 <div id="cur"></div>
 <div id="curR"></div>
 

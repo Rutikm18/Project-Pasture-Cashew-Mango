@@ -19,32 +19,46 @@
         "id": "W180-250",
         "name": "W180 Jumbo Cashew",
         "weight": "900g",
-        "price": 1099,
+        "mrp": 1099,
+        "price": 934,
         "icon": "🥜",
         "featured": true,
         "grade": "Premium Grade · W180",
         "description": "900g · Jumbo Whole Kernels",
-        "tags": ["Gift Quality", "Vacuum Sealed", "Largest Grade"]
+        "tags": [
+          "Gift Quality",
+          "Vacuum Sealed",
+          "Largest Grade"
+        ],
+        "discountPct": 15
       },
       {
         "id": "W210-250",
         "name": "W210 Select Cashew",
         "weight": "900g",
+        "mrp": 949,
         "price": 949,
         "icon": "🥜",
         "grade": "Select Grade · W210",
         "description": "900g · Large Whole Kernels",
-        "tags": ["Mithai · Desserts", "Vacuum Sealed"]
+        "tags": [
+          "Mithai · Desserts",
+          "Vacuum Sealed"
+        ]
       },
       {
         "id": "W240-250",
         "name": "W240 Standard Cashew",
         "weight": "900g",
+        "mrp": 869,
         "price": 869,
         "icon": "🥜",
         "grade": "Standard Grade · W240",
         "description": "900g · Whole Kernels",
-        "tags": ["Cooking · स्वयंपाक", "Vacuum Sealed"]
+        "tags": [
+          "Cooking · स्वयंपाक",
+          "Vacuum Sealed"
+        ]
       }
     ],
     "valuePacks": [
@@ -52,6 +66,7 @@
         "id": "W180-1.5kg",
         "name": "W180 Jumbo Cashew",
         "weight": "1.5 kg",
+        "mrp": 1799,
         "price": 1799,
         "icon": "📦",
         "label": "1.5 kg",
@@ -62,6 +77,7 @@
         "id": "W180-2kg",
         "name": "W180 Jumbo Cashew",
         "weight": "2 kg",
+        "mrp": 2399,
         "price": 2399,
         "icon": "📦",
         "best": true,
@@ -73,6 +89,7 @@
         "id": "W180-gift",
         "name": "Premium Cashew Gift Pack",
         "weight": "Gift Pack",
+        "mrp": 1999,
         "price": 1999,
         "icon": "🎁",
         "label": "Gift Pack 🎁",
@@ -86,11 +103,6 @@
       "code": "KONKAN10",
       "type": "percent",
       "value": 10
-    },
-    {
-      "code": "GUDIPADVA15",
-      "type": "percent",
-      "value": 15
     }
   ]
 }

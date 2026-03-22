@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Pasture — Ratnagiri Cashew · काजू</title>
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="apple-touch-icon" href="assets/favicon.png">
+<link rel="stylesheet" href="css/mobile.css">
 <script src="js/app-config.js"></script>
 <script src="js/analytics.js"></script>
 <script src="js/lightbox.js" defer></script>
@@ -21,7 +22,7 @@
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{font-family:'Lora',serif;background:var(--cream);color:var(--mud);overflow-x:hidden;}
+body{font-family:'Lora',serif;background:var(--cream);color:var(--mud);overflow-x:clip;}
 
 #cur,#curR{display:none;}
 
@@ -45,7 +46,7 @@ nav.scrolled .nav-bag{color:var(--bark);}
 .nav-cart-badge{position:absolute;top:-7px;right:-9px;background:var(--clay);color:#fff;font-family:'Josefin Sans',sans-serif;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:50%;display:none;align-items:center;justify-content:center;padding:0 3px;line-height:1;animation:badgePop .25s cubic-bezier(.36,2,.6,1);}
 .nav-cart-badge.show{display:flex;}
 @keyframes badgePop{0%{transform:scale(0)}80%{transform:scale(1.3)}100%{transform:scale(1)}}
-t #mini-cart{position:fixed;top:64px;right:5%;z-index:9000;width:min(300px,calc(100vw - 24px));background:rgba(28,15,6,.97);border:1px solid rgba(185,136,60,.3);backdrop-filter:blur(18px);padding:20px;display:none;box-shadow:0 12px 40px rgba(0,0,0,.5);}
+#mini-cart{position:fixed;top:64px;right:5%;z-index:9000;width:min(300px,calc(100vw - 24px));background:rgba(28,15,6,.97);border:1px solid rgba(185,136,60,.3);backdrop-filter:blur(18px);padding:20px;display:none;box-shadow:0 12px 40px rgba(0,0,0,.5);}
 #mini-cart.open{display:block;animation:mcDrop .2s ease;}
 @keyframes mcDrop{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
 .mc-title{font-family:'Josefin Sans',sans-serif;font-size:.7rem;letter-spacing:3px;color:var(--sun);text-transform:uppercase;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;}
@@ -147,9 +148,13 @@ nav.scrolled .nav-ul a:hover,nav.scrolled .nav-ul a.active{color:var(--clay);}
 .btn-main:hover{background:var(--straw);transform:translateY(-3px);box-shadow:0 12px 30px rgba(232,185,74,.4);}
 .btn-ghost{font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:3px;border:1.5px solid rgba(250,240,220,.35);color:var(--cream);padding:15px 38px;text-decoration:none;text-transform:uppercase;transition:all .3s;display:inline-block;}
 .btn-ghost:hover{border-color:var(--sun);color:var(--sun);}
-.hero-trust{display:flex;gap:24px;margin-top:36px;animation:fadeUp .8s 1s both;}
-.trust-chip{display:flex;align-items:center;gap:8px;font-size:.8rem;color:rgba(250,240,220,.75);}
-.trust-chip span:first-child{font-size:1rem;}
+/* Warm ghost — for proof/trust CTAs on dark backgrounds */
+.btn-ghost-warm{font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:3px;border:1.5px solid rgba(232,185,74,.55);color:var(--straw);padding:15px 38px;text-decoration:none;text-transform:uppercase;transition:all .3s;display:inline-block;position:relative;}
+.btn-ghost-warm:hover{border-color:var(--sun);color:var(--sun);transform:translateY(-3px);box-shadow:0 8px 24px rgba(232,185,74,.18);}
+.hero-trust{display:flex;gap:24px;margin-top:36px;animation:fadeUp .8s 1s both;position:relative;z-index:6;}
+.trust-chip{display:flex;align-items:flex-start;gap:10px;font-size:.82rem;color:rgba(250,240,220,.92);line-height:1.35;text-shadow:0 1px 12px rgba(0,0,0,.75);}
+.trust-chip span:first-child{font-size:1.1rem;line-height:1;flex-shrink:0;}
+.trust-chip span:last-child{min-width:0;}
 
 /* Scroll hint */
 .scroll-hint{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);z-index:6;text-align:center;animation:bounce 2s infinite;}
@@ -179,7 +184,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;o
 .grade-card:hover::after{transform:translateX(100%);}
 
 /* ── MAGNETIC BUTTON BASE ── */
-.btn-main,.btn-ghost,.btn-white,.nav-cta{display:inline-block;position:relative;}
+.btn-main,.btn-ghost,.btn-ghost-warm,.btn-white,.nav-cta{display:inline-block;position:relative;}
 
 /* ── SECTION SEPARATOR ── */
 .section-sep{width:48px;height:2px;background:var(--clay);margin:18px 0;display:block;}
@@ -189,10 +194,10 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;o
 
 /* ═══════════ SEASON BAND ═══════════ */
 .season-band{background:var(--mud);padding:22px 6%;display:flex;justify-content:space-around;flex-wrap:wrap;gap:16px;border-bottom:3px solid var(--clay);}
-.season-item{text-align:center;}
-.season-num{font-family:'Josefin Sans',sans-serif;font-size:2rem;font-weight:700;color:var(--sun);display:block;}
-.season-lbl{font-size:.75rem;letter-spacing:2px;color:rgba(250,240,220,.72);text-transform:uppercase;}
-.season-mr{font-family:'Tiro Devanagari Marathi',serif;font-size:.9rem;color:var(--ochre);display:block;}
+.season-item{text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:6px;min-width:0;}
+.season-num{font-family:'Josefin Sans',sans-serif;font-size:2rem;font-weight:700;color:var(--sun);display:block;line-height:1.15;}
+.season-lbl{font-size:.75rem;letter-spacing:2px;color:rgba(250,240,220,.72);text-transform:uppercase;line-height:1.35;display:block;}
+.season-mr{font-family:'Tiro Devanagari Marathi',serif;font-size:.9rem;color:var(--ochre);display:block;line-height:1.35;word-break:break-word;max-width:100%;}
 
 /* ═══════════ ABOUT SECTION ═══════════ */
 #about{background:var(--smoke);padding:90px 6%;position:relative;overflow:hidden;}
@@ -239,7 +244,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;o
 .js-phase{font-family:'Josefin Sans',sans-serif;font-size:.68rem;letter-spacing:3.5px;color:var(--clay);text-transform:uppercase;margin-bottom:14px;}
 .js-title{font-family:'Josefin Sans',sans-serif;font-size:clamp(1.3rem,2.2vw,1.9rem);font-weight:700;color:var(--mud);letter-spacing:1px;line-height:1.2;margin-bottom:16px;text-transform:uppercase;}
 .js-title em{font-style:italic;font-family:'Lora',serif;color:var(--clay);letter-spacing:0;}
-.js-body{font-size:.9rem;color:#3B1F0C;line-height:1.95;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;transition:max-height .5s ease;}
+.js-body{font-size:.9rem;color:#3B1F0C;line-height:1.95;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;transition:max-height .5s ease;}
 .js-body.expanded{display:block;overflow:visible;}
 .js-read-more{display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-family:'Josefin Sans',sans-serif;font-size:.65rem;letter-spacing:2.5px;color:var(--clay);text-transform:uppercase;background:none;border:none;padding:0;margin-bottom:14px;transition:color .2s;}
 .js-read-more:hover{color:var(--ochre);}
@@ -248,7 +253,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;o
 .js-tag{display:inline-flex;align-items:center;gap:7px;font-family:'Josefin Sans',sans-serif;font-size:.68rem;letter-spacing:2px;color:var(--clay);border:1px solid var(--border);padding:6px 14px;text-transform:uppercase;}
 @media(max-width:900px){
   .js-step{grid-template-columns:1fr;min-height:auto;}
-  .js-step:nth-child(odd) .js-img,.js-step:nth-child(even) .js-img{order:1;height:260px;}
+  .js-step:nth-child(odd) .js-img,.js-step:nth-child(even) .js-img{order:1;height:200px;}
   .js-step:nth-child(odd) .js-content,.js-step:nth-child(even) .js-content{order:2;}
   .js-content{padding:32px 24px;}
   .js-num{font-size:3.5rem;}
@@ -283,6 +288,11 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;o
 .gf-trust-list li::before{content:'✓';color:var(--sage);font-weight:700;flex-shrink:0;}
 .gf-price{font-family:'Josefin Sans',sans-serif;font-size:2rem;font-weight:700;color:var(--sun);margin-bottom:18px;}
 .gf-price .per{font-size:.9rem;color:rgba(250,240,220,.5);font-weight:400;margin-left:4px;}
+/* Offer pricing — grades section */
+.gf-off-row{display:flex;align-items:center;gap:10px;margin-bottom:4px;}
+.gf-offer-price{font-family:'Josefin Sans',sans-serif;font-size:2rem;font-weight:700;color:var(--sun);}
+.gf-mrp{font-size:.88rem;color:rgba(250,240,220,.35);text-decoration:line-through;display:block;margin-top:2px;}
+.gf-off-badge{font-family:'Josefin Sans',sans-serif;font-size:.62rem;letter-spacing:1.5px;background:var(--leaf-lt);color:#fff;padding:3px 10px;text-transform:uppercase;border-radius:3px;flex-shrink:0;}
 .gf-btn{display:block;text-align:center;background:var(--sun);color:var(--mud);font-family:'Josefin Sans',sans-serif;font-size:.78rem;letter-spacing:3px;padding:15px 28px;text-decoration:none;text-transform:uppercase;font-weight:700;transition:all .3s;border:none;cursor:pointer;width:100%;}
 .gf-btn:hover{background:var(--straw);transform:translateY(-2px);box-shadow:0 8px 24px rgba(232,185,74,.35);}
 /* Notify cards row */
@@ -305,8 +315,12 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;o
 .grade-tag{font-size:.7rem;letter-spacing:1px;color:rgba(250,240,220,.5);border:1px solid rgba(185,136,60,.2);padding:2px 10px;text-transform:uppercase;}
 @media(max-width:900px){
   .grade-featured{grid-template-columns:1fr;}
-  .gf-image{height:260px;}
-  .gf-content{padding:24px 20px;}
+  .gf-image{height:220px;}
+  .gf-content{padding:22px 18px;}
+  .gf-grade{font-size:2.4rem;letter-spacing:2px;}
+  .gf-name{font-size:.72rem;letter-spacing:2px;}
+  .gf-name-mr{font-size:.9rem;margin-bottom:14px;}
+  .gf-detail{font-size:.84rem;margin-bottom:16px;}
   .grade-notify-row{grid-template-columns:1fr;}
   .gn-card{padding:20px 16px;}
 }
@@ -366,89 +380,160 @@ footer{background:var(--mud);padding:60px 6% 28px;color:rgba(250,240,220,.65);}
 .reveal-r{opacity:0;transform:translateX(40px);transition:opacity .8s,transform .8s;}
 .reveal-r.visible{opacity:1;transform:none;}
 
-@media(max-width:768px){body{overflow-x:hidden;cursor:auto;}#bird{width:100px;}#wa-float{bottom:84px;right:16px;width:46px;height:46px;}#wa-float svg{width:24px;height:24px;}.fruit-group,.mango-fruit,.zoomable{cursor:auto;}}
+@media(max-width:768px){body{overflow-x:clip;cursor:auto;}#bird{width:100px;}#wa-float{bottom:84px;right:16px;width:46px;height:46px;}#wa-float svg{width:24px;height:24px;}.fruit-group,.mango-fruit,.zoomable{cursor:auto;}}
 @media(max-width:900px){
   .about-grid,.tree-grid,.testi-grid,.grade-cards{grid-template-columns:1fr;}
   .journey-steps{grid-template-columns:1fr;}
   .journey-step{border-right:none;border-bottom:1px solid var(--border);}
-  nav{flex-wrap:wrap;gap:8px 0;padding:12px 3%;}
-  .nav-ul{display:flex;flex-wrap:wrap;gap:6px 10px;margin:0;}
-  .nav-ul a{font-size:10px;letter-spacing:1.5px;padding:8px 4px;min-height:44px;display:inline-flex;align-items:center;}
-  nav .nav-cta{padding:12px 18px;font-size:.7rem;min-height:44px;display:inline-flex;align-items:center;justify-content:center;}
+  nav{flex-wrap:wrap;gap:6px 0;padding:10px 3%;}
+  .nav-ul{display:flex;flex-wrap:wrap;gap:4px 8px;margin:0;}
+  .nav-ul a{font-size:10px;letter-spacing:1.5px;padding:6px 4px;min-height:44px;display:inline-flex;align-items:center;}
+  nav .nav-cta{padding:11px 16px;font-size:.68rem;letter-spacing:2px;min-height:44px;display:inline-flex;align-items:center;justify-content:center;}
   .footer-top{grid-template-columns:1fr;gap:24px;margin-bottom:28px;}
-  #hero{padding:50px 3% 32px;min-height:auto;padding-top:72px;}
+  #hero{padding:18px 4% 32px;min-height:auto;}
   .hero-content{max-width:100%;}
-  .hero-tree{width:70%;right:0;max-width:320px;}
-  .hero-title{font-size:clamp(1.6rem,7vw,2.8rem);}
-  .hero-marathi{font-size:clamp(1.4rem,4.5vw,2.2rem);}
-  .hero-eyebrow{display:none;}
-  .hero-desc{font-size:.95rem;margin-top:14px;}
-  .hero-btns{flex-direction:column;margin-top:20px;gap:10px;}
-  .btn-main,.btn-ghost{text-align:center;min-height:46px;display:flex;align-items:center;justify-content:center;padding:14px 20px;width:100%;max-width:280px;margin:0 auto;font-size:10px;}
-  .hero-btns{width:100%;align-items:center;}
-  .hero-trust{flex-wrap:wrap;gap:12px;justify-content:center;}
+  .hero-tree{width:52%;right:0;max-width:270px;opacity:.85;}
+  .hero-title{font-size:clamp(1.9rem,7.5vw,2.8rem);letter-spacing:2px;}
+  .hero-marathi{font-size:clamp(1.55rem,5.5vw,2.2rem);margin-bottom:4px;}
+  .hero-eyebrow{font-size:.82rem;letter-spacing:.5px;margin-bottom:8px;display:block;}
+  .hero-desc{font-size:.95rem;margin-top:10px;}
+  .hero-btns{flex-direction:column;margin-top:16px;gap:8px;}
+  .btn-main{text-align:center;min-height:48px;display:flex;align-items:center;justify-content:center;padding:13px 20px;width:100%;max-width:100%;margin:0;font-size:12px;letter-spacing:3px;}
+  .btn-ghost,.btn-ghost-warm{text-align:center;min-height:40px;display:flex;align-items:center;justify-content:center;padding:10px 26px;width:auto;align-self:center;font-size:11px;letter-spacing:2.5px;max-width:none;margin:0;}
+  .hero-btns{width:100%;align-items:stretch;gap:8px;}
+  .hero-trust{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:7px;
+    margin-top:14px;
+    width:100%;
+    max-width:100%;
+    justify-items:stretch;
+    align-items:stretch;
+  }
+  .trust-chip{
+    font-size:.86rem;
+    color:#FAF0DC;
+    background:rgba(12,6,2,.78);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border:1px solid rgba(232,185,74,.35);
+    border-radius:10px;
+    padding:11px 12px;
+    gap:8px;
+    min-height:0;
+    align-items:center;
+    text-shadow:none;
+    box-shadow:0 4px 16px rgba(0,0,0,.3);
+  }
+  .trust-chip span:first-child{font-size:1.25rem;flex-shrink:0;}
   .scroll-hint{display:none;}
   #benefit-card{max-width:min(260px,calc(100vw - 24px));left:auto;right:12px;}
   .hero-desc{max-width:100%;}
   .hero-title,.section-title{word-break:break-word;overflow-wrap:break-word;}
-  section{padding:32px 3%;}
-  #about,#tree,#journey,#grades,#testimonials{padding:36px 3%;}
-  #farmer{padding:36px 3% !important;}
-  #farmer>div.reveal{grid-template-columns:1fr !important;gap:32px !important;}
+  section{padding:22px 3%;}
+  #about,#tree,#journey,#grades,#testimonials{padding:24px 3%;}
+  #farmer{padding:24px 3% !important;}
+  #farmer>div.reveal{grid-template-columns:1fr !important;gap:20px !important;}
   #farmer .farm-visual,.farmer-letter{max-width:100%;}
-  .season-band{padding:16px 3%;gap:12px;}
-  .season-item .season-num{font-size:1.6rem;}
-  .season-lbl,.season-mr{font-size:.7rem;}
-  .tree-grid{gap:28px;margin-top:28px;}
-  .tree-facts{gap:14px;}
-  .tree-fact{padding:14px 16px;gap:12px;flex-direction:column;align-items:flex-start;}
-  .tree-fact .fact-icon{font-size:1.4rem;}
+  /* ═══ SEASON BAND — MOBILE ONLY (desktop >900px untouched) ═══ */
+  .season-band{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:8px;
+    padding:14px max(12px,env(safe-area-inset-left)) 14px max(12px,env(safe-area-inset-right));
+    justify-content:stretch;
+    align-items:stretch;
+  }
+  .season-item{
+    padding:12px 8px;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(232,185,74,.2);
+    border-radius:10px;
+    text-align:center;
+    justify-content:center;
+    min-height:0;
+  }
+  .season-item .season-num{
+    font-size:1.6rem!important;
+    line-height:1.15;
+    color:var(--sun);
+  }
+  .season-item .season-lbl{
+    font-size:.58rem;
+    letter-spacing:1px;
+    margin-top:3px;
+  }
+  .season-item .season-mr{
+    font-size:.72rem;
+    margin-top:2px;
+  }
+  .about-grid{gap:20px;margin-top:18px;}
+  .tree-grid{gap:18px;margin-top:18px;}
+  .tree-facts{gap:10px;}
+  .tree-fact{padding:12px 14px;gap:10px;flex-direction:column;align-items:flex-start;}
+  .tree-fact .fact-icon{font-size:1.3rem;}
   .tree-fact .fact-en,.tree-fact .fact-body{font-size:.82rem;}
-  #tree .btn-main{margin-top:20px;max-width:100%;}
-  .journey-header{margin-bottom:36px;}
-  .journey-step{padding:24px 20px;}
+  #tree .btn-main{margin-top:14px;max-width:100%;}
+  .journey-header{margin-bottom:20px;}
+  .journey-step{padding:16px 16px;}
   .step-num{font-size:3rem;}
-  .grade-cards{gap:14px;}
-  .grade-card{padding:20px 16px;}
+  .grade-cards{gap:12px;}
+  .grade-card{padding:16px 14px;}
   .grade-code{font-size:1.8rem;}
   .grade-btn{padding:10px 16px;font-size:.65rem;}
-  .cta-band{padding:40px 3%;}
+  .cta-band{padding:26px 3%;}
   .cta-title{font-size:clamp(1.4rem,5vw,2.2rem);}
   .cta-mr{font-size:1.1rem;}
-  .cta-btns{flex-direction:column;align-items:center;gap:12px;margin-top:20px;}
-  .btn-white,.cta-btns a{width:100%;max-width:280px;text-align:center;padding:14px 20px;min-height:46px;display:flex;align-items:center;justify-content:center;font-size:10px;}
-  .testi-header{margin-bottom:32px;}
-  .testi-card{padding:24px 20px;}
+  .cta-btns{flex-direction:column;align-items:center;gap:8px;margin-top:14px;}
+  .btn-white,.cta-btns a{width:100%;max-width:280px;text-align:center;padding:13px 20px;min-height:44px;display:flex;align-items:center;justify-content:center;font-size:10px;}
+  .testi-header{margin-bottom:18px;}
+  .testi-card{padding:16px 16px;}
   .testi-text{font-size:.88rem;}
-  .footer-bottom{flex-direction:column;gap:10px;text-align:center;padding-top:16px;}
-  footer{padding:24px 3% 20px;padding-bottom:max(20px,env(safe-area-inset-bottom));}
+  .footer-bottom{flex-direction:column;gap:8px;text-align:center;padding-top:12px;}
+  footer{padding:16px 3% 14px;padding-bottom:max(16px,env(safe-area-inset-bottom));}
   #btt{bottom:max(24px,env(safe-area-inset-bottom));right:16px;width:44px;height:44px;font-size:1rem;}
-  .trust-chip{padding:8px 12px;min-height:44px;align-items:center;}
 }
 @media(max-width:480px){
-  .hero-tree{width:85%;max-width:280px;}
+  .hero-tree{width:56%;max-width:230px;opacity:.8;}
   .hero-desc{font-size:.9rem;}
   .logo-en{font-size:15px;letter-spacing:2px;}
-  #hero{padding:40px 2% 28px;padding-top:64px;}
-  section{padding:28px 2%;}
-  #about,#tree,#journey,#grades,#testimonials{padding:28px 2%;}
-  #farmer{padding:28px 2% !important;}
-  .tree-fact{padding:12px 14px;}
-  .journey-step{padding:20px 16px;}
-  .grade-card{padding:18px 14px;}
-  .cta-band{padding:32px 2%;}
-  .season-band{padding:14px 2%;flex-wrap:wrap;justify-content:center;}
-  .season-item{min-width:0;}
+  #hero{padding:14px 3% 24px;}
+  section{padding:18px 2%;}
+  #about,#tree,#journey,#grades,#testimonials{padding:20px 2%;}
+  #farmer{padding:20px 2% !important;}
+  .tree-fact{padding:10px 12px;}
+  .journey-step{padding:14px 14px;}
+  .grade-card{padding:14px 12px;}
+  .cta-band{padding:20px 2%;}
+  .season-band{
+    gap:6px;
+    padding:12px max(10px,env(safe-area-inset-left)) 12px max(10px,env(safe-area-inset-right));
+  }
+  .season-item{padding:10px 6px;}
+  .season-item .season-num{font-size:1.35rem!important;}
+  .season-item .season-lbl{font-size:.54rem;letter-spacing:.8px;}
+  .season-item .season-mr{font-size:.66rem;}
   footer{padding:20px 2% 16px;padding-bottom:max(16px,env(safe-area-inset-bottom));}
   nav{padding:10px 2%;}
-  .nav-ul a{font-size:9px;padding:10px 2px;}
+  .nav-ul a{font-size:10px;letter-spacing:1px;padding:10px 6px;}
   #hero{min-height:min(100vh,100dvh);}
-  .hero-marathi{font-size:clamp(1.2rem,4vw,1.8rem);}
+  .hero-marathi{font-size:clamp(1.4rem,4.8vw,1.9rem);}
+  .hero-title{font-size:clamp(1.7rem,7vw,2.4rem);}
+  .hero-eyebrow{font-size:.76rem;}
+  .hero-trust{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:16px;}
+  .trust-chip{font-size:.83rem;padding:10px 11px;}
 }
 @media(max-width:380px){
-  .hero-tree{width:75%;max-width:220px;}
-  .hero-title{font-size:1.4rem;}
-  .season-item{flex:1 1 40%;min-width:0;}
+  .hero-tree{width:58%;max-width:200px;opacity:.75;}
+  #hero{padding:12px 3% 20px;}
+  .hero-title{font-size:1.6rem;letter-spacing:1.5px;}
+  .hero-marathi{font-size:1.35rem;}
+  .hero-eyebrow{font-size:.72rem;}
+  .season-band{gap:5px;padding:11px max(8px,env(safe-area-inset-left)) 11px max(8px,env(safe-area-inset-right));}
+  .season-item{padding:9px 5px;}
+  .season-item .season-num{font-size:1.2rem!important;}
+  .season-item .season-mr{font-size:.62rem;}
   .js-num{font-size:2.5rem;}
   .gf-content{padding:16px 14px;}
   .gn-card{padding:14px 12px;}
@@ -485,12 +570,194 @@ footer{background:var(--mud);padding:60px 6% 28px;color:rgba(250,240,220,.65);}
 .ap-dot.active{background:#E8B94A;transform:scale(1.3);}
 @media(max-width:768px){.ap-slide{flex:0 0 calc(50% - 5px);}}
 @media(max-width:480px){.ap-slide{flex:0 0 calc(50% - 5px);}}
+
+/* ══════════════════════════════════════
+   MOBILE UX IMPROVEMENTS
+   ══════════════════════════════════════ */
+
+/* ── NAV: MOBILE TWO-ROW LAYOUT ── */
+@media (max-width: 900px) {
+  nav {
+    flex-wrap: wrap;
+    gap: 0;
+    padding: 12px 5% 0 !important;
+    align-items: center;
+  }
+  nav.scrolled { padding: 10px 5% 0 !important; }
+
+  /* Row 1: logo stretches, cart sits right */
+  .logo-link { flex: 1; }
+  .logo-en { font-size: 17px; letter-spacing: 3px; }
+  .logo-mr { font-size: 10px; }
+  .nav-bag { order: 2; font-size: 1.3rem; }
+
+  /* Hide desktop CTA button — Order link in nav row is enough */
+  nav .nav-cta { display: none; }
+
+  /* Row 2: links fill full width below logo row */
+  .nav-ul {
+    order: 3;
+    width: 100%;
+    display: flex !important;
+    flex-wrap: nowrap;
+    margin: 8px 0 0;
+    padding: 8px 0 10px;
+    border-top: 1px solid rgba(232,185,74,.12);
+    justify-content: space-around;
+    align-items: center;
+    gap: 0;
+    list-style: none;
+  }
+  .nav-ul li { flex: 1; text-align: center; }
+  .nav-ul a {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    padding: 6px 2px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: none;
+  }
+  .nav-ul a.active {
+    color: var(--sun);
+    position: relative;
+  }
+  .nav-ul a.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 2px;
+    background: var(--clay);
+    border-radius: 1px;
+  }
+  nav.scrolled .nav-ul {
+    border-top-color: rgba(185,136,60,.18);
+  }
+}
+
+/* ── HERO: MOBILE ALIGNMENT ── */
+@media (max-width: 900px) {
+  #hero {
+    flex-direction: column;
+    /* top padding clears two-row fixed nav + ticker (~140px on mobile) */
+    padding: 140px 5% 48px !important;
+    min-height: 100svh;
+    align-items: flex-start !important;
+    /* center vertically so ::before gradient frames the content, not just floats above it */
+    justify-content: center !important;
+    gap: 0;
+  }
+  /* Tree sits behind content on the right — semi-transparent so it doesn't fight the card */
+  .hero-tree {
+    position: absolute !important;
+    right: -3%;
+    bottom: 0;
+    width: 62% !important;
+    max-width: 300px !important;
+    opacity: 0.45 !important;
+    z-index: 2;
+    pointer-events: none;
+  }
+  /* Frosted glass card — content readable over the tree */
+  .hero-content {
+    position: relative;
+    z-index: 5;
+    width: 100%;
+    max-width: 100% !important;
+    background: rgba(14,6,2,.65);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(232,185,74,.2);
+    border-radius: 16px;
+    padding: 24px 20px 26px !important;
+  }
+  #hoverHint { display: none; }
+  #benefit-card { display: none !important; }
+}
+
+@media (max-width: 480px) {
+  #hero { padding: 130px 4% 40px !important; }
+  .hero-content { padding: 20px 16px 22px !important; }
+  .hero-tree { width: 66% !important; max-width: 260px !important; opacity: .4 !important; }
+}
+
+@media (max-width: 380px) {
+  #hero { padding: 100px 4% 36px !important; }
+  .hero-tree { width: 70% !important; max-width: 220px !important; opacity: .35 !important; }
+  .hero-content { padding: 16px 14px 18px !important; }
+}
+
+/* ── BIRD: HIDE ON SMALL SCREENS ── */
+@media (max-width: 600px) {
+  #bird { display: none; }
+}
+
+/* ── MINI-CART: FULL-WIDTH ON MOBILE ── */
+@media (max-width: 600px) {
+  #mini-cart {
+    top: 56px;
+    right: 0;
+    left: 0;
+    width: 100%;
+    max-width: 100%;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+    padding: 16px;
+  }
+}
+
+/* ── JOURNEY STEPS: BETTER IMAGES ── */
+@media (max-width: 900px) {
+  .js-step:nth-child(odd) .js-img,
+  .js-step:nth-child(even) .js-img { height: 220px; }
+  .js-content { padding: 28px 20px; }
+  .js-title { font-size: clamp(1.1rem, 4vw, 1.5rem); }
+}
+@media (max-width: 480px) {
+  .js-content { padding: 20px 16px; }
+}
+
+/* ── GRADES: SMALLER SCREENS ── */
+@media (max-width: 480px) {
+  .gf-image { height: 200px; }
+  .gf-content { padding: 18px 14px; }
+  .gf-grade { font-size: 2.2rem; }
+  .gn-card { padding: 16px 14px; }
+}
+
+/* ── SECTION PADDING: BREATHABLE ── */
+@media (max-width: 900px) {
+  #about, #tree, #journey, #grades, #testimonials { padding: 56px 5% !important; }
+  .cta-band { padding: 48px 5% !important; }
+}
+@media (max-width: 480px) {
+  #about, #tree, #journey, #grades, #testimonials { padding: 40px 4% !important; }
+  .cta-band { padding: 36px 4% !important; }
+}
+
+/* ── PHOTO GALLERY: SINGLE COLUMN ON TINY SCREENS ── */
+@media (max-width: 400px) {
+  .ap-slide { flex: 0 0 calc(100% - 24px); }
+}
+
+/* ── TICKER: COMPACT ON SMALL ── */
+@media (max-width: 480px) {
+  .ticker-item { font-size: .56rem; letter-spacing: 1.8px; padding: 0 28px; }
+}
 </style>
 </head>
-<body>
+<body class="nav-spacer-page">
 
 <div id="progress-bar"></div>
 <button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
+
+<!-- Mobile: reserves layout height for fixed nav (see css/mobile.css .nav-spacer) -->
+<div class="nav-spacer nav-spacer--ticker" aria-hidden="true"></div>
 
 <!-- PHOTO TICKER -->
 <div id="photo-ticker" onclick="document.getElementById('actual-photos').scrollIntoView({behavior:'smooth'})" style="cursor:pointer;" title="See actual product photos">
@@ -523,7 +790,7 @@ footer{background:var(--mud);padding:60px 6% 28px;color:rgba(250,240,220,.65);}
     <li><a href="order.html">Order · ऑर्डर</a></li>
   </ul>
   <span class="nav-bag" title="Your Cart" id="navBag" onclick="toggleMiniCart(event)">🛒<span class="nav-cart-badge" id="navBadge"></span></span>
-  <a href="order.html" class="nav-cta">Order Now · आता ऑर्डर करा</a>
+  <a href="order.html" class="nav-cta">Order Now</a>
 </nav>
 
 <!-- ══════════════ HERO ══════════════ -->
@@ -679,10 +946,11 @@ footer{background:var(--mud);padding:60px 6% 28px;color:rgba(250,240,220,.65);}
     <span class="hero-eyebrow">🌿 रत्नागिरीच्या मातीतून · From the Soil of Ratnagiri</span>
     <div class="hero-marathi">शुद्ध काजू · आपल्या शेतातून</div>
     <h1 class="hero-title">Pure <em>Cashew</em><br>Farm to Home</h1>
-    <p class="hero-desc">Three generations. One family farm. No brokers, no cold storage, no factory. Handpicked from our Ratnagiri orchard, sun-dried on bamboo mats, vacuum-sealed and at your door in 48 hours.</p>
+    <!-- <p class="hero-desc">Three generations on one Ratnagiri farm — farm-direct, no brokers. Fresh-packed to your door in 48 hours.</p> -->
     <div class="hero-btns">
-      <a href="order.html" class="btn-main">Order Now · ऑर्डर करा</a>
-      <a href="#journey" class="btn-ghost">Our Story · आमची कहाणी</a>
+      <a href="order.html" class="btn-main">Order Now</a>
+      <a href="#actual-photos" class="btn-ghost-warm">See Real Photos</a>
+      <a href="#journey" class="btn-ghost">Our Story</a>
     </div>
     <div class="hero-trust">
       <div class="trust-chip"><span>🌿</span><span>No Chemicals · रसायनमुक्त</span></div>
@@ -918,8 +1186,8 @@ footer{background:var(--mud);padding:60px 6% 28px;color:rgba(250,240,220,.65);}
         <li>Graded by village women — not optical sorters</li>
         <li>Vacuum-sealed within 48 hrs of your order</li>
       </ul>
-      <div class="gf-price">₹1,099 <span class="per">/ 900g</span></div>
-      <button class="gf-btn" onclick="window.location='order.html?grade=W180'">Order W180 Now · ऑर्डर करा →</button>
+      <div class="gf-price" id="gfPrice-W180-250" data-per="/ 900g">₹1,099 <span class="per">/ 900g</span></div>
+      <a class="gf-btn" id="gfBtn-W180-250" href="order.html?grade=W180">Order W180 Now →</a>
     </div>
   </div>
 
@@ -1294,7 +1562,7 @@ const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.tar
 document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el=>obs.observe(el));
 
 // Magnetic hover effect on CTA buttons
-document.querySelectorAll('.btn-main,.btn-ghost,.btn-white,.nav-cta,.grade-btn').forEach(btn=>{
+document.querySelectorAll('.btn-main,.btn-ghost,.btn-ghost-warm,.btn-white,.nav-cta,.grade-btn').forEach(btn=>{
   btn.addEventListener('mousemove',e=>{
     const r=btn.getBoundingClientRect();
     const x=(e.clientX-r.left-r.width/2)*.25;
@@ -1447,5 +1715,6 @@ updateCartBadge();
 <a id="wa-float" href="https://wa.me/919404598725?text=Hi%20Pasture!%20I'm%20interested%20in%20ordering%20Cashew." target="_blank" rel="noopener" title="Chat on WhatsApp">
   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
+
 </body>
 </html>

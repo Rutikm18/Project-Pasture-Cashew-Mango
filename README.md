@@ -12,6 +12,8 @@ Project-Pashure/
 │   └── site.json         ← Single source of truth: brand, delivery, products, coupons
 ├── js/
 │   └── app-config.js     ← Loads config, applies to pages (contact, prices, free delivery)
+├── css/
+│   └── mobile.css        ← Shared mobile: safe-area, `.nav-spacer` under fixed nav, overflow, touch
 ├── cashew.html           ← Main cashew landing page
 ├── hapus.html            ← Hapus Alphonso page (coming soon)
 ├── order.html            ← Order + cart page
@@ -26,6 +28,13 @@ Project-Pashure/
 **Variables** (prices, phone, email, coupons, free delivery) are driven by `config/site.json`. The front end loads `/api/config` and applies values via `js/app-config.js`. Edit `config/site.json` and redeploy to update site-wide content.
 
 Bird video source: `https://supplant.me/wp-content/uploads/2022/03/Calibri_Q50.webm`
+
+### Mobile viewport (`cashew`, `order`, `mango`, `hapus`, `admin`)
+
+- Meta viewport includes `viewport-fit=cover` for notched phones.
+- **`css/mobile.css`** — safe-area insets, `overflow-x: hidden`, `min-width: 0` on main grids (prevents horizontal scroll), `touch-action: manipulation` on buttons, order-page / mini-cart padding tweaks.
+- **Fixed nav + ticker:** `cashew`, `mango`, and `hapus` include an in-flow **`.nav-spacer`** (see `css/mobile.css`) so the photo ticker and hero aren’t hidden under the fixed nav on phones. `order.html` uses safe-area padding on the top ticker instead (`body.order-page`).
+- Each page still has its own `@media` blocks for layout (single-column order, stacked hero, etc.).
 
 ---
 

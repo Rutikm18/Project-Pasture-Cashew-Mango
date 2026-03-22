@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Pasture — Order Cashew · काजू ऑर्डर</title>
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="apple-touch-icon" href="assets/favicon.png">
+<link rel="stylesheet" href="css/mobile.css">
 <link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Marathi:ital@0;1&family=Josefin+Sans:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,600;1,400;1,600&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
 <script src="js/app-config.js"></script>
 <script src="js/analytics.js"></script>
@@ -22,7 +23,7 @@
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{font-family:'Lora',serif;background:var(--cream);color:var(--mud);overflow-x:hidden;}
+body{font-family:'Lora',serif;background:var(--cream);color:var(--mud);overflow-x:clip;}
 
 #cur{position:fixed;width:10px;height:10px;background:var(--sun);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;}
 #curR{position:fixed;width:36px;height:36px;border:1.5px solid var(--clay);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.5;}
@@ -128,6 +129,17 @@ nav{position:sticky;top:0;z-index:500;display:flex;align-items:center;justify-co
 .prod-price{font-family:'Josefin Sans',sans-serif;font-size:2rem;font-weight:700;color:var(--clay);line-height:1;}
 .prod-price .rs{font-size:1rem;vertical-align:top;margin-top:4px;display:inline-block;}
 .prod-price .pu{font-family:'Lora',serif;font-size:.7rem;color:rgba(59,31,12,.4);display:block;text-align:right;margin-top:2px;}
+/* Offer pricing */
+.prod-offer-row{display:flex;align-items:center;gap:7px;margin-bottom:1px;}
+.prod-offer-price{font-family:'Josefin Sans',sans-serif;font-size:2rem;font-weight:700;color:var(--clay);line-height:1;}
+.prod-offer-price .rs{font-size:1rem;vertical-align:top;margin-top:4px;display:inline-block;}
+.prod-mrp{font-size:.8rem;color:rgba(59,31,12,.35);text-decoration:line-through;display:block;margin-top:1px;}
+.prod-off-badge{font-family:'Josefin Sans',sans-serif;font-size:.58rem;letter-spacing:1.5px;background:var(--green);color:#fff;padding:3px 7px;text-transform:uppercase;border-radius:3px;white-space:nowrap;flex-shrink:0;}
+/* Value pack offer pricing */
+.vp-offer-row{display:flex;align-items:center;gap:7px;margin-bottom:2px;}
+.vp-offer-price{font-family:'Josefin Sans',sans-serif;font-size:2rem;font-weight:700;color:var(--clay);}
+.vp-mrp{font-size:.8rem;color:rgba(59,31,12,.35);text-decoration:line-through;display:block;margin-top:1px;}
+.vp-off-badge{font-family:'Josefin Sans',sans-serif;font-size:.58rem;letter-spacing:1.5px;background:var(--green);color:#fff;padding:3px 7px;border-radius:3px;white-space:nowrap;}
 .qty-row{display:flex;align-items:center;gap:9px;margin-top:12px;justify-content:flex-end;}
 .qty-btn{width:28px;height:28px;border:1px solid var(--border);background:transparent;color:var(--mud);font-size:1.1rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;}
 .qty-btn:hover{background:rgba(185,136,60,.12);border-color:var(--clay);color:var(--clay);}
@@ -498,7 +510,7 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
 .footer-bottom{border-top:1px solid rgba(255,255,255,.07);padding-top:20px;display:flex;justify-content:space-between;font-size:.76rem;}
 
 /* Mobile only: touch-friendly, no custom cursor, prevent horizontal scroll */
-@media(max-width:768px){body{cursor:auto;overflow-x:hidden;}#cur,#curR{display:none;}}
+@media(max-width:768px){body{cursor:auto;overflow-x:clip;}#cur,#curR{display:none;}}
 
 @media(max-width:900px){
   .order-layout{grid-template-columns:1fr;}
@@ -586,7 +598,7 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
   .prod-price{font-size:1.35rem;}
   .cart-row.total .cr-val{font-size:1.35rem;}
   nav{padding:10px 2%;}
-  .nav-ul a{font-size:9px;padding:10px 2px;}
+  .nav-ul a{font-size:10px;letter-spacing:1px;padding:10px 6px;}
   footer{padding:20px 2% 16px;padding-bottom:max(16px,env(safe-area-inset-bottom));}
   .float-wa{width:48px;height:48px;right:10px;bottom:max(16px,env(safe-area-inset-bottom));}
   .upi-apps{grid-template-columns:repeat(2,1fr);gap:6px;}
@@ -610,7 +622,7 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
 @keyframes tickerScroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
 </style>
 </head>
-<body>
+<body class="order-page">
 
 <div id="progress-bar"></div>
 
@@ -817,7 +829,7 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
               <span class="qty-val" id="qty-W180-250">1</span>
               <button class="qty-btn" onclick="changeQty('W180-250',+1)">+</button>
             </div>
-            <button class="add-btn" id="add-W180-250" onclick="addToCart('W180-250','W180 Jumbo Cashew','900g',1099,'🌿')">Add · काटात टाका</button>
+            <button class="add-btn" id="add-W180-250" onclick="addToCart('W180-250','W180 Jumbo Cashew','900g',1099,'🌿',1099)">Add · काटात टाका</button>
           </div>
         </div>
 
@@ -888,21 +900,21 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
           <div class="vp-grade">W180 Premium</div>
           <div class="vp-price">₹1,799</div>
           <div class="vp-save">Common choice</div>
-          <button class="vpack-btn" onclick="addToCart('W180-1.5kg','W180 Jumbo Cashew','1.5 kg',1799,'📦')">Add to Cart</button>
+          <button class="vpack-btn" onclick="addToCart('W180-1.5kg','W180 Jumbo Cashew','1.5 kg',1799,'📦',1799)">Add to Cart</button>
         </div>
         <div class="vpack best reveal" style="transition-delay:.08s" data-pack-id="W180-2kg">
           <div class="vp-wt">2 kg</div>
           <div class="vp-grade">W180 Premium</div>
           <div class="vp-price">₹2,399</div>
           <div class="vp-save">Best value · जास्त घ्या</div>
-          <button class="vpack-btn" onclick="addToCart('W180-2kg','W180 Jumbo Cashew','2 kg',2399,'📦')">Add to Cart</button>
+          <button class="vpack-btn" onclick="addToCart('W180-2kg','W180 Jumbo Cashew','2 kg',2399,'📦',2399)">Add to Cart</button>
         </div>
         <div class="vpack reveal" style="transition-delay:.16s" data-pack-id="W180-gift">
           <div class="vp-wt">Gift Pack 🎁</div>
           <div class="vp-grade">Premium Cashew Gift Pack</div>
           <div class="vp-price">₹1,999</div>
           <div class="vp-save">Premium cashew gift box</div>
-          <button class="vpack-btn" onclick="addToCart('W180-gift','Premium Cashew Gift Pack','Gift Pack',1999,'🎁')">Add to Cart</button>
+          <button class="vpack-btn" onclick="addToCart('W180-gift','Premium Cashew Gift Pack','Gift Pack',1999,'🎁',1999)">Add to Cart</button>
         </div>
       </div>
     </div>
@@ -1197,11 +1209,12 @@ function changeQty(id,d){
   if(cart[id]){cart[id].qty=v;renderCart();}
 }
 
-function addToCart(id,name,weight,price,icon){
+function addToCart(id,name,weight,price,icon,mrp){
   const qel=getQtyEl(id);
   const qty=qel?parseInt(qel.textContent):1;
+  const itemMrp=mrp||price;
   if(cart[id])cart[id].qty+=qty;
-  else cart[id]={id,name,weight,price,icon,qty};
+  else cart[id]={id,name,weight,price,mrp:itemMrp,icon,qty};
   renderCart();
   const btn=document.getElementById('add-'+id);
   if(btn){btn.textContent='✓ Added · टाकले!';btn.classList.add('added');
@@ -1297,10 +1310,14 @@ function updateNavCart(){
 
 function applyCoupon(){
   const code=document.getElementById('couponIn').value.trim().toUpperCase();
+  // Block coupon if any item already has a product-level discount
+  const hasProductDiscount=Object.values(cart).some(i=>i.mrp&&i.price<i.mrp);
+  if(hasProductDiscount){showToast('Coupon not valid — items already discounted');return;}
   const coupons=window.SITE_CONFIG&&window.SITE_CONFIG.coupons?window.SITE_CONFIG.coupons:[{code:'KONKAN10',type:'percent',value:10},{code:'YOURHARVEST',type:'fixed',value:100}];
   const c=coupons.find(x=>x.code===code);
   if(c){
-    const base=Object.values(cart).reduce((s,i)=>s+i.price*i.qty,0);
+    // Coupon applies on MRP total
+    const base=Object.values(cart).reduce((s,i)=>s+(i.mrp||i.price)*i.qty,0);
     couponType=c.type;
     if(c.type==='percent'){let v=Number(c.value);if(isNaN(v))v=0;couponPct=v;discount=Math.max(0,Math.round(base*v/100));}
     else{let fv=Number(c.value);if(isNaN(fv))fv=0;couponPct=0;discount=Math.max(0,fv);}

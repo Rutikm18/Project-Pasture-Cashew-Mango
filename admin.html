@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Pasture — Admin · Coupons, Contact & Orders</title>
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="apple-touch-icon" href="assets/favicon.png">
+  <link rel="stylesheet" href="css/mobile.css">
   <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600;700&family=Lora:ital,wght@0,400;0,600&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -32,6 +33,8 @@
     .orders-table tr:hover { background: rgba(185,84,31,.04); }
     .orders-table .oid { font-family: 'Josefin Sans', sans-serif; font-weight: 700; color: var(--clay); }
     .orders-empty { color: var(--bark); font-style: italic; padding: 20px; }
+    .analytics-more-btn { display: none; margin: 12px auto 4px; padding: 10px 28px; background: rgba(185,84,31,.1); border: 1px solid var(--border); color: var(--clay); font-family: 'Josefin Sans', sans-serif; font-size: .7rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 4px; transition: background .2s, border-color .2s; }
+    .analytics-more-btn:hover { background: rgba(185,84,31,.2); border-color: var(--clay); }
     .orders-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     .back { display: inline-block; margin-bottom: 20px; font-family: 'Josefin Sans', sans-serif; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--clay); text-decoration: none; }
     .back:hover { text-decoration: underline; }
@@ -65,6 +68,20 @@
     .cfg-msg { font-size: .8rem; margin-top: 8px; }
     .cfg-msg.ok { color: var(--green); }
     .cfg-msg.err { color: #c0392b; }
+    /* Products pricing editor */
+    .prod-edit-row { margin-bottom: 14px; padding: 14px 16px; background: rgba(185,136,60,.05); border: 1px solid var(--border); border-radius: 6px; }
+    .prod-edit-label { font-family: 'Josefin Sans', sans-serif; font-size: .72rem; letter-spacing: 1.5px; color: var(--clay); text-transform: uppercase; font-weight: 700; margin-bottom: 10px; }
+    .prod-edit-fields { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: flex-end; }
+    .prod-edit-field { display: flex; flex-direction: column; gap: 4px; }
+    .prod-edit-field label { font-size: .68rem; letter-spacing: 1px; color: var(--bark); }
+    .prod-edit-field input { padding: 8px 10px; border: 1px solid var(--border); border-radius: 4px; font-size: .9rem; width: 108px; }
+    .prod-edit-field input:focus { outline: none; border-color: var(--clay); }
+    .prod-edit-preview { font-size: .8rem; color: var(--bark); padding: 8px 12px; background: rgba(255,255,255,.6); border: 1px solid var(--border); border-radius: 4px; min-width: 180px; align-self: flex-end; line-height: 1.5; }
+    @media (max-width: 600px) {
+      .prod-edit-fields { gap: 8px; }
+      .prod-edit-field input { width: 90px; }
+      .prod-edit-preview { min-width: 0; width: 100%; }
+    }
     .coupon-edit { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }
     .coupon-edit input { flex: 1; min-width: 100px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 4px; }
     .coupon-edit select { padding: 8px 10px; border: 1px solid var(--border); border-radius: 4px; }
@@ -127,6 +144,12 @@
     <button type="button" class="cfg-save" id="addCoupon">+ Add Coupon</button>
     <button type="button" class="cfg-save" id="saveCoupons" style="margin-left:8px;">Save Coupons</button>
     <p class="cfg-msg" id="couponsMsg"></p>
+
+    <h3 style="font-size:.8rem;letter-spacing:2px;color:var(--clay);margin:28px 0 6px;">Products · Pricing</h3>
+    <p class="note" style="margin-bottom:14px;">Set <strong>MRP</strong> (original price, shown crossed out) and <strong>Discount %</strong> — offer price is auto-calculated. Or set an explicit <strong>Offer ₹</strong> which overrides the % field. Cart price updates automatically. Leave Discount % and Offer ₹ blank to show no discount.</p>
+    <div id="productEditor"></div>
+    <button type="button" class="cfg-save" id="saveProducts">Save Products</button>
+    <p class="cfg-msg" id="productsMsg"></p>
   </section>
 
   <section id="contactSec">
@@ -188,6 +211,7 @@
       </table>
     </div>
     <p id="analyticsEmpty" class="orders-empty" style="display:none;">No analytics events yet. Browse cashew / order / hapus pages to generate pageviews and clicks.</p>
+    <button id="analyticsMoreBtn" class="analytics-more-btn" onclick="renderAnalyticsRows(10)">Show 10 more ↓</button>
   </section>
 
   <section id="responsesSec">
@@ -314,6 +338,7 @@
             if (!coupons.length) ul.innerHTML = '<li>No coupons in config</li>';
 
             renderCouponEditor(coupons);
+            renderProductEditor(data.products || {});
           })
           .catch(function () {
             var sec = el('contactSec');
@@ -346,6 +371,116 @@
       el('addCoupon').onclick = function () {
         couponRows.push({ code: '', type: 'percent', value: 10 });
         renderCouponEditor(couponRows);
+      };
+
+      /* ── Products Pricing Editor ── */
+      function computePricingAdmin(mrp, discPct, offerInput) {
+        var m = parseInt(mrp, 10) || 0;
+        var d = parseFloat(discPct) || 0;
+        var o = parseInt(offerInput, 10);
+        var offer = null, pct = 0;
+        if (!isNaN(o) && o > 0 && o < m) {
+          offer = o;
+          pct = Math.round((1 - o / m) * 100);
+        } else if (d > 0 && d < 100) {
+          offer = Math.round(m * (1 - d / 100));
+          pct = Math.round(d);
+        }
+        return { mrp: m, offer: offer, pct: pct, effective: offer != null ? offer : m };
+      }
+
+      function safeId(id) { return (id || '').replace(/[^a-z0-9]/gi, '_'); }
+
+      function updateProductPreview(id) {
+        var editor = el('productEditor');
+        var mrpEl = editor.querySelector('.pe-mrp[data-id="' + id + '"]');
+        var discEl = editor.querySelector('.pe-disc[data-id="' + id + '"]');
+        var offerEl = editor.querySelector('.pe-offer[data-id="' + id + '"]');
+        var prev = el('pe-prev-' + safeId(id));
+        if (!mrpEl || !prev) return;
+        var pr = computePricingAdmin(mrpEl.value, discEl ? discEl.value : '', offerEl ? offerEl.value : '');
+        if (pr.offer != null && pr.offer > 0) {
+          prev.innerHTML =
+            '<del style="color:rgba(59,31,12,.4)">₹' + pr.mrp.toLocaleString() + '</del> &rarr; ' +
+            '<strong style="color:#1a6b1a">₹' + pr.offer.toLocaleString() + '</strong>' +
+            '&nbsp;<span style="background:#2D7A35;color:#fff;padding:1px 7px;font-size:.7rem;border-radius:2px;">' + pr.pct + '% off</span>' +
+            '<br><small style="color:rgba(59,31,12,.45)">Cart price: ₹' + pr.effective.toLocaleString() + '</small>';
+        } else {
+          prev.innerHTML = '<span style="color:var(--bark)">₹' + pr.mrp.toLocaleString() + '</span>' +
+            '&nbsp;<small style="color:rgba(59,31,12,.4)">no discount</small>';
+        }
+      }
+
+      function renderProductEditor(products) {
+        var all = (products.cashew || []).concat(products.valuePacks || []);
+        var div = el('productEditor');
+        div.innerHTML = '';
+        all.forEach(function (p) {
+          var row = document.createElement('div');
+          row.className = 'prod-edit-row';
+          row.innerHTML =
+            '<div class="prod-edit-label">' + escapeHtml(p.name) + ' &middot; ' + escapeHtml(p.weight || '') + '</div>' +
+            '<div class="prod-edit-fields">' +
+              '<div class="prod-edit-field">' +
+                '<label>MRP (₹)</label>' +
+                '<input type="number" class="pe-mrp" data-id="' + p.id + '" value="' + (p.mrp || p.price || '') + '" min="0" placeholder="e.g. 1099">' +
+              '</div>' +
+              '<div class="prod-edit-field">' +
+                '<label>Discount %</label>' +
+                '<input type="number" class="pe-disc" data-id="' + p.id + '" value="' + (p.discountPct != null ? p.discountPct : '') + '" min="0" max="99" step="0.5" placeholder="e.g. 15">' +
+              '</div>' +
+              '<div class="prod-edit-field">' +
+                '<label>Offer ₹ <em style="font-style:normal;opacity:.6">(overrides %)</em></label>' +
+                '<input type="number" class="pe-offer" data-id="' + p.id + '" value="' + (p.offerPrice != null ? p.offerPrice : '') + '" min="0" placeholder="auto">' +
+              '</div>' +
+              '<div class="prod-edit-preview" id="pe-prev-' + safeId(p.id) + '"></div>' +
+            '</div>';
+          div.appendChild(row);
+          updateProductPreview(p.id);
+        });
+        div.querySelectorAll('.pe-mrp,.pe-disc,.pe-offer').forEach(function (inp) {
+          inp.oninput = function () { updateProductPreview(inp.dataset.id); };
+        });
+      }
+
+      el('saveProducts').onclick = function () {
+        if (!siteConfigCache || !siteConfigCache.products) {
+          el('productsMsg').textContent = 'Config not loaded yet. Wait a moment and try again.';
+          el('productsMsg').className = 'cfg-msg err';
+          return;
+        }
+        var editor = el('productEditor');
+        function processGroup(arr) {
+          return (arr || []).map(function (p) {
+            var mrpEl = editor.querySelector('.pe-mrp[data-id="' + p.id + '"]');
+            var discEl = editor.querySelector('.pe-disc[data-id="' + p.id + '"]');
+            var offerEl = editor.querySelector('.pe-offer[data-id="' + p.id + '"]');
+            var updated = JSON.parse(JSON.stringify(p));
+            if (!mrpEl) return updated;
+            var mrpVal = parseInt(mrpEl.value, 10);
+            var discVal = parseFloat(discEl ? discEl.value : '');
+            var offerVal = parseInt(offerEl ? offerEl.value : '', 10);
+            if (!isNaN(mrpVal) && mrpVal > 0) updated.mrp = mrpVal;
+            // Clear previous discount fields, then apply new ones
+            delete updated.discountPct;
+            delete updated.offerPrice;
+            if (!isNaN(offerVal) && offerVal > 0 && offerVal < (updated.mrp || updated.price || 0)) {
+              updated.offerPrice = offerVal;
+            } else if (!isNaN(discVal) && discVal > 0 && discVal < 100) {
+              updated.discountPct = discVal;
+            }
+            // Compute and store effective cart price (backward compat)
+            var pr = computePricingAdmin(updated.mrp || updated.price, updated.discountPct, updated.offerPrice);
+            updated.price = pr.effective;
+            return updated;
+          });
+        }
+        saveConfig({
+          products: {
+            cashew: processGroup(siteConfigCache.products.cashew),
+            valuePacks: processGroup(siteConfigCache.products.valuePacks)
+          }
+        }, el('productsMsg'));
       };
 
       function saveConfig(payload, msgEl) {
@@ -494,6 +629,34 @@
         if (getAdminKey()) loadWaitlist();
       }
 
+      var analyticsAllEvents = [];
+      var analyticsShown = 0;
+
+      function renderAnalyticsRows(count) {
+        var tbody = el('analyticsBody');
+        var btn = el('analyticsMoreBtn');
+        var end = Math.min(analyticsShown + count, analyticsAllEvents.length);
+        for (var i = analyticsShown; i < end; i++) {
+          var ev = analyticsAllEvents[i];
+          var tr = document.createElement('tr');
+          var time = ev.serverTime || ev.timestamp || '—';
+          time = time.slice(0, 19).replace('T', ' ');
+          var elemText = (ev.element || '') + (ev.text ? ' · ' + ev.text : '');
+          var ua = (ev.userAgent || '').slice(0, 50);
+          if ((ev.userAgent || '').length > 50) ua += '…';
+          tr.innerHTML =
+            '<td>' + escapeHtml(time) + '</td>' +
+            '<td>' + escapeHtml(ev.type || '—') + '</td>' +
+            '<td>' + escapeHtml(ev.page || '—') + '</td>' +
+            '<td>' + escapeHtml(elemText || '—') + '</td>' +
+            '<td>' + escapeHtml(ev.ip || '—') + '</td>' +
+            '<td style="font-size:.7rem;">' + escapeHtml(ua) + '</td>';
+          tbody.appendChild(tr);
+        }
+        analyticsShown = end;
+        if (btn) btn.style.display = analyticsShown >= analyticsAllEvents.length ? 'none' : 'block';
+      }
+
       function loadAnalytics() {
         fetchAuth(ANALYTICS_URL)
           .then(function (r) {
@@ -505,6 +668,7 @@
               }
               el('analyticsBody').innerHTML = '';
               el('analyticsEmpty').style.display = 'block';
+              if (el('analyticsMoreBtn')) el('analyticsMoreBtn').style.display = 'none';
               return null;
             }
             return r.json();
@@ -515,37 +679,24 @@
             var summary = data.summary || { pageviews: 0, clicks: 0 };
             if (el('analyticsPageviews')) el('analyticsPageviews').textContent = summary.pageviews != null ? summary.pageviews : events.filter(function (e) { return e.type === 'pageview'; }).length;
             if (el('analyticsClicks')) el('analyticsClicks').textContent = summary.clicks != null ? summary.clicks : events.filter(function (e) { return e.type === 'click'; }).length;
-            var tbody = el('analyticsBody');
+            el('analyticsBody').innerHTML = '';
             var empty = el('analyticsEmpty');
-            tbody.innerHTML = '';
             if (!events.length) {
               empty.textContent = 'No analytics events yet. Browse cashew, order, or hapus pages to generate pageviews and clicks.';
               empty.style.display = 'block';
+              if (el('analyticsMoreBtn')) el('analyticsMoreBtn').style.display = 'none';
               return;
             }
             empty.style.display = 'none';
-            var list = events.slice(-400).reverse();
-            list.forEach(function (ev) {
-              var tr = document.createElement('tr');
-              var time = ev.serverTime || ev.timestamp || '—';
-              time = time.slice(0, 19).replace('T', ' ');
-              var elemText = (ev.element || '') + (ev.text ? ' · ' + ev.text : '');
-              var ua = (ev.userAgent || '').slice(0, 50);
-              if ((ev.userAgent || '').length > 50) ua += '…';
-              tr.innerHTML =
-                '<td>' + escapeHtml(time) + '</td>' +
-                '<td>' + escapeHtml(ev.type || '—') + '</td>' +
-                '<td>' + escapeHtml(ev.page || '—') + '</td>' +
-                '<td>' + escapeHtml(elemText || '—') + '</td>' +
-                '<td>' + escapeHtml(ev.ip || '—') + '</td>' +
-                '<td style="font-size:.7rem;">' + escapeHtml(ua) + '</td>';
-              tbody.appendChild(tr);
-            });
+            analyticsAllEvents = events.slice(-400).reverse();
+            analyticsShown = 0;
+            renderAnalyticsRows(10);
           })
           .catch(function () {
             el('analyticsEmpty').textContent = 'Could not load analytics. Open this page via your server (e.g. http://localhost:3000/admin.html).';
             el('analyticsEmpty').style.display = 'block';
             el('analyticsBody').innerHTML = '';
+            if (el('analyticsMoreBtn')) el('analyticsMoreBtn').style.display = 'none';
           });
       }
       function loadAnalyticsMaybe() {
