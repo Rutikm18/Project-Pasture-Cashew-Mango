@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Pasture — Order Cashew · काजू ऑर्डर</title>
+<title>Pasture — Order Hapus Mango & Cashew · ऑर्डर द्या</title>
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="apple-touch-icon" href="assets/favicon.png">
 <link rel="stylesheet" href="css/mobile.css">
@@ -406,6 +406,179 @@ nav{position:sticky;top:0;z-index:500;display:flex;align-items:center;justify-co
 .confirm-btn{width:100%;background:var(--mud);border:none;color:var(--cream);padding:16px;font-family:'Josefin Sans',sans-serif;font-size:.72rem;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:all .3s;margin-top:14px;}
 .confirm-btn:hover{background:var(--clay);}
 
+/* ── MANGO ORDER SECTION ANIMATIONS ── */
+@keyframes mangoBounce{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-12px) rotate(3deg)}}
+@keyframes urgShimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+@keyframes savePulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+@keyframes stockLoad{from{width:0}to{width:32%}}
+@keyframes ctaPulse{0%,100%{box-shadow:0 0 0 0 rgba(37,211,102,.5)}60%{box-shadow:0 0 0 14px rgba(37,211,102,0)}}
+
+/* ── MAIN ORDER SECTION ── */
+.order-main{max-width:900px;margin:0 auto;padding:56px 6% 72px;}
+
+/* ── MANGO CARD ── */
+.mango-card{background:linear-gradient(145deg,#1a0800,#2a1004,#1a1204);border:1px solid rgba(212,79,16,.35);overflow:hidden;margin-bottom:32px;position:relative;}
+.mango-urgency-bar{background:#D44F10;padding:10px 28px;font-family:'Josefin Sans',sans-serif;font-size:.68rem;letter-spacing:2.5px;color:#fff;text-transform:uppercase;text-align:center;position:relative;overflow:hidden;}
+.mango-card-inner{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+.mango-card-left{padding:40px 36px;border-right:1px solid rgba(212,79,16,.18);}
+.mango-card-right{padding:40px 32px;display:flex;flex-direction:column;justify-content:center;}
+.mango-order-btn{display:block;text-align:center;background:#25D366;color:#fff;font-family:'Josefin Sans',sans-serif;font-size:.85rem;letter-spacing:3px;font-weight:700;text-transform:uppercase;padding:18px 28px;text-decoration:none;transition:all .3s;animation:ctaPulse 2.5s ease-in-out infinite;}
+.mango-order-btn:hover{background:#1da851;transform:translateY(-2px);}
+
+/* ── CASHEW WA CARD ── */
+.cashew-wa-card{background:var(--smoke);border:1px solid var(--border);padding:36px 32px;display:flex;align-items:center;gap:32px;flex-wrap:wrap;}
+
+/* ── MANGO CARD PRICING ── */
+.mango-price-row{display:flex;align-items:center;gap:14px;margin-bottom:6px;flex-wrap:wrap;}
+.mango-price-orig{font-family:'Josefin Sans',sans-serif;font-size:1.5rem;color:rgba(250,240,220,.28);text-decoration:line-through;font-weight:700;}
+.mango-price-main{font-family:'Josefin Sans',sans-serif;font-size:3rem;font-weight:700;color:#F0A832;line-height:1;}
+.mango-price-save{background:#D44F10;color:#fff;font-family:'Josefin Sans',sans-serif;font-size:.62rem;letter-spacing:2px;padding:4px 11px;text-transform:uppercase;animation:savePulse 2s ease-in-out infinite;white-space:nowrap;}
+.mango-price-per{font-family:'Josefin Sans',sans-serif;font-size:.72rem;letter-spacing:1.5px;color:rgba(250,240,220,.38);text-transform:uppercase;margin-bottom:26px;}
+.mango-features{display:flex;flex-direction:column;gap:8px;margin-bottom:30px;}
+.mango-feature{font-size:.87rem;color:rgba(250,240,220,.85);display:flex;align-items:flex-start;gap:9px;line-height:1.5;}
+.mango-feature-check{color:#F0A832;font-weight:700;font-family:'Josefin Sans',sans-serif;flex-shrink:0;margin-top:1px;}
+
+/* ── MOBILE — ORDER PAGE ── */
+@media(max-width:900px){
+  .order-main{padding:36px 4% 52px;}
+  .mango-card-inner{grid-template-columns:1fr;}
+  .mango-card-left{padding:28px 22px;border-right:none;border-bottom:1px solid rgba(212,79,16,.15);}
+  .mango-card-right{padding:24px 22px;}
+  .mango-urgency-bar{font-size:.6rem;letter-spacing:1.5px;padding:9px 16px;line-height:1.5;}
+  .cashew-wa-card{padding:24px 22px;gap:20px;}
+  .farmer-strip>div{grid-template-columns:1fr !important;}
+  .farmer-strip>div>div{padding:32px 4% !important;}
+}
+@media(max-width:600px){
+  .order-main{padding:24px 3% 40px;}
+  .mango-card-left{padding:22px 18px;}
+  .mango-card-right{padding:20px 18px;}
+  .mango-urgency-bar{font-size:.56rem;letter-spacing:1px;padding:8px 14px;}
+  .mango-order-btn{font-size:.78rem;letter-spacing:2px;padding:16px 20px;}
+  .mango-price-main{font-size:2.4rem;}
+  .mango-price-orig{font-size:1.2rem;}
+  .mango-price-per{font-size:.65rem;}
+  .mango-feature{font-size:.82rem;}
+  .cashew-wa-card{padding:20px 16px;gap:16px;}
+  .cashew-wa-card>div:last-child{width:100%;text-align:center;}
+  .cashew-wa-card>div:last-child a{display:block!important;width:100%;box-sizing:border-box;}
+}
+@media(max-width:400px){
+  .order-main{padding:16px 3% 32px;}
+  .mango-card-left{padding:18px 14px;}
+  .mango-card-right{padding:16px 14px;}
+  .mango-urgency-bar{font-size:.52rem;letter-spacing:.5px;}
+  .mango-price-main{font-size:2rem;}
+  .mango-price-orig{font-size:1rem;}
+  .mango-price-save{font-size:.56rem;padding:3px 8px;}
+  .mango-order-btn{font-size:.72rem;letter-spacing:1.5px;padding:15px 16px;}
+  .mango-feature{font-size:.78rem;}
+}
+
+/* ══ ORDER PAGE — REDESIGNED ══ */
+
+/* Products section */
+.op-products{background:var(--smoke);padding:64px 6%;display:flex;flex-direction:column;gap:36px;}
+
+/* Product card */
+.op-card{display:grid;grid-template-columns:2fr 3fr;border:1px solid var(--border);overflow:hidden;background:var(--cream);transition:box-shadow .4s;}
+.op-card:hover{box-shadow:0 16px 56px rgba(59,31,12,.13);}
+.op-card.op-mango{border-color:rgba(212,79,16,.3);}
+.op-card.op-cashew{border-color:rgba(185,136,60,.3);}
+
+/* Image panel */
+.op-img-panel{position:relative;overflow:hidden;min-height:400px;}
+.op-img-panel img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s cubic-bezier(.22,1,.36,1);}
+.op-card:hover .op-img-panel img{transform:scale(1.05);}
+.op-img-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(26,8,0,.82) 0%,rgba(26,8,0,.25) 45%,transparent 100%);}
+.op-img-badge{position:absolute;top:20px;left:20px;font-family:'Josefin Sans',sans-serif;font-size:.58rem;letter-spacing:2.5px;text-transform:uppercase;padding:5px 13px;color:#fff;z-index:2;}
+.op-img-badge.live{background:#D44F10;}
+.op-img-badge.avail{background:var(--clay);}
+.op-img-bottom{position:absolute;bottom:0;left:0;right:0;padding:24px 26px;z-index:2;}
+.op-img-price-main{font-family:'Josefin Sans',sans-serif;font-size:2.8rem;font-weight:700;color:#fff;line-height:1;display:block;text-shadow:0 2px 20px rgba(0,0,0,.5);}
+.op-img-price-row{display:flex;align-items:center;gap:8px;margin-top:4px;flex-wrap:wrap;}
+.op-img-price-orig{font-family:'Josefin Sans',sans-serif;font-size:.88rem;color:rgba(255,255,255,.45);text-decoration:line-through;}
+.op-img-save{font-family:'Josefin Sans',sans-serif;font-size:.56rem;letter-spacing:2px;background:#D44F10;color:#fff;padding:3px 8px;text-transform:uppercase;}
+.op-img-price-sub{font-family:'Josefin Sans',sans-serif;font-size:.6rem;letter-spacing:2px;color:rgba(255,255,255,.6);text-transform:uppercase;display:block;margin-top:6px;}
+
+/* Details panel */
+.op-details-panel{padding:44px 48px;display:flex;flex-direction:column;justify-content:center;}
+.op-card-eyebrow{font-family:'Josefin Sans',sans-serif;font-size:.6rem;letter-spacing:3px;color:var(--clay);text-transform:uppercase;margin-bottom:8px;}
+.op-card-title{font-family:'Josefin Sans',sans-serif;font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--mud);line-height:1.1;margin-bottom:4px;}
+.op-card-title em{font-family:'Lora',serif;color:var(--clay);font-style:italic;}
+.op-card-mr{font-family:'Tiro Devanagari Marathi',serif;font-size:1rem;color:var(--terra);display:block;margin-bottom:24px;}
+
+/* Mobile price (visible on mobile only) */
+.op-inline-price{display:none;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+.op-inline-price-main{font-family:'Josefin Sans',sans-serif;font-size:2rem;font-weight:700;color:var(--clay);line-height:1;}
+.op-inline-price-orig{font-family:'Josefin Sans',sans-serif;font-size:.95rem;color:rgba(59,31,12,.3);text-decoration:line-through;}
+.op-inline-save{background:rgba(212,79,16,.1);border:1px solid rgba(212,79,16,.22);color:#D44F10;font-family:'Josefin Sans',sans-serif;font-size:.58rem;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;}
+
+/* Features */
+.op-feats{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:30px;}
+.op-feats li{display:flex;align-items:flex-start;gap:10px;font-size:.88rem;color:var(--bark);line-height:1.55;}
+.op-feats li::before{content:'✦';color:var(--sun);font-size:.62rem;flex-shrink:0;margin-top:4px;}
+
+/* WhatsApp CTA */
+.op-wa-btn{display:flex;align-items:center;justify-content:center;gap:9px;color:#fff;font-family:'Josefin Sans',sans-serif;font-size:.78rem;letter-spacing:2.5px;font-weight:700;text-transform:uppercase;padding:16px 24px;text-decoration:none;transition:all .3s;border:none;cursor:pointer;}
+.op-wa-btn.mango-btn{background:#25D366;}
+.op-wa-btn.mango-btn:hover{background:#1da851;transform:translateY(-2px);box-shadow:0 10px 30px rgba(37,211,102,.3);}
+.op-wa-btn.cashew-btn{background:var(--clay);}
+.op-wa-btn.cashew-btn:hover{background:var(--bark);transform:translateY(-2px);box-shadow:0 10px 30px rgba(59,31,12,.25);}
+.op-wa-hint{font-family:'Josefin Sans',sans-serif;font-size:.57rem;letter-spacing:1.5px;color:rgba(59,31,12,.32);text-transform:uppercase;margin-top:9px;text-align:center;line-height:1.6;}
+
+/* HOW TO ORDER */
+.op-how{background:var(--mud);padding:72px 6%;border-top:3px solid var(--clay);}
+.op-how-label{font-family:'Josefin Sans',sans-serif;font-size:.62rem;letter-spacing:4px;color:var(--sun);text-transform:uppercase;text-align:center;margin-bottom:52px;}
+.op-steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;max-width:820px;margin:0 auto;}
+.op-step{text-align:center;}
+.op-step-num{font-family:'Josefin Sans',sans-serif;font-size:2.6rem;font-weight:700;color:rgba(232,185,74,.1);line-height:1;display:block;}
+.op-step-icon{font-size:1.9rem;display:block;margin:-4px 0 12px;}
+.op-step-title{font-family:'Josefin Sans',sans-serif;font-size:.7rem;letter-spacing:2px;color:var(--cream);text-transform:uppercase;margin-bottom:9px;}
+.op-step-body{font-size:.83rem;color:rgba(250,240,220,.48);line-height:1.75;}
+
+/* TRUST STRIP */
+.op-trust{background:var(--parch);padding:60px 6%;border-top:1px solid var(--border);}
+.op-trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;max-width:980px;margin:0 auto;}
+.op-trust-item{text-align:center;}
+.op-trust-icon{font-size:1.8rem;display:block;margin-bottom:10px;}
+.op-trust-title{font-family:'Josefin Sans',sans-serif;font-size:.65rem;letter-spacing:2px;color:var(--mud);text-transform:uppercase;margin-bottom:5px;}
+.op-trust-body{font-size:.8rem;color:var(--terra);line-height:1.7;}
+
+/* MOBILE — ORDER PAGE REDESIGN */
+@media(max-width:900px){
+  .op-products{padding:40px 4%;gap:24px;}
+  .op-card{grid-template-columns:1fr;}
+  .op-img-panel{min-height:240px;}
+  .op-img-bottom{display:none;}
+  .op-inline-price{display:flex;}
+  .op-details-panel{padding:28px 24px;}
+  .op-how{padding:52px 4%;}
+  .op-steps-grid{grid-template-columns:1fr;gap:28px;max-width:460px;}
+  .op-trust{padding:44px 4%;}
+  .op-trust-grid{grid-template-columns:1fr 1fr;gap:24px;max-width:100%;}
+  .farmer-strip>div{grid-template-columns:1fr !important;}
+  .farmer-strip>div>div{padding:32px 4% !important;}
+}
+@media(max-width:600px){
+  .op-products{padding:24px 3%;gap:20px;}
+  .op-img-panel{min-height:200px;}
+  .op-details-panel{padding:22px 18px;}
+  .op-card-title{font-size:clamp(1.4rem,5vw,1.8rem);}
+  .op-feats li{font-size:.84rem;}
+  .op-wa-btn{font-size:.72rem;letter-spacing:2px;padding:15px 18px;}
+  .op-how{padding:40px 3%;}
+  .op-how-label{margin-bottom:36px;}
+  .op-trust{padding:36px 3%;}
+  .op-trust-grid{gap:18px;}
+}
+@media(max-width:420px){
+  .op-trust-grid{grid-template-columns:1fr;gap:16px;}
+  .op-trust-item{display:flex;align-items:flex-start;gap:14px;text-align:left;}
+  .op-trust-icon{flex-shrink:0;font-size:1.5rem;margin-bottom:0;}
+  .op-step-num{font-size:2rem;}
+}
+
 /* ── PROGRESS BAR ── */
 #progress-bar{position:fixed;top:0;left:0;height:2.5px;background:linear-gradient(90deg,var(--clay),var(--sun),var(--ochre));z-index:9999;width:0%;transition:width .1s linear;}
 
@@ -642,8 +815,8 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
 <div id="curR"></div>
 <div class="toast" id="toast"></div>
 
-<!-- ══ UPI PAYMENT MODAL ══ -->
-<div class="upi-overlay" id="upiOverlay" onclick="closeUpiModal(event)">
+<!-- UPI modal removed — orders handled via WhatsApp -->
+<div class="upi-overlay" id="upiOverlay" style="display:none!important">
   <div class="upi-modal" id="upiModal">
     <button class="upi-close" onclick="closeUpiModal(null,true)">✕</button>
 
@@ -762,302 +935,153 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
     <li><a href="mango.html">Mango · आंबा</a></li>
     <li><a href="order.html" class="active">Order · ऑर्डर</a></li>
   </ul>
-  <div class="cart-pill" onclick="scrollToCart()">
-    <span class="cart-icon">🛒</span>
-    <span class="cart-count" id="navCartLabel">Cart</span>
-    <span class="cart-total" id="navCartAmt">₹0</span>
-  </div>
+  <a href="https://wa.me/919325848094" target="_blank" rel="noopener" class="cart-pill" style="text-decoration:none;" title="Order on WhatsApp">
+    <span class="cart-icon">💬</span>
+    <span class="cart-count">WhatsApp</span>
+    <span class="cart-total" style="font-size:.78rem;">Order Now</span>
+  </a>
 </nav>
 
 <!-- PAGE HEADER -->
 <div class="page-header">
-  <span class="ph-eyebrow">🌿 रत्नागिरी · Konkan</span>
+  <span class="ph-eyebrow">🌿 थेट शेतातून · Farm Direct · Ratnagiri</span>
   <h1 class="ph-title">Place Your <em>Order</em></h1>
-  <span class="ph-mr">ऑर्डर द्या · थेट शेतातून घरी</span>
+  <span class="ph-mr">ऑर्डर द्या · एका WhatsApp मेसेजवर</span>
   <div class="ph-badges">
-    <div class="ph-badge"><span>🌿</span> 100% Natural · नैसर्गिक</div>
-    <div class="ph-badge"><span>✋</span> Hand-Picked · हाताने तोडलेले</div>
-    <div class="ph-badge"><span>🚚</span> Free delivery above ₹<span data-config="freeDelivery">999</span></div>
-    <div class="ph-badge"><span>📦</span> Vacuum Sealed · व्हॅक्यूम सील</div>
-    <div class="ph-badge"><span>⚡</span> Shipped in 48 hours · ४८ तासात</div>
+    <div class="ph-badge"><span>🥭</span> Hapus Mango · Season Live!</div>
+    <div class="ph-badge"><span>🌿</span> Premium Cashew · काजू</div>
+    <div class="ph-badge"><span>💬</span> Order on WhatsApp — Instant</div>
+    <div class="ph-badge"><span>🚚</span> Farm-to-Door · 24–48 hrs</div>
   </div>
 </div>
 
-<!-- MAIN LAYOUT -->
-<div class="order-layout">
+<!-- ══ PRODUCTS ══ -->
+<section class="op-products">
 
-  <!-- ── LEFT: PRODUCTS ── -->
-  <div class="products-col">
-
-    <!-- Tabs -->
-    <div class="cat-tabs">
-      <button class="cat-tab active" id="tabAll"    onclick="switchTab('all')">All · सर्व</button>
-      <button class="cat-tab" id="tabCashew" onclick="switchTab('cashew')">Cashew · काजू</button>
-      <button class="cat-tab" id="tabHapus"  onclick="switchTab('hapus')">Mango · आंबा 🥭</button>
-    </div>
-
-    <!-- CASHEW SECTION -->
-    <div id="cashewSec">
-      <div class="sec-title reveal">
-        <span class="st-icon">🌿</span>
-        <div>
-          <div class="st-en">Konkan Cashew</div>
-          <div class="st-mr">रत्नागिरी काजू · Season Feb–May</div>
+  <!-- MANGO CARD -->
+  <div class="op-card op-mango reveal">
+    <div class="op-img-panel">
+      <img src="mango_tree.jpg" alt="Ratnagiri Hapus Mango from our farm">
+      <div class="op-img-overlay"></div>
+      <span class="op-img-badge live">🥭 Season Live Now</span>
+      <div class="op-img-bottom">
+        <span class="op-img-price-main">₹1,800</span>
+        <div class="op-img-price-row">
+          <span class="op-img-price-orig">₹2,000</span>
+          <span class="op-img-save">Save ₹200</span>
         </div>
-        <div class="st-line"></div>
-      </div>
-
-      <div class="prod-cards" id="cashewCards">
-        <!-- W180 900g -->
-        <div class="prod-card featured reveal" id="card-W180-250">
-          <div class="popular-tag">Most Popular</div>
-          <div class="prod-icon-box">
-            <img src="final_cashew.jpeg" alt="W180 Premium Cashew from our Ratnagiri farm" class="zoomable">
-          </div>
-          <div>
-            <div class="prod-grade" data-tip="w180">Premium Grade · W180</div>
-            <div class="prod-tags-row">
-              <span class="instock-badge">In Stock</span>
-              <span class="prod-tag">Gift Quality</span>
-              <span class="prod-tag">Largest Grade</span>
-            </div>
-          </div>
-          <div class="prod-right">
-            <div class="prod-price"><span class="rs">₹</span>1,099<span class="pu">per 900g</span></div>
-            <div class="qty-row">
-              <button class="qty-btn" onclick="changeQty('W180-250',-1)">−</button>
-              <span class="qty-val" id="qty-W180-250">1</span>
-              <button class="qty-btn" onclick="changeQty('W180-250',+1)">+</button>
-            </div>
-            <button class="add-btn" id="add-W180-250" onclick="addToCart('W180-250','W180 Jumbo Cashew','900g',1099,'🌿',1099)">Add · काटात टाका</button>
-          </div>
-        </div>
-
-        <!-- W210 900g — Notify Me -->
-        <div class="notify-card reveal" id="card-W210-250" style="transition-delay:.1s">
-          <div class="nc-grade-box">
-            <span class="ncg-code">W210</span>
-            <span class="ncg-label">Select</span>
-          </div>
-          <div class="nc-body">
-            <div class="prod-grade" data-tip="w210">Select Grade · W210</div>
-            <div class="prod-name">W210 Select Cashew</div>
-            <div class="prod-wt">900g · Medium-Large Whole</div>
-            <div class="prod-tags-row">
-              <span class="prod-tag">Mithai · Desserts</span>
-              <span class="prod-tag">Notify Me</span>
-            </div>
-          </div>
-          <div class="nc-right">
-            <div class="nc-price"><span class="rs">~₹</span>949<span class="pu">per 900g</span></div>
-            <div class="nc-form">
-              <input class="nc-input" type="tel" maxlength="10" placeholder="WhatsApp number" id="nc-phone-210">
-              <button class="nc-btn" onclick="orderPageNotify('210')">Notify Me</button>
-            </div>
-            <div class="nc-success" id="nc-ok-210">✓ We'll notify you on WhatsApp!</div>
-          </div>
-        </div>
-
-        <!-- W240 900g — Notify Me -->
-        <div class="notify-card reveal" id="card-W240-250" style="transition-delay:.15s">
-          <div class="nc-grade-box">
-            <span class="ncg-code">W240</span>
-            <span class="ncg-label">Standard</span>
-          </div>
-          <div class="nc-body">
-            <div class="prod-grade" data-tip="w240">Standard Grade · W240</div>
-            <div class="prod-name">W240 Standard Cashew</div>
-            <div class="prod-wt">900g · Whole Kernels</div>
-            <div class="prod-tags-row">
-              <span class="prod-tag">Cooking · स्वयंपाक</span>
-              <span class="prod-tag">Notify Me</span>
-            </div>
-          </div>
-          <div class="nc-right">
-            <div class="nc-price"><span class="rs">~₹</span>869<span class="pu">per 900g</span></div>
-            <div class="nc-form">
-              <input class="nc-input" type="tel" maxlength="10" placeholder="WhatsApp number" id="nc-phone-240">
-              <button class="nc-btn" onclick="orderPageNotify('240')">Notify Me</button>
-            </div>
-            <div class="nc-success" id="nc-ok-240">✓ We'll notify you on WhatsApp!</div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Value packs -->
-      <div class="sec-title reveal">
-        <span class="st-icon">📦</span>
-        <div>
-          <div class="st-en">Value Packs</div>
-          <div class="st-mr">W180 Premium · जास्त घ्या, कमी द्या</div>
-        </div>
-        <div class="st-line"></div>
-      </div>
-      <div class="pack-grid">
-        <div class="vpack reveal" data-pack-id="W180-1.5kg">
-          <div class="vp-wt">1.5 kg</div>
-          <div class="vp-grade">W180 Premium</div>
-          <div class="vp-price">₹1,799</div>
-          <div class="vp-save">Common choice</div>
-          <button class="vpack-btn" onclick="addToCart('W180-1.5kg','W180 Jumbo Cashew','1.5 kg',1799,'📦',1799)">Add to Cart</button>
-        </div>
-        <div class="vpack best reveal" style="transition-delay:.08s" data-pack-id="W180-2kg">
-          <div class="vp-wt">2 kg</div>
-          <div class="vp-grade">W180 Premium</div>
-          <div class="vp-price">₹2,399</div>
-          <div class="vp-save">Best value · जास्त घ्या</div>
-          <button class="vpack-btn" onclick="addToCart('W180-2kg','W180 Jumbo Cashew','2 kg',2399,'📦',2399)">Add to Cart</button>
-        </div>
-        <div class="vpack reveal" style="transition-delay:.16s" data-pack-id="W180-gift">
-          <div class="vp-wt">Gift Pack 🎁</div>
-          <div class="vp-grade">Premium Cashew Gift Pack</div>
-          <div class="vp-price">₹1,999</div>
-          <div class="vp-save">Premium cashew gift box</div>
-          <button class="vpack-btn" onclick="addToCart('W180-gift','Premium Cashew Gift Pack','Gift Pack',1999,'🎁',1999)">Add to Cart</button>
-        </div>
+        <span class="op-img-price-sub">Box of 50 Alphonso Mangoes</span>
       </div>
     </div>
-
-    <!-- HAPUS SECTION -->
-    <div id="hapusSec" style="display:none">
-      <div class="sec-title reveal">
-        <span class="st-icon">🥭</span>
-        <div>
-          <div class="st-en" style="color:var(--mud)">Ratnagiri Hapus</div>
-          <div class="st-mr" style="color:#D44F10">GI Certified · Season Apr–Jun 2025</div>
-        </div>
-        <div class="st-line"></div>
+    <div class="op-details-panel">
+      <div class="op-card-eyebrow">Ratnagiri Alphonso · GI Certified</div>
+      <h2 class="op-card-title">Hapus <em>Mango</em> Box</h2>
+      <span class="op-card-mr">रत्नागिरी हापूस आंबा · ५० फळे प्रति बॉक्स</span>
+      <div class="op-inline-price">
+        <span class="op-inline-price-main" style="color:#D44F10;">₹1,800</span>
+        <span class="op-inline-price-orig">₹2,000</span>
+        <span class="op-inline-save">Save ₹200</span>
       </div>
-      <div style="background:linear-gradient(135deg,rgba(212,79,16,.05),rgba(240,168,50,.05));border:1px solid rgba(212,79,16,.2);padding:36px 32px;text-align:center;margin-bottom:32px;">
-        <div style="font-size:3rem;margin-bottom:14px;">🥭</div>
-        <div style="font-family:'Josefin Sans',sans-serif;font-size:.8rem;letter-spacing:3px;color:var(--mud);text-transform:uppercase;margin-bottom:6px;">Coming Season April — June 2025</div>
-        <div style="font-family:'Tiro Devanagari Marathi',serif;font-size:1.1rem;color:#D44F10;margin-bottom:14px;">एप्रिल २०२५ मध्ये उपलब्ध होणार</div>
-        <p style="font-size:.88rem;color:#3B1F0C;line-height:1.75;max-width:480px;margin:0 auto 20px;">Ratnagiri GI Certified Hapus Alphonso — tree-ripened, saffron-yellow, intensely fragrant. Register on our <a href="mango.html" style="color:#D44F10;">Mango page</a> to be notified when the season opens.</p>
-        <a href="mango.html" style="font-family:'Josefin Sans',sans-serif;font-size:.72rem;letter-spacing:2.5px;background:#D44F10;color:var(--cream);padding:13px 28px;text-decoration:none;text-transform:uppercase;display:inline-block;transition:all .3s;" onmouseover="this.style.background='#1C0F06'" onmouseout="this.style.background='#D44F10'">Register for Mango · आंब्यासाठी नाव नोंदवा 🥭</a>
-      </div>
+      <ul class="op-feats">
+        <li>50 Alphonso Hapus Mangoes per box — ₹36 per mango</li>
+        <li>GI Certified Ratnagiri — authentic origin guaranteed</li>
+        <li>Tree-ripened naturally · No carbide · Zero chemicals</li>
+        <li>Dispatched within 24 hours of harvest, farm-fresh</li>
+        <li>Packed in ventilated wooden crate lined with dried leaves</li>
+      </ul>
+      <a href="https://wa.me/919325848094?text=Hi%20Pasture!%20%F0%9F%A5%AD%0AI%20want%20to%20order%20Ratnagiri%20Hapus%20Mango%20Box.%0A50%20Alphonso%20Mangoes%20%C2%B7%20%E2%82%B91%2C800%20per%20box.%0A%0ANo.%20of%20Boxes%3A%20%0AName%3A%20%0APhone%3A%20%0ADelivery%20Address%3A%20%0ACity%20%26%20Pincode%3A%20" target="_blank" rel="noopener" class="op-wa-btn mango-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M17.47 14.38c-.28-.14-1.65-.81-1.91-.9-.26-.1-.44-.14-.63.14-.19.28-.72.9-.88 1.09-.16.18-.33.2-.61.07-.28-.14-1.18-.43-2.25-1.38-.83-.74-1.39-1.65-1.55-1.93-.16-.28-.02-.43.12-.57.13-.13.28-.33.42-.5.14-.16.18-.28.28-.47.09-.19.05-.35-.03-.49-.07-.14-.63-1.52-.87-2.08-.23-.55-.46-.48-.63-.49h-.54c-.18 0-.49.07-.75.35-.26.28-1 .98-1 2.38s1.02 2.76 1.16 2.95c.14.18 2.01 3.07 4.88 4.31.68.3 1.22.47 1.63.6.69.22 1.31.19 1.81.11.55-.08 1.7-.7 1.94-1.37.24-.67.24-1.25.17-1.37-.07-.11-.25-.18-.53-.32z"/><path d="M12 0C5.37 0 0 5.37 0 12c0 2.11.55 4.09 1.51 5.8L0 24l6.36-1.49A11.94 11.94 0 0012 24c6.63 0 12-5.37 12-12S18.63 0 12 0zm0 21.82c-1.88 0-3.63-.5-5.14-1.38l-.37-.22-3.77.89.89-3.69-.24-.38A9.82 9.82 0 012.18 12C2.18 6.57 6.57 2.18 12 2.18c5.43 0 9.82 4.39 9.82 9.82 0 5.43-4.39 9.82-9.82 9.82z"/></svg>
+        Order Mango on WhatsApp
+      </a>
+      <div class="op-wa-hint">+91 93258 48094 · WhatsApp opens with your order details pre-filled</div>
     </div>
-
   </div>
 
-  <!-- ── RIGHT: CART ── -->
-  <div class="cart-col" id="cartCol">
-    <div class="cart-heading">Your Order · तुमची ऑर्डर</div>
-
-    <!-- Empty -->
-    <div class="cart-empty" id="cartEmpty">
-      <span class="ce-icon">🛒</span>
-      <div class="ce-txt">Your cart is empty</div>
-      <div class="ce-sub">काजू निवडा · Add cashew to start</div>
-    </div>
-
-    <!-- Order success -->
-    <div class="order-success" id="orderSuccess">
-      <span class="os-icon">🌿</span>
-      <div class="os-title">Order Placed! · ऑर्डर मिळाली!</div>
-      <div class="os-code" id="osCode">YH-000000</div>
-      <p class="os-msg">आमचे शेतकरी तुमची ऑर्डर तयार करत आहेत.<br>We will call to confirm within 24 hours.<br>Delivery in 3–5 business days.</p>
-      <button onclick="resetOrder()" style="margin-top:16px;background:none;border:1px solid var(--clay);color:var(--clay);padding:10px 22px;cursor:pointer;font-family:'Josefin Sans',sans-serif;font-size:.7rem;letter-spacing:2px;text-transform:uppercase;transition:all .3s;" onmouseover="this.style.background='var(--clay)';this.style.color='var(--cream)'" onmouseout="this.style.background='none';this.style.color='var(--clay)'">New Order · नवीन ऑर्डर</button>
-    </div>
-
-    <!-- Cart items container -->
-    <div id="cartMain" style="display:none">
-      <div class="cart-items" id="cartItems"></div>
-
-      <!-- Coupon -->
-      <div class="coupon-row">
-        <input class="coupon-in" id="couponIn" placeholder="Coupon code · सवलत कोड">
-        <button class="coupon-btn" onclick="applyCoupon()">Apply</button>
-      </div>
-
-      <div class="divider"></div>
-      <div class="cart-row"><span class="cr-lbl">Subtotal · एकूण</span><span class="cr-val" id="subTotal">₹0</span></div>
-      <div class="cart-row" id="discRow" style="display:none"><span class="cr-lbl" style="color:var(--green)">Discount · सवलत</span><span class="cr-val" style="color:var(--green)" id="discVal">−₹0</span></div>
-      <div class="cart-row"><span class="cr-lbl">Delivery · वितरण</span><span class="cr-val" id="delivVal">₹80</span></div>
-      <div class="divider"></div>
-      <div class="cart-row total"><span class="cr-lbl">Total · एकूण</span><span class="cr-val" id="cartTotalAmt">₹0</span></div>
-      <div class="free-delivery" id="freeDel">Add ₹<span id="freeLeft">999</span> more for free delivery</div>
-      
-      <!-- ── SECONDARY: WhatsApp Order ── -->
-      <button class="checkout-btn" onclick="proceedCheckout()">Checkout · पुढे जा</button>
-      <button class="wa-btn" id="waBtn" onclick="orderWhatsApp()"><span>💬</span> Order via WhatsApp · व्हॉट्सअॅपवर ऑर्डर</button>
-
-      <!-- Address form + payment choice -->
-      <div class="addr-section" id="addrSec">
-        <div class="addr-title">Delivery Details · पत्ता सांगा</div>
-        <div class="form-row">
-          <div class="form-field"><label class="form-label">First Name · नाव</label><input class="form-in" id="fname" placeholder="Your Good Name"></div>
-          <div class="form-field"><label class="form-label">Last Name · आडनाव</label><input class="form-in" id="lname" placeholder="Your Good Last Name"></div>
-        </div>
-        <div class="form-row full">
-          <div class="form-field"><label class="form-label">Phone · फोन नंबर</label><input class="form-in" id="phone" placeholder="+91 1234567890" type="tel"></div>
-        </div>
-        <div class="form-row full">
-          <div class="form-field"><label class="form-label">Address · पत्ता</label><input class="form-in" id="addr" placeholder="House / Flat / Street · घर नंबर, रस्ता"></div>
-        </div>
-        <div class="form-row">
-          <div class="form-field"><label class="form-label">City · शहर</label><input class="form-in" id="city" placeholder="Mumbai"></div>
-          <div class="form-field"><label class="form-label">Pincode · पिनकोड</label><input class="form-in" id="pin" placeholder="400000"></div>
-        </div>
-        <div class="form-row full">
-          <div class="form-field">
-            <label class="form-label">State · राज्य</label>
-            <select class="form-sel" id="state">
-              <option value="">Select State · राज्य निवडा</option>
-              <option value="Maharashtra">Maharashtra · महाराष्ट्र</option>
-            </select>
-            <small style="font-size:.7rem;color:#8B5E3C;display:block;margin-top:4px;">
-              Currently we deliver online orders within Maharashtra only. For other states, please order via WhatsApp.
-            </small>
-          </div>
-        </div>
-        
-        <!-- Payment options after address -->
-        <div style="margin-top:10px;margin-bottom:4px;font-family:'Josefin Sans',sans-serif;font-size:.7rem;letter-spacing:2px;color:#7A4A28;text-transform:uppercase;">
-          Select Payment Method · पेमेंट कसे कराल?
-        </div>
-        <div class="form-row full" style="margin-bottom:10px;">
-          <div class="form-field">
-            <div style="display:flex;gap:14px;align-items:center;font-size:.8rem;color:#3B1F0C;">
-              <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
-                <input type="radio" name="payMethod" value="UPI" onclick="selectPaymentMethod('UPI')" checked>
-                <span>UPI</span>
-              </label>
-              <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
-                <input type="radio" name="payMethod" value="COD" onclick="selectPaymentMethod('COD')">
-                <span>Cash on Delivery · COD</span>
-              </label>
-            </div>
-          </div>
-        </div>
-        <div id="payUpiWrap">
-          <button class="upi-btn" id="upiPayBtn" onclick="openUpiModal()">
-            <span class="upi-logo">💳</span>
-            Pay via UPI · यूपीआय ने पेमेंट करा
-          </button>
-        </div>
-        <div id="payCodWrap" style="display:none;">
-          <button class="confirm-btn" onclick="confirmOrder()">Place Order (COD) · कॅश ऑन डिलिव्हरी</button>
-        </div>
-      </div>
-
-      <div class="trust-strip">
-        <div class="trust-item"><span>💳</span><span>UPI · GPay · PhonePe · Paytm accepted</span></div>
-        <div class="trust-item"><span>🔒</span><span>Cash on delivery also available · COD उपलब्ध</span></div>
-        <div class="trust-item"><span>🚚</span><span>Delivery in 3–5 days · ३-५ दिवसात पोहोचणार</span></div>
-      </div>
-
-      <!-- Hapus teaser in cart -->
-      <div class="hapus-teaser">
-        <span class="ht-icon">🥭</span>
-        <div class="ht-title">Hapus Alphonso Coming April 2025</div>
-        <span class="ht-mr">हापूस आंबा येतो आहे!</span>
-        <a href="hapus.html" class="ht-btn">Pre-Register Now</a>
+  <!-- CASHEW CARD -->
+  <div class="op-card op-cashew reveal" style="transition-delay:.1s">
+    <div class="op-img-panel">
+      <img src="final_cashew.jpeg" alt="W180 Premium Cashew — Ratnagiri farm">
+      <div class="op-img-overlay" style="background:linear-gradient(to top,rgba(26,15,6,.82) 0%,rgba(26,15,6,.25) 50%,transparent 100%);"></div>
+      <span class="op-img-badge avail">🌿 Available Now</span>
+      <div class="op-img-bottom">
+        <span class="op-img-price-main">₹1,099</span>
+        <span class="op-img-price-sub">W180 Premium Grade · per 900g</span>
       </div>
     </div>
-
+    <div class="op-details-panel">
+      <div class="op-card-eyebrow">Ratnagiri Konkan · Farm Direct · No Middlemen</div>
+      <h2 class="op-card-title">Premium <em>Cashew</em></h2>
+      <span class="op-card-mr">रत्नागिरी काजू · W180 · W210 · W240</span>
+      <div class="op-inline-price">
+        <span class="op-inline-price-main">₹1,099</span>
+        <span style="font-family:'Josefin Sans',sans-serif;font-size:.78rem;letter-spacing:1px;color:rgba(59,31,12,.4);align-self:flex-end;padding-bottom:3px;">/ 900g · W180</span>
+      </div>
+      <ul class="op-feats">
+        <li>W180 Jumbo — India's largest cashew grade, premium gift quality</li>
+        <li>Hand-picked &amp; graded by village women — never optical sorters</li>
+        <li>Vacuum-sealed within 48 hours of your order</li>
+        <li>Multiple sizes: 900g · 1.5 kg · 2 kg · Gift Pack</li>
+      </ul>
+      <a href="https://wa.me/919325848094?text=Hi%20Pasture!%20%F0%9F%8C%BF%0AI%20want%20to%20order%20Ratnagiri%20Cashew.%0A%0AGrade%3A%20W180%20%2F%20W210%20%2F%20W240%0AQuantity%3A%20%0AName%3A%20%0APhone%3A%20%0ADelivery%20Address%3A%20" target="_blank" rel="noopener" class="op-wa-btn cashew-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M17.47 14.38c-.28-.14-1.65-.81-1.91-.9-.26-.1-.44-.14-.63.14-.19.28-.72.9-.88 1.09-.16.18-.33.2-.61.07-.28-.14-1.18-.43-2.25-1.38-.83-.74-1.39-1.65-1.55-1.93-.16-.28-.02-.43.12-.57.13-.13.28-.33.42-.5.14-.16.18-.28.28-.47.09-.19.05-.35-.03-.49-.07-.14-.63-1.52-.87-2.08-.23-.55-.46-.48-.63-.49h-.54c-.18 0-.49.07-.75.35-.26.28-1 .98-1 2.38s1.02 2.76 1.16 2.95c.14.18 2.01 3.07 4.88 4.31.68.3 1.22.47 1.63.6.69.22 1.31.19 1.81.11.55-.08 1.7-.7 1.94-1.37.24-.67.24-1.25.17-1.37-.07-.11-.25-.18-.53-.32z"/><path d="M12 0C5.37 0 0 5.37 0 12c0 2.11.55 4.09 1.51 5.8L0 24l6.36-1.49A11.94 11.94 0 0012 24c6.63 0 12-5.37 12-12S18.63 0 12 0zm0 21.82c-1.88 0-3.63-.5-5.14-1.38l-.37-.22-3.77.89.89-3.69-.24-.38A9.82 9.82 0 012.18 12C2.18 6.57 6.57 2.18 12 2.18c5.43 0 9.82 4.39 9.82 9.82 0 5.43-4.39 9.82-9.82 9.82z"/></svg>
+        Order Cashew on WhatsApp
+      </a>
+      <div class="op-wa-hint">+91 93258 48094 · Tell us your grade + quantity, we confirm price</div>
+    </div>
   </div>
-</div>
+
+</section>
+
+<!-- ══ HOW TO ORDER ══ -->
+<section class="op-how">
+  <div class="op-how-label">How Ordering Works · ऑर्डर कसा द्यायचा?</div>
+  <div class="op-steps-grid">
+    <div class="op-step">
+      <span class="op-step-num">01</span>
+      <span class="op-step-icon">💬</span>
+      <div class="op-step-title">Tap WhatsApp</div>
+      <p class="op-step-body">Click the Order button above. WhatsApp opens automatically with your product and quantity details already typed in.</p>
+    </div>
+    <div class="op-step">
+      <span class="op-step-num">02</span>
+      <span class="op-step-icon">📝</span>
+      <div class="op-step-title">Add Your Details</div>
+      <p class="op-step-body">Just fill in your name, delivery address and pincode. Hit send — that is the complete ordering process.</p>
+    </div>
+    <div class="op-step">
+      <span class="op-step-num">03</span>
+      <span class="op-step-icon">📦</span>
+      <div class="op-step-title">We Pack & Dispatch</div>
+      <p class="op-step-body">We confirm personally, pack your order fresh from the farm, and dispatch within 24 hours. Farm direct to your door.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TRUST ══ -->
+<section class="op-trust">
+  <div class="op-trust-grid">
+    <div class="op-trust-item">
+      <span class="op-trust-icon">🌾</span>
+      <div class="op-trust-title">Farm Direct</div>
+      <p class="op-trust-body">You buy straight from the farmer. No brokers, no cold storage, no markup.</p>
+    </div>
+    <div class="op-trust-item">
+      <span class="op-trust-icon">✦</span>
+      <div class="op-trust-title">GI Certified</div>
+      <p class="op-trust-body">Genuine Ratnagiri origin — Geographical Indication certified, authenticity guaranteed.</p>
+    </div>
+    <div class="op-trust-item">
+      <span class="op-trust-icon">📦</span>
+      <div class="op-trust-title">Packed Fresh</div>
+      <p class="op-trust-body">Packed and dispatched within 24–48 hours of harvest. Never cold-stored.</p>
+    </div>
+    <div class="op-trust-item">
+      <span class="op-trust-icon">💬</span>
+      <div class="op-trust-title">Always Reachable</div>
+      <p class="op-trust-body">Questions before or after ordering? We are on WhatsApp — real people, fast replies.</p>
+    </div>
+  </div>
+</section>
 
 <!-- ══════════════ FARMER PROMISE STRIP ══════════════ -->
 <div class="farmer-strip">
@@ -1128,7 +1152,7 @@ footer{background:var(--mud);padding:50px 6% 24px;color:rgba(250,240,220,.6);}
   </div>
 </footer>
 
-<a id="floatWa" href="https://wa.me/919404598725" target="_blank" rel="noopener" class="float-wa" title="Chat on WhatsApp · व्हॉट्सअॅपवर चॅट करा" style="display:none;">💬</a>
+<a id="floatWa" href="https://wa.me/919325848094" target="_blank" rel="noopener" class="float-wa" title="Order on WhatsApp · व्हॉट्सअॅपवर ऑर्डर करा" style="display:flex;">💬</a>
 <script>
   document.addEventListener('siteConfigReady', function(){
     var C = window.SITE_CONFIG;
@@ -1162,7 +1186,7 @@ try{
 }catch(e){}
 var FREE_SHIP=999;
 var DELIVERY_CHARGE=80;
-var WHATSAPP_NUMBER='919404598725';
+var WHATSAPP_NUMBER='919325848094';
 
 // ── ⚠️  SET YOUR UPI ID HERE ──────────────────────────────────────────────
 // Replace with your actual UPI ID (e.g. yourname@okicici, 9876543210@upi)
@@ -1227,9 +1251,10 @@ function addToCart(id,name,weight,price,icon,mrp){
 }
 
 function renderCart(){
+  const main=document.getElementById('cartMain');
+  if(!main)return;
   const items=Object.values(cart);
   const empty=document.getElementById('cartEmpty');
-  const main=document.getElementById('cartMain');
   const success=document.getElementById('orderSuccess');
   if(!items.length){empty.style.display='block';main.style.display='none';return;}
   empty.style.display='none';success.style.display='none';main.style.display='block';
@@ -1303,8 +1328,9 @@ function updateNavCart(){
   const items=Object.values(cart);
   const total=items.reduce((s,i)=>s+i.price*i.qty,0);
   const count=items.reduce((s,i)=>s+i.qty,0);
-  document.getElementById('navCartLabel').textContent=count?count+' item'+(count>1?'s':''):'Cart';
-  document.getElementById('navCartAmt').textContent='₹'+total.toLocaleString();
+  const lbl=document.getElementById('navCartLabel');const amt=document.getElementById('navCartAmt');
+  if(lbl)lbl.textContent=count?count+' item'+(count>1?'s':''):'Cart';
+  if(amt)amt.textContent='₹'+total.toLocaleString();
   try{localStorage.setItem('pastureCartCount',count||'');localStorage.setItem('pastureCart',JSON.stringify(Object.values(cart)));}catch(e){}
 }
 
@@ -1420,7 +1446,7 @@ function upiDoneWhatsApp(){
     `Total Paid: ₹${total.toLocaleString()}\n`+
     `UPI ID: ${UPI_ID}\n\n`+
     `Please confirm my order. 🙏`;
-  window.open('https://wa.me/'+(WHATSAPP_NUMBER||'919404598725')+'?text='+encodeURIComponent(msg),'_blank');
+  window.open('https://wa.me/'+(WHATSAPP_NUMBER||'919325848094')+'?text='+encodeURIComponent(msg),'_blank');
   // Auto-place order in system as prepaid UPI
   placeOrder(addr,'UPI');
 }
@@ -1524,23 +1550,25 @@ function resetOrder(){
 
 function orderWhatsApp(){
   const items=Object.values(cart);
-  if(!items.length){showToast('Add items first');return;}
-  const sub=items.reduce((s,i)=>s+i.price*i.qty,0);
-  const lines=items.map(i=>`• ${i.name} ${i.weight} × ${i.qty} = ₹${(i.price*i.qty).toLocaleString()}`).join('\n');
-  const msg=`नमस्कार Pasture! 🌿\n\nमला ऑर्डर द्यायची आहे:\n\n${lines}\n\nTotal: ₹${sub.toLocaleString()}\n\nRatnagiri Konkan 🙏`;
-  window.open('https://wa.me/'+(WHATSAPP_NUMBER||'919404598725')+'?text='+encodeURIComponent(msg),'_blank');
+  const wa=WHATSAPP_NUMBER||'919325848094';
+  let msg;
+  if(items.length){
+    const sub=items.reduce((s,i)=>s+i.price*i.qty,0);
+    const del=sub>=FREE_SHIP?0:DELIVERY_CHARGE;
+    const disc2=isNaN(discount)?0:discount;
+    const total=sub-disc2+del;
+    const lines=items.map(i=>`• ${i.icon} ${i.name} (${i.weight}) × ${i.qty} = ₹${(i.price*i.qty).toLocaleString()}`).join('\n');
+    msg=`नमस्कार Pasture! 🌿\n\nI want to order:\n\n${lines}\n\nSubtotal: ₹${sub.toLocaleString()}\nDelivery: ${del===0?'FREE 🎉':'₹'+del}\nTotal: ₹${total.toLocaleString()}\n\nPlease confirm my order 🙏\n\nName: \nPhone: \nDelivery Address: \nCity & Pincode: `;
+  } else {
+    msg=`नमस्कार Pasture! 🌿\n\nI want to order from your farm.\n\nProduct: (Cashew / Hapus Mango)\nQuantity: \n\nName: \nPhone: \nDelivery Address: \nCity & Pincode: `;
+  }
+  window.open('https://wa.me/'+wa+'?text='+encodeURIComponent(msg),'_blank');
 }
 
-function scrollToCart(){document.getElementById('cartCol').scrollIntoView({behavior:'smooth'});}
+function scrollToCart(){const el=document.getElementById('cartCol');if(el)el.scrollIntoView({behavior:'smooth'});}
 
 // ── TABS ────────────────────────────────────────────────────────────────────
-function switchTab(t){
-  const cs=document.getElementById('cashewSec'),hs=document.getElementById('hapusSec');
-  document.querySelectorAll('.cat-tab').forEach(tb=>tb.classList.remove('active'));
-  if(t==='all')  {cs.style.display='block';hs.style.display='none';document.getElementById('tabAll').classList.add('active');}
-  if(t==='cashew'){cs.style.display='block';hs.style.display='none';document.getElementById('tabCashew').classList.add('active');}
-  if(t==='hapus'){cs.style.display='none';hs.style.display='block';document.getElementById('tabHapus').classList.add('active');}
-}
+function switchTab(t){}
 
 // ── TOAST ───────────────────────────────────────────────────────────────────
 let toastT;

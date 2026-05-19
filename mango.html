@@ -281,10 +281,10 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;o
 @media(max-width:900px){
   .about-grid,.gi-grid,.pack-cards,.what-steps{grid-template-columns:1fr;}
   .what-step{border-right:none;border-bottom:1px solid rgba(212,79,16,.15);}
-  nav{flex-wrap:wrap;gap:8px 0;padding:12px 3%;}
-  .nav-ul{display:flex;flex-wrap:wrap;gap:6px 10px;margin:0;}
-  .nav-ul a{font-size:10px;letter-spacing:1.5px;padding:8px 4px;min-height:44px;display:inline-flex;align-items:center;}
-  nav .nav-cta{padding:12px 18px;font-size:.7rem;min-height:44px;display:inline-flex;align-items:center;justify-content:center;}
+  nav{flex-wrap:wrap;gap:6px 0;padding:10px 3%;}
+  .nav-ul{display:flex;flex-wrap:wrap;gap:4px 8px;margin:0;}
+  .nav-ul a{font-size:10px;letter-spacing:1.5px;padding:7px 4px;min-height:40px;display:inline-flex;align-items:center;}
+  nav .nav-cta{padding:10px 14px;font-size:.68rem;min-height:40px;display:inline-flex;align-items:center;justify-content:center;}
   .hero-eyebrow{font-size:.82rem;letter-spacing:.5px;margin-bottom:10px;display:block;}
   .footer-top{grid-template-columns:1fr;gap:24px;margin-bottom:28px;}
   .notify-form{flex-direction:column;}
@@ -327,6 +327,9 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;o
   .pack-cards{gap:12px;}
   .pack-card{padding:16px 14px;}
   .pack-btn{padding:10px 14px;font-size:.65rem;}
+  .pack-price{font-size:1.6rem !important;}
+  .pack-price span[style*="line-through"]{font-size:.9rem !important;}
+  #packs .pack-cards{gap:10px;}
   section a[href="cashew.html"]:not(.btn-cashew){width:100%;max-width:280px;margin:14px auto 0;display:flex !important;justify-content:center;padding:12px 20px !important;font-size:.7rem !important;}
   section:has(a[href="cashew.html"]:not(.btn-cashew)){padding:24px 3% !important;}
   section:has(a[href="cashew.html"]:not(.btn-cashew)) .reveal{grid-template-columns:1fr !important;gap:20px !important;}
@@ -372,12 +375,165 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;o
   #mini-cart{right:8px;padding:14px;}
   .notify-input,.notify-btn{padding:12px 14px;font-size:.82rem;}
 }
+
+/* ══ DEAL TOP SECTION ══ */
+#deal-top{background:linear-gradient(160deg,#1a0800 0%,#2a1004 40%,#0e1a04 100%);padding:0;position:relative;overflow:hidden;padding-top:68px;} /* 68px = fixed nav height */
+#deal-top::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 70% 50%,rgba(240,168,50,.08) 0%,transparent 65%);pointer-events:none;}
+.deal-urgency-bar{background:var(--orange);color:var(--cream);text-align:center;padding:11px 6%;font-family:'Josefin Sans',sans-serif;font-size:.75rem;letter-spacing:2.5px;text-transform:uppercase;position:relative;overflow:hidden;}
+.deal-urgency-bar::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent 20%,rgba(255,255,255,.18) 50%,transparent 80%);animation:urgShimmer 2.2s linear infinite;}
+@keyframes urgShimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.deal-urgency-bar strong{color:var(--yellow);}
+.deal-inner{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center;padding:72px 6% 80px;position:relative;z-index:2;}
+.deal-eyebrow{font-family:'Caveat',cursive;font-size:1.5rem;color:var(--sage);display:block;margin-bottom:10px;}
+.deal-title{font-family:'Josefin Sans',sans-serif;font-size:clamp(2rem,3.8vw,3.2rem);font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--cream);line-height:1.05;}
+.deal-title em{color:var(--gold);font-style:italic;font-family:'Lora',serif;}
+.deal-subtitle{font-family:'Josefin Sans',sans-serif;font-size:.82rem;letter-spacing:2px;color:rgba(250,240,220,.55);text-transform:uppercase;margin-top:10px;margin-bottom:26px;}
+.deal-pricing{display:flex;align-items:center;gap:16px;margin-bottom:6px;flex-wrap:wrap;}
+.deal-original{font-family:'Josefin Sans',sans-serif;font-size:1.7rem;color:rgba(250,240,220,.3);text-decoration:line-through;font-weight:700;}
+.deal-price{font-family:'Josefin Sans',sans-serif;font-size:3.8rem;font-weight:700;color:var(--gold);line-height:1;}
+.deal-save{background:var(--orange);color:var(--cream);font-family:'Josefin Sans',sans-serif;font-size:.68rem;letter-spacing:2px;padding:5px 13px;text-transform:uppercase;font-weight:700;animation:savePulse 2s ease-in-out infinite;align-self:center;}
+@keyframes savePulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(212,79,16,.5)}50%{transform:scale(1.06);box-shadow:0 0 0 8px rgba(212,79,16,0)}}
+.deal-per{font-family:'Josefin Sans',sans-serif;font-size:.78rem;letter-spacing:1.5px;color:rgba(250,240,220,.4);text-transform:uppercase;margin-bottom:24px;}
+.deal-features{display:flex;flex-direction:column;gap:9px;margin-bottom:28px;}
+.deal-feature{font-size:.88rem;color:rgba(250,240,220,.85);display:flex;align-items:center;gap:10px;}
+.deal-feature::before{content:'✓';color:var(--gold);font-weight:700;flex-shrink:0;font-family:'Josefin Sans',sans-serif;}
+.deal-cta{display:inline-block;background:var(--gold);color:var(--mud);font-family:'Josefin Sans',sans-serif;font-size:.88rem;letter-spacing:3px;font-weight:700;text-transform:uppercase;padding:18px 52px;text-decoration:none;transition:all .3s;cursor:pointer;animation:ctaPulse 2.5s ease-in-out infinite;}
+@keyframes ctaPulse{0%,100%{box-shadow:0 0 0 0 rgba(240,168,50,.6)}60%{box-shadow:0 0 0 18px rgba(240,168,50,0)}}
+.deal-cta:hover{background:var(--yellow);transform:translateY(-3px);box-shadow:0 16px 40px rgba(240,168,50,.45);}
+.deal-social-proof{margin-top:20px;display:flex;flex-direction:column;gap:8px;}
+.deal-proof-item{font-family:'Josefin Sans',sans-serif;font-size:.7rem;letter-spacing:1.5px;color:rgba(250,240,220,.5);text-transform:uppercase;display:flex;align-items:center;gap:8px;}
+.deal-proof-item strong{color:var(--amber);}
+.deal-stocks{margin-top:16px;}
+.deal-stock-bar{height:5px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;margin-top:7px;}
+.deal-stock-fill{height:100%;width:68%;background:linear-gradient(90deg,var(--orange),var(--gold));border-radius:3px;animation:stockLoad 1.8s ease-out .8s both;}
+@keyframes stockLoad{from{width:0}to{width:68%}}
+.deal-stock-lbl{font-family:'Josefin Sans',sans-serif;font-size:.63rem;letter-spacing:1.5px;color:rgba(250,240,220,.35);text-transform:uppercase;}
+.deal-visual{position:relative;}
+.deal-mango-display{background:rgba(255,255,255,.03);border:1px solid rgba(240,168,50,.2);padding:44px 32px;text-align:center;position:relative;overflow:hidden;}
+.deal-mango-display::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(240,168,50,.06),transparent 70%);pointer-events:none;}
+.deal-mango-emoji{font-size:7rem;display:block;animation:mangoBounce 3.5s ease-in-out infinite;filter:drop-shadow(0 8px 28px rgba(240,168,50,.25));position:relative;z-index:1;}
+@keyframes mangoBounce{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-14px) rotate(3deg)}}
+.deal-mango-count{font-family:'Josefin Sans',sans-serif;font-size:1rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-top:14px;display:block;position:relative;z-index:1;}
+.deal-mango-mr{font-family:'Tiro Devanagari Marathi',serif;font-size:1.1rem;color:var(--amber);display:block;margin-top:5px;position:relative;z-index:1;}
+.deal-box-details{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px;position:relative;z-index:1;}
+.deal-box-detail{background:rgba(255,255,255,.04);border:1px solid rgba(212,79,16,.15);padding:13px 10px;text-align:center;}
+.deal-box-detail-val{font-family:'Josefin Sans',sans-serif;font-size:1.25rem;font-weight:700;color:var(--cream);display:block;}
+.deal-box-detail-lbl{font-size:.62rem;letter-spacing:1.5px;color:rgba(250,240,220,.38);text-transform:uppercase;margin-top:2px;display:block;}
+@media(max-width:900px){
+  #deal-top{padding-top:96px;}
+  .deal-inner{grid-template-columns:1fr;gap:20px;padding:28px 3% 40px;}
+  .deal-visual{display:none;}
+  .deal-title{font-size:clamp(1.8rem,6vw,2.6rem);letter-spacing:2px;}
+  .deal-price{font-size:2.8rem;}
+  .deal-original{font-size:1.4rem;}
+  .deal-pricing{gap:10px;margin-bottom:8px;}
+  .deal-urgency-bar{font-size:.64rem;letter-spacing:1.5px;padding:9px 3%;line-height:1.5;}
+  .deal-cta{display:block;width:100%;text-align:center;padding:16px 20px;font-size:.8rem;letter-spacing:2px;box-sizing:border-box;}
+  .deal-subtitle{font-size:.75rem;letter-spacing:1.2px;margin-bottom:20px;}
+  .deal-per{font-size:.7rem;}
+  .deal-features{gap:7px;margin-bottom:22px;}
+  .deal-feature{font-size:.84rem;}
+  .deal-social-proof{gap:6px;margin-top:16px;}
+  .deal-proof-item{font-size:.64rem;letter-spacing:1px;}
+  .deal-stocks{margin-top:10px;}
+  .deal-stock-lbl{font-size:.6rem;}
+  .deal-eyebrow{font-size:1.25rem;}
+}
+@media(max-width:600px){
+  #deal-top{padding-top:88px;}
+  .deal-urgency-bar{font-size:.58rem;letter-spacing:1px;padding:8px 3%;line-height:1.4;}
+  .deal-inner{padding:22px 3% 34px;}
+  .deal-title{font-size:clamp(1.6rem,7vw,2.2rem);}
+  .deal-price{font-size:2.4rem;}
+  .deal-original{font-size:1.2rem;}
+  .deal-save{font-size:.6rem;padding:4px 9px;}
+  .deal-cta{font-size:.75rem;letter-spacing:1.5px;padding:15px 16px;}
+  .deal-feature{font-size:.8rem;}
+  .deal-proof-item{font-size:.6rem;}
+}
+@media(max-width:380px){
+  #deal-top{padding-top:80px;}
+  .deal-urgency-bar{font-size:.54rem;letter-spacing:.5px;padding:7px 2%;}
+  .deal-inner{padding:18px 2% 28px;}
+  .deal-title{font-size:1.5rem;letter-spacing:1.5px;}
+  .deal-price{font-size:2rem;}
+  .deal-original{font-size:1.1rem;}
+  .deal-cta{font-size:.7rem;letter-spacing:1px;padding:14px 14px;}
+  .deal-subtitle{font-size:.68rem;}
+  .deal-eyebrow{font-size:1.1rem;}
+}
 </style>
 </head>
 <body class="nav-spacer-page">
 
 <div id="progress-bar"></div>
 <button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
+<!-- ══════════════ ORDER DEAL — FIRST ON PAGE ══════════════ -->
+<section id="deal-top">
+  <div class="deal-urgency-bar">
+    ⚡ <strong>HURRY!</strong> &nbsp;Season is SHORT — Limited boxes available · Last year sold out in 3 weeks · हंगाम लवकर संपतो!
+  </div>
+  <div class="deal-inner">
+    <div>
+      <span class="deal-eyebrow">🥭 Mangoes NOW Available · हापूस उपलब्ध!</span>
+      <h2 class="deal-title">Ratnagiri<br><em>Hapus</em> Box</h2>
+      <div class="deal-subtitle">50 Tree-Ripened Alphonso Mangoes · GI Certified · Zero Chemicals</div>
+
+      <div class="deal-pricing">
+        <span class="deal-original">₹2,000</span>
+        <span class="deal-price">₹1,800</span>
+        <span class="deal-save">Save ₹200</span>
+      </div>
+      <div class="deal-per">Per Box · 50 Hapus Mangoes Included</div>
+
+      <div class="deal-features">
+        <div class="deal-feature">50 Alphonso Hapus Mangoes per box</div>
+        <div class="deal-feature">GI Certified Ratnagiri Origin — Authenticity Guaranteed</div>
+        <div class="deal-feature">Tree-ripened · No Carbide · No Cold Storage</div>
+        <div class="deal-feature">Dispatched within 24 hours of harvest — Ultra Fresh</div>
+      </div>
+
+      <a href="https://wa.me/919325848094?text=Hi%20Pasture!%20%F0%9F%A5%AD%0AI%20want%20to%20order%20Ratnagiri%20Hapus%20Mango%20Box.%0A50%20Alphonso%20Mangoes%20%C2%B7%20%E2%82%B91%2C800%20per%20box.%0A%0ANo.%20of%20Boxes%3A%20%0AName%3A%20%0APhone%3A%20%0ADelivery%20Address%3A%20" target="_blank" rel="noopener" class="deal-cta">💬 Order Now on WhatsApp →</a>
+
+      <div class="deal-social-proof">
+        <div class="deal-proof-item">🔥 <strong>68%</strong> of this season's boxes already booked</div>
+        <div class="deal-proof-item">🕐 Last season stock sold out in under <strong>3 weeks</strong></div>
+        <div class="deal-stocks">
+          <div class="deal-stock-lbl">Season Stock Left ↓</div>
+          <div class="deal-stock-bar"><div class="deal-stock-fill"></div></div>
+          <div class="deal-stock-lbl" style="margin-top:6px;color:rgba(240,168,50,.6);">Only 32% remaining — Don't miss out!</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="deal-visual">
+      <div class="deal-mango-display">
+        <span class="deal-mango-emoji">🥭</span>
+        <span class="deal-mango-count">50 Mangoes · ₹1,800</span>
+        <span class="deal-mango-mr">एका बॉक्समध्ये ५० हापूस आंबे</span>
+        <div class="deal-box-details">
+          <div class="deal-box-detail">
+            <span class="deal-box-detail-val">50</span>
+            <span class="deal-box-detail-lbl">Mangoes</span>
+          </div>
+          <div class="deal-box-detail">
+            <span class="deal-box-detail-val">₹36</span>
+            <span class="deal-box-detail-lbl">Per Mango</span>
+          </div>
+          <div class="deal-box-detail">
+            <span class="deal-box-detail-val">GI</span>
+            <span class="deal-box-detail-lbl">Certified</span>
+          </div>
+          <div class="deal-box-detail">
+            <span class="deal-box-detail-val">24h</span>
+            <span class="deal-box-detail-lbl">Dispatch</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <div class="nav-spacer nav-spacer--hero-dark" aria-hidden="true"></div>
 
 <div id="bird">
@@ -405,8 +561,8 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;o
   <!-- Stars -->
   <div id="stars"></div>
 
-  <!-- COMING SOON RIBBON -->
-  <div class="coming-ribbon">🥭 Coming Season Apr–Jun 2025</div>
+  <!-- SEASON LIVE RIBBON -->
+  <div class="coming-ribbon">🔥 Season LIVE Now · Limited Stock!</div>
 
   <!-- Interactive Mango Benefit Tooltip Card -->
   <div id="mango-card">
@@ -548,27 +704,31 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;o
     <span class="hero-eyebrow">🥭 GI Certified · रत्नागिरी हापूस</span>
     <div class="hero-marathi">राजा आंबा · हापूस</div>
     <h1 class="hero-title">Ratnagiri<br><em>Alphonso</em><br>Hapus</h1>
-    <p class="hero-desc">The king of mangoes. GI Certified Ratnagiri Alphonso — tree-ripened, never chemically ripened, packed with saffron-like fragrance and unmatched sweetness. Arriving April 2025.</p>
+    <p class="hero-desc">The king of mangoes. GI Certified Ratnagiri Alphonso — tree-ripened, never chemically ripened, packed with saffron-like fragrance and unmatched sweetness. <strong style="color:var(--gold)">Available now at ₹1,800 per box · 50 mangoes.</strong></p>
     <div class="hero-btns">
-      <button class="btn-notify" onclick="document.getElementById('notifySection').scrollIntoView({behavior:'smooth'})">Notify Me 🥭</button>
-      <a href="cashew.html" class="btn-cashew">Order Cashew</a>
+      <a href="https://wa.me/919325848094?text=Hi%20Pasture!%20%F0%9F%A5%AD%0AI%20want%20to%20order%20Ratnagiri%20Hapus%20Mango%20Box.%0A50%20Alphonso%20Mangoes%20%C2%B7%20%E2%82%B91%2C800%20per%20box.%0A%0ANo.%20of%20Boxes%3A%20%0AName%3A%20%0APhone%3A%20%0ADelivery%20Address%3A%20" target="_blank" rel="noopener" class="btn-notify">💬 Order Now — ₹1,800 🥭</a>
+      <a href="cashew.html" class="btn-cashew">Also Order Cashew</a>
     </div>
-    <div class="hero-season-note">🗓️ Season: April — June · हंगाम: एप्रिल — जून</div>
+    <div class="hero-season-note">⚡ Season: April — June · Limited Stock — Order Fast!</div>
   </div>
 </section>
 
-<!-- NOTIFY SECTION -->
+<!-- ORDER / NOTIFY SECTION -->
 <div id="notifySection" class="notify-section">
-  <span class="eyebrow">सूचना मिळवा · Get Notified</span>
-  <h2 class="notify-title">Be First When<br><em>Season Opens</em></h2>
-  <span class="notify-mr">हंगाम सुरू होताच सर्वप्रथम जाणून घ्या</span>
-  <p class="notify-sub">Ratnagiri Hapus season is short (April–June). Last year, our stock sold out in 3 weeks. Register your number and we will call you as soon as harvesting begins.</p>
+  <span class="eyebrow">🥭 Season Is LIVE · हंगाम सुरू झाला!</span>
+  <h2 class="notify-title">Order Now —<br><em>Don't Wait!</em></h2>
+  <span class="notify-mr">उशीर केल्यास स्टॉक संपेल — आत्ताच ऑर्डर करा</span>
+  <p class="notify-sub">Ratnagiri Hapus season is short (April–June). <strong style="color:var(--gold)">Last year, our stock sold out in just 3 weeks.</strong> This year's box of 50 mangoes is available at ₹1,800 (down from ₹2,000). Order now or register your number and we will call you before stock runs out.</p>
+  <div style="margin:24px auto 0;text-align:center;">
+    <a href="https://wa.me/919325848094?text=Hi%20Pasture!%20%F0%9F%A5%AD%0AI%20want%20to%20order%20Ratnagiri%20Hapus%20Mango%20Box.%0A50%20Alphonso%20Mangoes%20%C2%B7%20%E2%82%B91%2C800%20per%20box.%0A%0ANo.%20of%20Boxes%3A%20%0AName%3A%20%0APhone%3A%20%0ADelivery%20Address%3A%20" target="_blank" rel="noopener" style="display:inline-block;background:#25D366;color:#fff;font-family:'Josefin Sans',sans-serif;font-size:.85rem;letter-spacing:3px;font-weight:700;text-transform:uppercase;padding:16px 48px;text-decoration:none;transition:all .3s;margin-bottom:20px;" onmouseover="this.style.background='#1da851'" onmouseout="this.style.background='#25D366'">💬 Order on WhatsApp · ₹1,800 for 50 Mangoes →</a>
+  </div>
+  <p style="color:rgba(250,240,220,.45);font-size:.8rem;margin-top:4px;margin-bottom:16px;">— or register for a WhatsApp reminder —</p>
   <div class="notify-form">
     <input class="notify-input" id="notifyPhone" placeholder="Your WhatsApp number · व्हॉट्सअॅप नंबर" type="tel">
-    <button class="notify-btn" onclick="registerNotify()">Notify Me 🥭</button>
+    <button class="notify-btn" onclick="registerNotify()">Remind Me 🥭</button>
   </div>
-  <div class="notify-success" id="notifySuccess">✓ You're registered! We'll WhatsApp you when season opens. 🥭</div>
-  <div class="notify-count" id="notifyCount">Join <span id="waitCount">247</span> people already on the waitlist</div>
+  <div class="notify-success" id="notifySuccess">✓ Registered! We'll WhatsApp you before stock runs out. 🥭</div>
+  <div class="notify-count" id="notifyCount"><span id="waitCount">247</span> people already on waitlist — Stock filling fast!</div>
 </div>
 
 <!-- BAND -->
@@ -694,35 +854,37 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;o
 <!-- PACKS (Coming Soon) -->
 <section id="packs">
   <div class="packs-header reveal">
-    <span class="eyebrow">पॅक्स · Available Packs</span>
-    <h2 class="section-title" style="color:#FAF0DC">Hapus <em style="color:#F0A832">Packs</em> Coming Soon</h2>
-    <div class="section-mr">एप्रिल २०२५ पासून उपलब्ध · Available from April 2025</div>
-    <p style="color:rgba(250,240,220,.45);margin-top:12px;font-style:italic;font-size:.88rem;">Register above to be notified when ordering opens.</p>
+    <span class="eyebrow">पॅक्स · Available Now</span>
+    <h2 class="section-title" style="color:#FAF0DC">Hapus <em style="color:#F0A832">Season</em> Is Live</h2>
+    <div class="section-mr">आत्ता उपलब्ध · Season Stock — Order Fast Before It Runs Out!</div>
   </div>
       <div class="pack-cards">
-        <div class="pack-card soon reveal" style="transition-delay:.05s">
-          <div class="pack-size">Regular Box</div>
-          <span class="pack-size-mr">साधारण बॉक्स · 12 पीस</span>
-          <div class="pack-price">Pricing closer to season</div>
-          <div class="pack-per">12 pieces · Medium size</div>
-          <p class="pack-desc">12 medium Hapus mangoes in a ventilated box. Perfect for a small family. GI Certified, tree-ripened.</p>
-          <button class="pack-btn" onclick="document.getElementById('notifyPhone').focus();document.getElementById('notifySection').scrollIntoView({behavior:'smooth'})">Notify Me · सूचना द्या</button>
+        <div class="pack-card reveal" style="transition-delay:.05s">
+          <div class="pack-size">Hapus Box</div>
+          <span class="pack-size-mr">हापूस बॉक्स · ५० आंबे</span>
+          <div class="pack-price" style="display:flex;align-items:center;gap:10px;justify-content:center;flex-wrap:wrap;">
+            <span style="font-size:1.1rem;color:rgba(250,240,220,.3);text-decoration:line-through;font-weight:400;">₹2,000</span>
+            <span>₹1,800</span>
+          </div>
+          <div class="pack-per">50 mangoes · Save ₹200 · ₹36 per mango</div>
+          <p class="pack-desc">50 Alphonso Hapus mangoes in a ventilated wooden crate. GI Certified, tree-ripened, zero chemicals — direct from our Ratnagiri orchard.</p>
+          <a href="https://wa.me/919325848094?text=Hi%20Pasture!%20%F0%9F%A5%AD%0AI%20want%20to%20order%20Ratnagiri%20Hapus%20Mango%20Box.%0A50%20Alphonso%20Mangoes%20%C2%B7%20%E2%82%B91%2C800%20per%20box.%0A%0ANo.%20of%20Boxes%3A%20%0AName%3A%20%0APhone%3A%20%0ADelivery%20Address%3A%20" target="_blank" rel="noopener" class="pack-btn" style="text-decoration:none;display:block;text-align:center;">💬 Order on WhatsApp</a>
         </div>
-        <div class="pack-card best soon reveal" style="transition-delay:.1s">
-          <div class="pack-size">Gift Crate</div>
-          <span class="pack-size-mr">भेट क्रेट · 6 मोठे</span>
-          <div class="pack-price">Pricing closer to season</div>
-          <div class="pack-per">6 large pieces · Wooden crate</div>
-          <p class="pack-desc">6 premium large Hapus in a branded wooden crate. The perfect corporate gift or celebration gift for loved ones.</p>
-          <button class="pack-btn" onclick="document.getElementById('notifyPhone').focus();document.getElementById('notifySection').scrollIntoView({behavior:'smooth'})">Notify Me · सूचना द्या</button>
-        </div>
-        <div class="pack-card soon reveal" style="transition-delay:.15s">
+        <div class="pack-card best reveal" style="transition-delay:.1s">
           <div class="pack-size">Family Crate</div>
-          <span class="pack-size-mr">कुटुंब क्रेट · 24 पीस</span>
-          <div class="pack-price">Pricing closer to season</div>
-          <div class="pack-per">24 pieces · Large family pack</div>
-          <p class="pack-desc">24 Hapus mangoes in a large wooden crate. Best value for families, corporate orders, and those who want to stock up for the season.</p>
-          <button class="pack-btn" onclick="document.getElementById('notifyPhone').focus();document.getElementById('notifySection').scrollIntoView({behavior:'smooth'})">Notify Me · सूचना द्या</button>
+          <span class="pack-size-mr">कुटुंब क्रेट · मोठा बॉक्स</span>
+          <div class="pack-price">Ask for Price</div>
+          <div class="pack-per">Bulk order · Best value per mango</div>
+          <p class="pack-desc">Bulk Hapus order for families, events, or corporate gifting. Contact us on WhatsApp for bulk pricing — best rates of the season.</p>
+          <a href="https://wa.me/919325848094?text=Hi%20Pasture!%20%F0%9F%A5%AD%0AI%20want%20to%20order%20Hapus%20Mango%20Bulk%20Crate.%0A%0ANo.%20of%20Boxes%2FCrates%3A%20%0AName%3A%20%0APhone%3A%20%0ADelivery%20Address%3A%20" target="_blank" rel="noopener" class="pack-btn" style="text-decoration:none;display:block;text-align:center;">WhatsApp for Bulk Order</a>
+        </div>
+        <div class="pack-card reveal" style="transition-delay:.15s">
+          <div class="pack-size">Gift Crate</div>
+          <span class="pack-size-mr">भेट क्रेट · Premium Gift</span>
+          <div class="pack-price">Ask for Price</div>
+          <div class="pack-per">Premium packaging · Perfect gift</div>
+          <p class="pack-desc">Premium Hapus mangoes in a branded wooden gift crate. Ideal for corporate gifts, weddings, and celebrations. Contact us for gifting options.</p>
+          <a href="https://wa.me/919325848094?text=Hi%20Pasture!%20%F0%9F%A5%AD%0AI%20want%20to%20order%20a%20Hapus%20Mango%20Gift%20Crate.%0A%0ANo.%20of%20Crates%3A%20%0AName%3A%20%0APhone%3A%20%0ADelivery%20Address%3A%20" target="_blank" rel="noopener" class="pack-btn" style="text-decoration:none;display:block;text-align:center;">WhatsApp for Gift Order</a>
         </div>
       </div>
 </section>
@@ -999,7 +1161,7 @@ updateCartBadge();
   </div>
 </div>
 
-<a id="wa-float" href="https://wa.me/919404598725?text=Hi%20Pasture!%20I'm%20interested%20in%20Ratnagiri%20Alphonso%20Mango." target="_blank" rel="noopener" title="Chat on WhatsApp">
+<a id="wa-float" href="https://wa.me/919325848094?text=Hi%20Pasture!%20%F0%9F%A5%AD%0AI%20want%20to%20order%20Ratnagiri%20Hapus%20Mango%20Box.%0A50%20Alphonso%20Mangoes%20%C2%B7%20%E2%82%B91%2C800%20per%20box.%0A%0ANo.%20of%20Boxes%3A%20%0AName%3A%20%0APhone%3A%20%0ADelivery%20Address%3A%20" target="_blank" rel="noopener" title="Order Mango on WhatsApp">
   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 </body>
